@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "geoserver.fullname" . }}-discovery
+  labels:
+    {{- include "geoserver.labels" . | nindent 4 }}
+    gs-service: discovery
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{ .Values.geoserver.discovery.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "geoserver.selectorLabels" . | nindent 6 }}
+      gs-service: discovery
+  template:
+    metadata:
+    {{- with .Values.geoserver.discovery.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "geoserver.selectorLabels" . | nindent 8 }}
+        gs-service: discovery
+        {{- if .Values.global.custom_pod_labels }}
+          {{- toYaml .Values.global.custom_pod_labels | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.geoserver.discovery.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-discovery
+          securityContext:
+            {{- toYaml .Values.geoserver.discovery.securityContext | nindent 12 }}
+          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.discovery.image.repository }}:{{ .Values.geoserver.discovery.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          env:
+            - name: EUREKA_INSTANCE_HOSTNAME
+              value: {{ include "geoserver.fullname" . }}-discovery
+            - name: SERVER_PORT
+              value: "8761"
+{{- if .Values.geoserver.config.env }}
+{{ toYaml .Values.geoserver.config.env | indent 12 }}
+{{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8761
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            {{- toYaml .Values.geoserver.discovery.resources | nindent 12 }}
+      {{- with .Values.geoserver.discovery.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.discovery.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.discovery.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

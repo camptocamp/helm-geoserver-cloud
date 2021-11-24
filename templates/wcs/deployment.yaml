@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "geoserver.fullname" . }}-wcs
+  labels:
+    {{- include "geoserver.labels" . | nindent 4 }}
+    gs-service: wcs
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{ .Values.geoserver.wcs.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "geoserver.selectorLabels" . | nindent 6 }}
+      gs-service: wcs
+  template:
+    metadata:
+    {{- with .Values.geoserver.wcs.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "geoserver.selectorLabels" . | nindent 8 }}
+        gs-service: wcs
+        {{- if .Values.global.custom_pod_labels }}
+          {{- toYaml .Values.global.custom_pod_labels | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.geoserver.wcs.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-wcs
+          securityContext:
+            {{- toYaml .Values.geoserver.wcs.securityContext | nindent 12 }}
+          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.wcs.image.repository }}:{{ .Values.geoserver.wcs.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          command:
+            - dockerize
+            - -wait
+            - http://{{ include "geoserver.fullname" . }}-config:8080/wcs-service/default
+            - --timeout
+            - 120s
+            - java
+            - -jar
+            - /opt/app/wcs-service.jar
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+{{- if .Values.geoserver.config.env }}
+{{ toYaml .Values.geoserver.config.env | indent 12 }}
+{{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            {{- toYaml .Values.geoserver.wcs.resources | nindent 12 }}
+      {{- with .Values.geoserver.wcs.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.wcs.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.wcs.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "geoserver.fullname" . }}-webui
+  labels:
+    {{- include "geoserver.labels" . | nindent 4 }}
+    gs-service: webui
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{ .Values.geoserver.webui.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "geoserver.selectorLabels" . | nindent 6 }}
+      gs-service: webui
+  template:
+    metadata:
+    {{- with .Values.geoserver.webui.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "geoserver.selectorLabels" . | nindent 8 }}
+        gs-service: webui
+        {{- if .Values.global.custom_pod_labels }}
+          {{- toYaml .Values.global.custom_pod_labels | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.geoserver.webui.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-webui
+          securityContext:
+            {{- toYaml .Values.geoserver.webui.securityContext | nindent 12 }}
+          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.webui.image.repository }}:{{ .Values.geoserver.webui.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          command:
+            - dockerize
+            - -wait
+            - http://{{ include "geoserver.fullname" . }}-config:8080/web-ui/default
+            - --timeout
+            - 120s
+            - java
+            - -jar
+            - /opt/app/web-ui-service.jar
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: {{ include "geoserver.fullname" . }}-rabbitmq
+{{- if .Values.geoserver.config.env }}
+{{ toYaml .Values.geoserver.config.env | indent 12 }}
+{{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            {{- toYaml .Values.geoserver.webui.resources | nindent 12 }}
+      {{- with .Values.geoserver.webui.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.webui.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.webui.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "geoserver.fullname" . }}-gateway
+  labels:
+    {{- include "geoserver.labels" . | nindent 4 }}
+    gs-service: gateway
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{ .Values.geoserver.gateway.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "geoserver.selectorLabels" . | nindent 6 }}
+      gs-service: gateway
+  template:
+    metadata:
+    {{- with .Values.geoserver.gateway.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "geoserver.selectorLabels" . | nindent 8 }}
+        gs-service: gateway
+        {{- if .Values.global.custom_pod_labels }}
+          {{- toYaml .Values.global.custom_pod_labels | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.geoserver.gateway.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-gateway
+          securityContext:
+            {{- toYaml .Values.geoserver.gateway.securityContext | nindent 12 }}
+          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.gateway.image.repository }}:{{ .Values.geoserver.gateway.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          command:
+            - dockerize
+            - -wait
+            - http://{{ include "geoserver.fullname" . }}-config:8080/gateway-service/default
+            - --timeout
+            - 30s
+            - java
+            - -jar
+            - /opt/app/gateway-service.jar
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
+{{- if .Values.geoserver.config.env }}
+{{ toYaml .Values.geoserver.config.env | indent 12 }}
+{{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            {{- toYaml .Values.geoserver.gateway.resources | nindent 12 }}
+      {{- with .Values.geoserver.gateway.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.gateway.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.geoserver.gateway.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
