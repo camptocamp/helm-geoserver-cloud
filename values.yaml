@@ -58,7 +58,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-config
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -91,7 +91,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-gateway
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -124,7 +124,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-discovery
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -157,7 +157,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-webui
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -190,7 +190,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-rest
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -223,7 +223,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-wfs
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -256,7 +256,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-wms
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
@@ -289,7 +289,7 @@ geoserver:
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-wcs
-      tag: ""
+      tag: "1.0-SNAPSHOT"
 
     env: []
 
