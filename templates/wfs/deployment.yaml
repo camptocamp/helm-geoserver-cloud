@@ -37,14 +37,9 @@ spec:
           image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.wfs.image.repository }}:{{ .Values.geoserver.wfs.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           command:
-            - dockerize
-            - -wait
-            - http://{{ include "geoserver.fullname" . }}-config:8080/wfs-service/default
-            - --timeout
-            - 120s
-            - java
-            - -jar
-            - /opt/app/wfs-service.jar
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://{{ include "geoserver.fullname" . }}-config:8080/wfs-service/default -- java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
