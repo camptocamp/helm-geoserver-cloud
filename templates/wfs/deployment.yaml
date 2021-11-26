@@ -34,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}-wfs
           securityContext:
             {{- toYaml .Values.geoserver.wfs.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.wfs.image.repository }}:{{ .Values.geoserver.wfs.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.geoserver.wfs.image.repository }}:{{ .Values.geoserver.wfs.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           command:
             - /bin/sh

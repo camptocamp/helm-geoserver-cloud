@@ -34,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}-rest
           securityContext:
             {{- toYaml .Values.geoserver.rest.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.rest.image.repository }}:{{ .Values.geoserver.rest.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.geoserver.rest.image.repository }}:{{ .Values.geoserver.rest.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           command:
             - /bin/sh

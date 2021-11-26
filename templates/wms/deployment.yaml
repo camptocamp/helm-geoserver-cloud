@@ -34,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}-wms
           securityContext:
             {{- toYaml .Values.geoserver.wms.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.wms.image.repository }}:{{ .Values.geoserver.wms.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.geoserver.wms.image.repository }}:{{ .Values.geoserver.wms.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           command:
             - /bin/sh

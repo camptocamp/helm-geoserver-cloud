@@ -65,7 +65,7 @@ spec:
         - name: {{ .Chart.Name }}-config
           securityContext:
             {{- toYaml .Values.geoserver.config.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.registry }}{{ .Values.geoserver.config.image.repository }}:{{ .Values.geoserver.config.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.geoserver.config.image.repository }}:{{ .Values.geoserver.config.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           command:
             - /bin/sh

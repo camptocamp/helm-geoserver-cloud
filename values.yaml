@@ -7,7 +7,6 @@ global:
   cluster_environment: dev
   image:
     pullPolicy: IfNotPresent
-    registry: "docker.io/"
 
 rabbitmq:
   image:
@@ -158,6 +157,7 @@ geoserver:
     image:
       repository: geoservercloud/geoserver-cloud-webui
       tag: "1.0-SNAPSHOT"
+      
 
     env: []
 
