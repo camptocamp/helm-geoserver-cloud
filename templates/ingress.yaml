@@ -16,3 +16,10 @@ spec:
             name: {{ include "geoserver.fullname" . }}-gateway
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
+      - path: /web/
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "geoserver.fullname" . }}-webui
+            port:
+              number: {{ .Values.geoserver.gateway.service.port }}
