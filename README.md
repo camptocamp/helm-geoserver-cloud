@@ -49,6 +49,9 @@ k3d cluster create k3d-cluster-1 --registry-use k3d-registry.localhost --k3s-age
 ### start the chart
 
 ```bash
+# update the dependencies the first time as well
+helm dependency update
+# then install the chart
 helm install geoserver .
 ```
 
