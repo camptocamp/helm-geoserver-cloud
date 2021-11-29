@@ -1,0 +1,2498 @@
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-rabbitmq
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+secrets:
+  - name: test-rabbitmq
+---
+# Source: testgeoserver/charts/geoserver/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-geoserver
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: testgeoserver/charts/geoserver/templates/secrets/secret_postgres.yaml
+apiVersion: v1
+data:
+  DATABASE_NAME: Y29uZmln
+  HOST: dGVzdC1wb3N0Z3Jlc3Fs
+  ROLE: dXNlcm5hbWU=
+  PASSWORD: cGFzc3dvcmQ=
+kind: Secret
+metadata:
+  name: jdbcconfig-test-geoserver
+  #namespace: sig-dev
+type: Opaque
+---
+# Source: testgeoserver/charts/geoserver/templates/secrets/secret_rabbitmq.yaml
+apiVersion: v1
+data:
+  rabbitmq-erlang-cookie: UDQ1UXdPNEJaZFBOZkFLNGhMVnZnQ0tUbVFoZ1pn
+  rabbitmq-password: Z2Vvc2VydmVy
+kind: Secret
+metadata:
+  name: geoserver-rabbitmq
+  #namespace: sig-dev
+type: Opaque
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/configuration.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-rabbitmq-config
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+data:
+  rabbitmq.conf: |-
+    ## Username and password
+    default_user = geoserver
+    default_pass = CHANGEME
+    ## Clustering
+    cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
+    cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
+    cluster_formation.node_cleanup.interval = 10
+    cluster_formation.node_cleanup.only_log_warning = true
+    cluster_partition_handling = autoheal
+    # queue master locator
+    queue_master_locator = min-masters
+    # enable guest user
+    loopback_users.guest = false
+    #default_vhost = default-vhost
+    #disk_free_limit.absolute = 50MB
+    #load_definitions = /app/load_definition.json
+---
+# Source: testgeoserver/charts/geoserver/templates/config/configmap-init-db.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-geoserver-init-db
+  annotations:
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+data:
+  init-db.sql: |
+    -- tables
+    CREATE TABLE object (
+      oid serial NOT NULL,
+      type_id int4 NOT NULL,
+      id text NOT NULL,
+      blob text NOT NULL,
+      PRIMARY KEY (oid)
+    );
+
+    CREATE TABLE object_property (
+      oid int4 NOT NULL,
+      property_type int4 NOT NULL,
+      id text NOT NULL,
+      related_oid int4,
+      related_property_type int4,
+      colindex int4 NOT NULL,
+      value text,
+      PRIMARY KEY (oid, property_type, colindex)
+    );
+
+    CREATE TABLE type (
+      oid serial NOT NULL,
+      typename text NOT NULL,
+      PRIMARY KEY (OID)
+    );
+
+    CREATE TABLE property_type (
+      oid  serial NOT NULL,
+      target_property int4,
+      type_id int4 NOT NULL,
+      name text NOT NULL,
+      collection bool NOT NULL,
+      text bool NOT NULL,
+      PRIMARY KEY (oid)
+    );
+
+    CREATE TABLE default_object (
+      def_key text NOT NULL,
+      id text NOT NULL
+
+    );
+
+    -- foreign keys
+    ALTER TABLE object_property ADD CONSTRAINT fk_object_property
+      FOREIGN KEY (oid) REFERENCES object (oid) ON DELETE CASCADE;
+
+    ALTER TABLE property_type ADD CONSTRAINT
+      fk_type_property_type FOREIGN KEY (type_id) REFERENCES type (oid);
+
+    ALTER TABLE object ADD CONSTRAINT
+      fk_object_type FOREIGN KEY (type_id) REFERENCES type (oid);
+
+    ALTER TABLE property_type ADD CONSTRAINT
+      fk_property_type_target_property FOREIGN KEY (target_property) REFERENCES property_type (oid);
+
+    ALTER TABLE object_property ADD CONSTRAINT
+      fk_object_property_property_type FOREIGN KEY (property_type) REFERENCES property_type (oid);
+
+    -- indexes
+    CREATE INDEX object_type_id_idx ON object (type_id);
+    CREATE UNIQUE INDEX object_id_idx ON object (id);
+
+    CREATE INDEX object_property_value_upper_idx ON object_property (UPPER(value));
+    CREATE INDEX object_property_property_type_idx ON object_property (property_type);
+    CREATE INDEX object_property_id_idx ON object_property (id);
+    CREATE INDEX object_property_related_oid_idx ON object_property (related_oid);
+    CREATE INDEX object_property_related_property_type_idx ON object_property (related_property_type);
+    CREATE INDEX object_property_colindex_idx ON object_property (colindex);
+    CREATE INDEX object_property_value_idx ON object_property (value);
+
+    CREATE UNIQUE INDEX type_typename_idx ON type (typename);
+
+    CREATE INDEX property_type_target_property_idx ON property_type (target_property);
+    CREATE INDEX property_type_type_id_idx ON property_type (type_id);
+    CREATE INDEX property_type_name_idx ON property_type (name);
+    CREATE INDEX property_type_collection_idx ON property_type (collection);
+    -- Avoid creating the same target property mapping twice
+    CREATE UNIQUE INDEX property_type_unique_target_idx ON property_type (target_property, type_id, name);
+
+    CREATE INDEX default_object_def_key_idx ON default_object (def_key);
+    CREATE INDEX default_object_id_idx ON default_object (id);
+
+    -- views
+    -- workspace view
+    CREATE OR REPLACE VIEW workspace AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT e.value
+              FROM object_property e, property_type f
+            WHERE e.property_type = f.oid
+              AND e.oid = (SELECT g.oid
+                              FROM object_property g, property_type h
+                            WHERE g.property_type = h.oid
+                              AND g.value = (SELECT i.value
+                                                FROM object_property i, property_type j
+                                              WHERE i.oid = a.oid
+                                                AND i.property_type = j.oid
+                                                AND j.name = 'name')
+                              AND h.name = 'prefix')
+              AND f.name = 'URI') as uri
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.WorkspaceInfo';
+
+    -- datastore view
+    CREATE OR REPLACE VIEW datastore AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'description') as description,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'type') as type,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.DataStoreInfo';
+
+    -- feature type view
+    CREATE OR REPLACE VIEW featuretype AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'nativeName') as native_name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'prefixedName') as prefixed_name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'abstract') as abstract,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'SRS') as srs,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'projectionPolicy') as projection_policy,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'store.id') store,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'namespace.id') namespace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.FeatureTypeInfo';
+
+    -- coveragestore view
+    CREATE OR REPLACE VIEW coveragestore AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'description') as description,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'type') as type,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.CoverageStoreInfo';
+
+    -- coverage view
+    CREATE OR REPLACE VIEW coverage AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'nativeName') as native_name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'prefixedName') as prefixed_name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'abstract') as abstract,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'SRS') as srs,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'projectionPolicy') as projection_policy,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'store.id') store,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'namespace.id') namespace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.CoverageInfo';
+
+    -- wmsstore view
+    CREATE OR REPLACE VIEW wmsstore AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'description') as description,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'capabilitiesURL') as capabilities_url,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'type') as type,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.WMSStoreInfo';
+
+    -- wms layer view
+    CREATE OR REPLACE VIEW wmslayer AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'nativeName') as native_name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'prefixedName') as prefixed_name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'abstract') as abstract,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'SRS') as srs,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'projectionPolicy') as projection_policy,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'store.id') store,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'namespace.id') namespace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.WMSLayerInfo';
+
+    -- style view
+    CREATE OR REPLACE VIEW style AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'filename') as filename,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.StyleInfo';
+
+    -- layer view
+    CREATE OR REPLACE VIEW layer AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'abstract') as abstract,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'type') as type,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'defaultStyle.id') default_style,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'resource.id') resource
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.LayerInfo';
+
+    -- layergroup styles
+    CREATE OR REPLACE VIEW layer_style AS
+    SELECT a.oid, b.related_oid as style
+      FROM object a, object_property b, property_type c, type d
+    WHERE a.oid = b.oid
+      AND a.type_id = d.oid
+      AND b.property_type = c.oid
+      AND c.name = 'styles.id'
+      AND d.typename = 'org.geoserver.catalog.LayerInfo';
+
+    -- layer group view
+    CREATE OR REPLACE VIEW layergroup AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'abstract') as abstract,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'mode') as mode,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.catalog.LayerGroupInfo';
+
+    -- layergroup layers
+    CREATE OR REPLACE VIEW layergroup_layer AS
+    SELECT a.oid, b.related_oid as layer
+      FROM object a, object_property b, property_type c, type d
+    WHERE a.oid = b.oid
+      AND a.type_id = d.oid
+      AND b.property_type = c.oid
+      AND c.name = 'layers.id'
+      AND d.typename = 'org.geoserver.catalog.LayerGroupInfo';
+
+    -- layergroup styles
+    CREATE OR REPLACE VIEW layergroup_style AS
+    SELECT a.oid, b.related_oid as style
+      FROM object a, object_property b, property_type c, type d
+    WHERE a.oid = b.oid
+      AND a.type_id = d.oid
+      AND b.property_type = c.oid
+      AND c.name = 'styles.id'
+      AND d.typename = 'org.geoserver.catalog.LayerGroupInfo';
+
+    -- global view
+    CREATE OR REPLACE VIEW global AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'featureTypeCacheSize') as feature_type_cache_size,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'globalServices') as global_services,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'xmlPostRequestLogBufferSize') as xml_post_request_log_buffer_size,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'updateSequence') as update_sequence,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'settings.id') as settings
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.config.GeoServerInfo';
+
+    -- settings view
+    CREATE OR REPLACE VIEW settings AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'charset') as charset,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'verbose') as verbose,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'verboseExceptions') as verbose_exceptions,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'numDecimals') as num_decimals,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'onlineResource') as online_resource,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'proxyBaseUrl') as proxy_base_url,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'schemaBaseUrl') as schema_base_url,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') as workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.config.SettingsInfo';
+
+    -- service view
+    CREATE OR REPLACE VIEW service AS
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'name') as name,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'title') as title,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'abstract') as abstract,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'maintainer') as maintainer,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'verbose') as verbose,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'citeCompliant') as cite_compliant,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'outputStrategy') as output_strategy,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'onlineResource') as online_resource,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'schemaBaseURL') as schema_base_url,
+          (SELECT c.value
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'enabled') as enabled,
+          (SELECT c.related_oid
+              FROM object_property c, property_type d
+            WHERE c.oid = a.oid
+              AND c.property_type = d.oid
+              AND d.name = 'workspace.id') as workspace
+      FROM object a, type b
+    WHERE a.type_id = b.oid
+      AND b.typename = 'org.geoserver.config.ServiceInfo';
+
+    CREATE TABLE resources
+    (
+      oid serial NOT NULL,
+      name character varying NOT NULL,
+      parent integer,
+      last_modified timestamp without time zone NOT NULL DEFAULT timezone('UTC'::text, now()),
+      content bytea,
+      CONSTRAINT resources_pkey PRIMARY KEY (oid),
+      CONSTRAINT resources_parent_fkey FOREIGN KEY (parent)
+          REFERENCES resources (oid)
+          ON UPDATE RESTRICT ON DELETE CASCADE,
+      CONSTRAINT resources_parent_name_key UNIQUE (parent, name),
+      CONSTRAINT resources_only_one_root_check CHECK (parent IS NOT NULL OR oid = 0)
+    );
+
+    CREATE INDEX resources_parent_name_idx
+      ON resources (parent NULLS FIRST, name NULLS FIRST);
+
+    INSERT INTO resources (oid, name, parent, content) VALUES (0, '', NULL, NULL);
+
+    -- only the required table(s) to support distributed locking, from
+    -- spring-integration-jdbc-<version>.jar/org/springframework/integration/jdbc/schema-postgresql.sql
+    -- Table named RESOURCE_LOCK instead of INT_LOCK
+    CREATE TABLE RESOURCE_LOCK  (
+      LOCK_KEY CHAR(36) NOT NULL,
+      REGION VARCHAR(100) NOT NULL,
+      CLIENT_ID CHAR(36),
+      CREATED_DATE TIMESTAMP NOT NULL,
+      constraint LOCK_PK primary key (LOCK_KEY, REGION)
+    );
+---
+# Source: testgeoserver/charts/geoserver/templates/config/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-geoserver-config-configs
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: "config"
+data:
+  application.yml: |
+    server:
+      tomcat:
+        # Maximum number of connections that the server accepts and processes at any given time.
+        # Once the limit has been reached, the operating system may still accept connections based on the "acceptCount" property.
+        max-connections: 1000 # default: 8192
+        # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
+        accept-count: 100 # default: 100
+        accesslog:
+          enabled: false
+          directory: logs
+          encoding: UTF-8
+        threads:
+          # Minimum amount of worker threads.
+          min-spare: 2 #default: 10
+          # Maximum amount of worker threads.
+          max: 20 #default: 200
+
+    # Common configuration for all services. Override or add service specific config
+    # properties on each <service-name>-service.yml file
+    geoserver:
+      security.enabled: true
+      servlet.filter.session-debug.enabled: false # until the NPE is fixed
+      catalog:
+        advertised: true
+        localWorkspace: true
+        secure: true
+        # enable caching if using the catalog-service as backend
+        caching.enabled: ${geoserver.backend.catalog-service.enabled}
+      bus:
+        # whether to send distributed events (i.e. acts as master). All instances receive remote events.
+        send-events: true
+        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false,
+        # not all possible payload types are properly tested, and full object payload is not needed.
+        send-object: ${geoserver.backend.data-directory.enabled}
+        # whether to send a diff of changes as payload with the event. Set to false, not all possible payload types are properly tested nor needed.
+        send-diff: ${geoserver.backend.data-directory.enabled}
+      backend:
+        # configure catalog backends and decide which backend to use on this service.
+        # All backends are disabled, enable the required one on each service. For example, the catalog microservice
+        # will enable one backend type, and the front services the catalog-service backend.
+        # revisit: Could be split into profiles
+        catalog-service:
+          enabled: ${backend.catalog:false}
+          # Base URI of the catalog service. If not set, will be automatically determined using the discovery service, looking for "catalog-service"
+          # This allows to explicitly set a fixed location for the catalog service.
+          # uri: http://catalog:8080
+          cache-directory: ${java.io.tmpdir}/cngs/catalog-client/resource_store
+          fallback-resource-directory: ${java.io.tmpdir}/cngs/catalog-client/fallback_resource_store
+        data-directory:
+          enabled: ${backend.data-directory:false}
+          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory}
+        jdbcconfig:
+          enabled: ${backend.jdbcconfig:false}
+          initdb: false
+          web.enabled: true
+          cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
+          datasource:
+            jdbcUrl: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
+            username: ${jdbcconfig.username:geoserver}
+            password: ${jdbcconfig.password:geo5erver}
+            driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
+            # optional:
+            schema: ${jdbcconfig.schema:public}
+            minimumIdle: ${jdbcconfig.minConnections:2}
+            maximumPoolSize: ${jdbcconfig.maxConnections:8}
+
+    management:
+      endpoints:
+        enabled-by-default: true
+        web.exposure.include: "*"
+      endpoint:
+        info.enabled: true
+        metrics.enabled: true
+        shutdown.enabled: true
+        health:
+          enabled: true
+          show-details: always
+      metrics:
+        binders:
+          processor.enabled: true
+          uptime.enabled: true
+          jvm.enabled: true
+        enable.all: true
+        enable.jvm: true
+        export:
+          atlas.enabled: false
+
+    spring:
+      rabbitmq:
+        host: test-geoserver-rabbitmq
+        port: 5672
+        username: geoserver
+        password: ${RABBITMQ_PASSWORD}
+      cloud:
+        bus:
+          enabled: true
+          id: ${server.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
+          trace.enabled: false #switch on tracing of acks (default off).
+        stream:
+          bindings:
+            springCloudBusOutput:
+              destination: gscatalog
+            springCloudBusInput:
+              destination: gscatalog
+      jackson:
+        default-property-inclusion: non_empty
+        serialization.indent_output: false #set to true if doing manual testing and want formatted output
+
+    reactive.feign.cloud.enabled: true
+    reactive.feign.hystrix.enabled: false
+
+    logging:
+      level:
+        root: WARN
+        org.springframework: ERROR
+        org.springframework.cloud.bus: INFO
+        org.springframework.retry: INFO
+        # geoserver roots
+        org.geoserver: INFO
+        org.geoserver.catalog.plugin: INFO
+        org.geoserver.wms: WARN #don't flood the logs with every request details
+        org.geoserver.wfs: WARN
+        org.geoserver.jackson: INFO
+        org.geotools.jackson: INFO
+        org.geoserver.platform: INFO
+        org.geoserver.platform.resource: INFO
+        org.geoserver.jdbcconfig: INFO
+        oshi.hardware.platform.linux: ERROR
+        oshi.software.os: ERROR
+        # gs-cloud roots
+        org.geoserver.cloud: INFO
+        org.geoserver.cloud.autoconfigure: INFO
+        org.geoserver.cloud.config.factory: INFO
+        # bus debugging
+        org.geoserver.cloud.bus: INFO
+        org.springframework.cloud.bus.BusAutoConfiguration: INFO
+        org.springframework.cloud.bus.DefaultBusPathMatcher: INFO
+        # reactivefeign:
+        reactivefeign.client.log: INFO
+        org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
+
+    ---
+    spring.profiles: local
+    # provide environment variables that otherwise would be given by docker-compose.yml
+    rabbitmq.host: localhost
+
+    jdbcconfig.url: jdbc:postgresql://localhost:5432/geoserver_config
+    jdbcconfig.username: geoserver
+    jdbcconfig.password: geo5erver
+    ---
+    spring.profiles: datadir
+    backend.jdbcconfig: false
+    backend.catalog: false
+    backend.data-directory: true
+    ---
+    spring.profiles: jdbcconfig
+    backend.jdbcconfig: true
+    backend.catalog: false
+    backend.data-directory: false
+    ---
+    spring.profiles: catalog
+    backend.catalog: true
+    backend.jdbcconfig: false
+    backend.data-directory: false
+    ---
+    spring.profiles: debug
+
+    logging:
+      level:
+        root: WARN
+        org.springframework: INFO
+        # geoserver roots
+        org.geoserver: INFO
+        org.geoserver.catalog.plugin: DEBUG
+        org.geoserver.wms: WARN
+        org.geoserver.wfs: WARN
+        org.geoserver.jackson: DEBUG
+        org.geotools.jackson: DEBUG
+        org.geoserver.platform: ERROR
+        org.geoserver.jdbcconfig: INFO
+        # gs-cloud roots
+        org.geoserver.cloud: DEBUG
+        org.geoserver.cloud.autoconfigure: DEBUG
+        org.geoserver.cloud.config.factory: DEBUG
+        # bus debugging
+        org.geoserver.cloud.bus: TRACE
+        org.springframework.cloud.bus: DEBUG
+        org.springframework.cloud.bus.BusAutoConfiguration: DEBUG
+        org.springframework.cloud.bus.DefaultBusPathMatcher: INFO
+        # reactivefeign:
+        reactivefeign.client.log: DEBUG
+
+  config-service.yml: |
+    spring:
+      profiles:
+        active: native #use native filesystem config by default instead of git. REVISIT.
+      config.server.native.searchLocations: ${config.path:file:./config}
+
+    logging:
+      level:
+        root: WARN
+        org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
+
+  gateway-service.yml: |
+    server:
+      compression:
+        enabled: true
+    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
+
+    management:
+      endpoint.gateway.enabled: true # default value
+      endpoints:
+        enabled-by-default: true
+        web.exposure.include: "*"
+        #web.exposure.include: gateway, info, health
+
+    spring:
+      cloud:
+        gateway:
+          actuator:
+            verbose:
+              enabled: true
+          routes:
+          - id: catalog
+            uri: lb://catalog-service
+            predicates:
+            - Path=/api/v1/**
+            filters: # Expose the catalog and configuration API only if the dev profile is active
+            - RouteProfile=dev,403
+    # WFS routes
+          - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
+            uri: lb://wfs-service #load balanced to the wfs-service instances
+            predicates:
+            - Path=/wfs,/{segment}/wfs,/schemas/wfs/**
+    # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
+          - id: wfs_ows
+            uri: lb://wfs-service
+            predicates:
+            - Path=/ows,/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
+    # WMS routes
+          - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
+            uri: lb://wms-service #load balanced to the wms-service instances
+            predicates:
+            - Path=/wms,/{segment}/wms,/schemas/wms/**,/openlayers/**,/openlayers3/**
+          - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
+            uri: lb://wms-service
+            predicates:
+            - Path=/ows,/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
+    # WCS routes
+          - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
+            uri: lb://wcs-service #load balanced to the wps-service instances
+            predicates:
+            - Path=/wcs,/{segment}/wcs,/schemas/wcs/**
+          - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
+            uri: lb://wcs-service
+            predicates:
+            - Path=/ows,/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
+    # WPS routes
+          - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
+            uri: lb://wps-service #load balanced to the wps-service instances
+            predicates:
+            - Path=/wps,/{segment}/wps,/schemas/wps/**
+          - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
+            uri: lb://wps-service
+            predicates:
+            - Path=/ows,/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
+    # REST configuration routes
+          - id: restconfig
+            uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
+            predicates:
+            - Path=/rest/**
+    # Web UI configuration routes
+          - id: restconfig
+            uri: lb://web-ui
+            predicates:
+            - Path=/,/index.html,/web,/web/**,/j_spring_security_check,/j_spring_security_logout
+
+    logging:
+      level:
+        root: WARN
+        com.netflix.discovery: WARN
+        com.netflix.eureka: WARN
+
+  web-ui.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+      web-ui:
+        file-browser.hide-file-system: true
+        # These are all default values, here just for reference. You can omit them and add only the ones to disable or further configure
+        security.enabled: true
+        wfs.enabled: true
+        wms.enabled: true
+        wcs.enabled: true
+        wps.enabled: false # not working yet
+        gwc.enabled: false # not ready yet
+        extensions:
+          importer.enabled: true
+        demos:
+          enabled: true
+          wps-request-builder: true
+          wcs-request-builder: true
+          demo-requests: true
+          srs-list: true
+          reprojection-console: true
+          layer-preview-page:
+            enabled: true
+            common-formats:
+              open-layers: true
+              gml: true
+              kml: false #kml links are broken
+        tools:
+          enabled: true
+          resource-browser: true
+          catalog-bulk-load: true
+    ---
+    spring.profiles: local
+    server.port: 9106
+
+  restconfig-v1.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+    ---
+    spring.profiles: local
+    server.port: 9105
+
+  wfs-service.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+    ---
+    spring.profiles: local
+    server.port: 9101
+
+  wms-service.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+    ---
+    spring.profiles: local
+    server.port: 9102
+
+  wcs-service.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+    ---
+    spring.profiles: local
+    server.port: 9103
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: test-rabbitmq-endpoint-reader
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create"]
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: test-rabbitmq-endpoint-reader
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+subjects:
+  - kind: ServiceAccount
+    name: test-rabbitmq
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: test-rabbitmq-endpoint-reader
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-rabbitmq-headless
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+spec:
+  clusterIP: None
+  ports:
+    - name: epmd
+      port: 4369
+      targetPort: epmd
+    - name: amqp
+      port: 5672
+      targetPort: amqp
+    - name: dist
+      port: 25672
+      targetPort: dist
+    - name: http-stats
+      port: 15672
+      targetPort: stats
+  selector:
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/instance: test
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-rabbitmq
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: amqp
+      port: 5672
+      targetPort: amqp
+      nodePort: null
+    - name: epmd
+      port: 4369
+      targetPort: epmd
+      nodePort: null
+    - name: dist
+      port: 25672
+      targetPort: dist
+      nodePort: null
+    - name: http-stats
+      port: 15672
+      targetPort: stats
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/instance: test
+---
+# Source: testgeoserver/charts/geoserver/templates/config/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-config
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: config
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: config
+---
+# Source: testgeoserver/charts/geoserver/templates/discovery/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-discovery
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: discovery
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8761
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: discovery
+---
+# Source: testgeoserver/charts/geoserver/templates/gateway/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-gateway
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: gateway
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: gateway
+---
+# Source: testgeoserver/charts/geoserver/templates/rest/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-rest
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: rest
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: rest
+---
+# Source: testgeoserver/charts/geoserver/templates/wcs/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-wcs
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: wcs
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: wcs
+---
+# Source: testgeoserver/charts/geoserver/templates/webui/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-webui
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: webui
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: webui
+---
+# Source: testgeoserver/charts/geoserver/templates/wfs/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-wfs
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: wfs
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: wfs
+---
+# Source: testgeoserver/charts/geoserver/templates/wms/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoserver-wms
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: wms
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    gs-service: wms
+---
+# Source: testgeoserver/charts/geoserver/templates/config/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-config
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: "config"
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: "config"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: "config"
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      initContainers:
+        - name: configure-db
+          image: postgres:12
+          command:
+            - psql
+            - -f
+            - /data/init-db.sql
+          env:
+            - name: PGHOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+          volumeMounts:
+            - name: init-db
+              mountPath: /data
+      containers:
+        - name: geoserver-config
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-config:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-discovery:8761/actuator/health -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+            - name: SPRING_PROFILES_ACTIVE
+              value: native
+            - name: CONFIG_NATIVE_PATH
+              value: /opt/app/config
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+
+          volumeMounts:
+            - name: configs
+              mountPath: /opt/app/config
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 600Mi
+            requests:
+              cpu: 100m
+              memory: 300Mi
+      volumes:
+        - name: configs
+          configMap:
+            name: test-geoserver-config-configs
+        - name: init-db
+          configMap:
+            name: test-geoserver-init-db
+---
+# Source: testgeoserver/charts/geoserver/templates/discovery/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-discovery
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: discovery
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: discovery
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: discovery
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-discovery
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: EUREKA_INSTANCE_HOSTNAME
+              value: test-geoserver-discovery
+            - name: SERVER_PORT
+              value: "8761"
+
+          ports:
+            - name: http
+              containerPort: 8761
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              cpu: 300m
+              memory: 600Mi
+            requests:
+              cpu: 100m
+              memory: 300Mi
+---
+# Source: testgeoserver/charts/geoserver/templates/gateway/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-gateway
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: gateway
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: gateway
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: gateway
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-gateway
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-config:8080/gateway-service/default -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 800Mi
+            requests:
+              cpu: 100m
+              memory: 400Mi
+---
+# Source: testgeoserver/charts/geoserver/templates/rest/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-rest
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: rest
+  annotations:
+    argocd.argoproj.io/sync-wave: "9"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: rest
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: rest
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-rest
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-rest:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-config:8080/restconfig-service/default -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoserver-rabbitmq
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 1Gi
+            requests:
+              cpu: 200m
+              memory: 512Mi
+---
+# Source: testgeoserver/charts/geoserver/templates/wcs/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-wcs
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: wcs
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: wcs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: wcs
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-wcs
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-config:8080/wcs-service/default -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 800Mi
+            requests:
+              cpu: 100m
+              memory: 400Mi
+---
+# Source: testgeoserver/charts/geoserver/templates/webui/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-webui
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: webui
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: webui
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: webui
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-webui
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-webui:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-config:8080/web-ui/default -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoserver-rabbitmq
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 1Gi
+            requests:
+              cpu: 300m
+              memory: 512Mi
+---
+# Source: testgeoserver/charts/geoserver/templates/wfs/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-wfs
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: wfs
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: wfs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: wfs
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-wfs
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-config:8080/wfs-service/default -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 800Mi
+            requests:
+              cpu: 200m
+              memory: 400Mi
+---
+# Source: testgeoserver/charts/geoserver/templates/wms/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoserver-wms
+  labels:
+    helm.sh/chart: geoserver-0.1.0
+    deployed_by: argocd
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/managed-by: Helm
+    gs-service: wms
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/instance: test
+      gs-service: wms
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/instance: test
+        gs-service: wms
+    spec:
+      serviceAccountName: test-geoserver
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: geoserver-wms
+          securityContext:
+            {}
+          image: "geoservercloud/geoserver-cloud-wms:1.0-SNAPSHOT"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - exec wait-for -t 120 http://test-geoserver-config:8080/wms-service/default -- java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoserver-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoserver
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            periodSeconds: 5
+
+          resources:
+            limits:
+              memory: 800Mi
+            requests:
+              cpu: 100m
+              memory: 400Mi
+---
+# Source: testgeoserver/charts/geoserver/charts/rabbitmq/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test-rabbitmq
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.0.1
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: test-rabbitmq-headless
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: rabbitmq
+      app.kubernetes.io/instance: test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: rabbitmq
+        helm.sh/chart: rabbitmq-8.0.1
+        app.kubernetes.io/instance: test
+        app.kubernetes.io/managed-by: Helm
+      annotations:
+    spec:
+
+      serviceAccountName: test-rabbitmq
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: rabbitmq
+          image: docker.io/bitnami/rabbitmq:3.8.9-debian-10-r37
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: K8S_SERVICE_NAME
+              value: "test-rabbitmq-headless"
+            - name: K8S_ADDRESS_TYPE
+              value: hostname
+            - name: RABBITMQ_FORCE_BOOT
+              value: "no"
+            - name: RABBITMQ_NODE_NAME
+              value: "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: K8S_HOSTNAME_SUFFIX
+              value: ".$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: RABBITMQ_MNESIA_DIR
+              value: "/bitnami/rabbitmq/mnesia/$(RABBITMQ_NODE_NAME)"
+            - name: RABBITMQ_LDAP_ENABLE
+              value: "no"
+            - name: RABBITMQ_LOGS
+              value: "-"
+            - name: RABBITMQ_ULIMIT_NOFILES
+              value: "65536"
+            - name: RABBITMQ_USE_LONGNAME
+              value: "true"
+            - name: RABBITMQ_ERL_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-erlang-cookie
+            - name: RABBITMQ_USERNAME
+              value: "geoserver"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_PLUGINS
+              value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"
+          ports:
+            - name: amqp
+              containerPort: 5672
+            - name: dist
+              containerPort: 25672
+            - name: stats
+              containerPort: 15672
+            - name: epmd
+              containerPort: 4369
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - rabbitmq-diagnostics -q check_running
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 20
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - rabbitmq-diagnostics -q check_running
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 20
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            limits: {}
+            requests: {}
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - bash
+                  - -ec
+                  - rabbitmqctl stop_app
+          volumeMounts:
+            - name: configuration
+              mountPath: /bitnami/rabbitmq/conf
+            - name: data
+              mountPath: /bitnami/rabbitmq/mnesia
+      volumes:
+        - name: configuration
+          configMap:
+            name: test-rabbitmq-config
+            items:
+              - key: rabbitmq.conf
+                path: rabbitmq.conf
+        - name: data
+          emptyDir: {}

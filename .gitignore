@@ -1,6 +1,7 @@
 *.tar.gz
 *.tgz
-/Chart.lock
+**/Chart.lock
 /charts/
 /tests/*actual.yaml
 */__pycache__/*
+.venv/
