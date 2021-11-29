@@ -8,61 +8,61 @@ metadata:
 data:
   init-db.sql: |
     -- tables
-    CREATE TABLE object ( 
-      oid serial NOT NULL, 
-      type_id int4 NOT NULL, 
-      id text NOT NULL, 
-      blob text NOT NULL, 
+    CREATE TABLE object (
+      oid serial NOT NULL,
+      type_id int4 NOT NULL,
+      id text NOT NULL,
+      blob text NOT NULL,
       PRIMARY KEY (oid)
     );
 
     CREATE TABLE object_property (
-      oid int4 NOT NULL, 
-      property_type int4 NOT NULL, 
-      id text NOT NULL, 
-      related_oid int4, 
-      related_property_type int4, 
-      colindex int4 NOT NULL, 
-      value text, 
+      oid int4 NOT NULL,
+      property_type int4 NOT NULL,
+      id text NOT NULL,
+      related_oid int4,
+      related_property_type int4,
+      colindex int4 NOT NULL,
+      value text,
       PRIMARY KEY (oid, property_type, colindex)
     );
 
     CREATE TABLE type (
       oid serial NOT NULL,
-      typename text NOT NULL, 
+      typename text NOT NULL,
       PRIMARY KEY (OID)
     );
 
     CREATE TABLE property_type (
-      oid  serial NOT NULL, 
-      target_property int4, 
-      type_id int4 NOT NULL, 
-      name text NOT NULL, 
-      collection bool NOT NULL, 
-      text bool NOT NULL, 
+      oid  serial NOT NULL,
+      target_property int4,
+      type_id int4 NOT NULL,
+      name text NOT NULL,
+      collection bool NOT NULL,
+      text bool NOT NULL,
       PRIMARY KEY (oid)
     );
 
     CREATE TABLE default_object (
-      def_key text NOT NULL, 
+      def_key text NOT NULL,
       id text NOT NULL
 
     );
 
     -- foreign keys
-    ALTER TABLE object_property ADD CONSTRAINT fk_object_property 
+    ALTER TABLE object_property ADD CONSTRAINT fk_object_property
       FOREIGN KEY (oid) REFERENCES object (oid) ON DELETE CASCADE;
 
-    ALTER TABLE property_type ADD CONSTRAINT 
+    ALTER TABLE property_type ADD CONSTRAINT
       fk_type_property_type FOREIGN KEY (type_id) REFERENCES type (oid);
 
-    ALTER TABLE object ADD CONSTRAINT 
+    ALTER TABLE object ADD CONSTRAINT
       fk_object_type FOREIGN KEY (type_id) REFERENCES type (oid);
 
-    ALTER TABLE property_type ADD CONSTRAINT 
+    ALTER TABLE property_type ADD CONSTRAINT
       fk_property_type_target_property FOREIGN KEY (target_property) REFERENCES property_type (oid);
 
-    ALTER TABLE object_property ADD CONSTRAINT 
+    ALTER TABLE object_property ADD CONSTRAINT
       fk_object_property_property_type FOREIGN KEY (property_type) REFERENCES property_type (oid);
 
     -- indexes
@@ -90,20 +90,20 @@ data:
     CREATE INDEX default_object_id_idx ON default_object (id);
 
     -- views
-    -- workspace view 
+    -- workspace view
     CREATE OR REPLACE VIEW workspace AS
-    SELECT a.oid, 
-          a.id, 
-          (SELECT c.value 
-              FROM object_property c, property_type d 
+    SELECT a.oid,
+          a.id,
+          (SELECT c.value
+              FROM object_property c, property_type d
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
-              AND d.name = 'name') as name, 
+              AND d.name = 'name') as name,
           (SELECT e.value
               FROM object_property e, property_type f
             WHERE e.property_type = f.oid
-              AND e.oid = (SELECT g.oid 
-                              FROM object_property g, property_type h 
+              AND e.oid = (SELECT g.oid
+                              FROM object_property g, property_type h
                             WHERE g.property_type = h.oid
                               AND g.value = (SELECT i.value
                                                 FROM object_property i, property_type j
@@ -114,11 +114,11 @@ data:
               AND f.name = 'URI') as uri
       FROM object a, type b
     WHERE a.type_id = b.oid
-      AND b.typename = 'org.geoserver.catalog.WorkspaceInfo'; 
-        
+      AND b.typename = 'org.geoserver.catalog.WorkspaceInfo';
+
     -- datastore view
     CREATE OR REPLACE VIEW datastore AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -145,13 +145,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.DataStoreInfo';
 
     -- feature type view
     CREATE OR REPLACE VIEW featuretype AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -203,13 +203,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'namespace.id') namespace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.FeatureTypeInfo';
 
     -- coveragestore view
     CREATE OR REPLACE VIEW coveragestore AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -236,13 +236,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.CoverageStoreInfo';
 
     -- coverage view
     CREATE OR REPLACE VIEW coverage AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -294,13 +294,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'namespace.id') namespace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.CoverageInfo';
 
     -- wmsstore view
     CREATE OR REPLACE VIEW wmsstore AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -332,13 +332,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.WMSStoreInfo';
 
     -- wms layer view
     CREATE OR REPLACE VIEW wmslayer AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -390,13 +390,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'namespace.id') namespace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.WMSLayerInfo';
 
     -- style view
     CREATE OR REPLACE VIEW style AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -413,13 +413,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.StyleInfo';
 
     -- layer view
     CREATE OR REPLACE VIEW layer AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -456,15 +456,15 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'resource.id') resource
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.LayerInfo';
 
     -- layergroup styles
     CREATE OR REPLACE VIEW layer_style AS
     SELECT a.oid, b.related_oid as style
-      FROM object a, object_property b, property_type c, type d 
-    WHERE a.oid = b.oid 
+      FROM object a, object_property b, property_type c, type d
+    WHERE a.oid = b.oid
       AND a.type_id = d.oid
       AND b.property_type = c.oid
       AND c.name = 'styles.id'
@@ -472,7 +472,7 @@ data:
 
     -- layer group view
     CREATE OR REPLACE VIEW layergroup AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -499,25 +499,25 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.LayerGroupInfo';
 
     -- layergroup layers
     CREATE OR REPLACE VIEW layergroup_layer AS
     SELECT a.oid, b.related_oid as layer
-      FROM object a, object_property b, property_type c, type d 
-    WHERE a.oid = b.oid 
+      FROM object a, object_property b, property_type c, type d
+    WHERE a.oid = b.oid
       AND a.type_id = d.oid
       AND b.property_type = c.oid
       AND c.name = 'layers.id'
       AND d.typename = 'org.geoserver.catalog.LayerGroupInfo';
-      
+
     -- layergroup styles
     CREATE OR REPLACE VIEW layergroup_style AS
     SELECT a.oid, b.related_oid as style
-      FROM object a, object_property b, property_type c, type d 
-    WHERE a.oid = b.oid 
+      FROM object a, object_property b, property_type c, type d
+    WHERE a.oid = b.oid
       AND a.type_id = d.oid
       AND b.property_type = c.oid
       AND c.name = 'styles.id'
@@ -525,7 +525,7 @@ data:
 
     -- global view
     CREATE OR REPLACE VIEW global AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -552,7 +552,7 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'settings.id') as settings
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.config.GeoServerInfo';
 
@@ -605,13 +605,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') as workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.config.SettingsInfo';
 
     -- service view
     CREATE OR REPLACE VIEW service AS
-    SELECT a.oid, 
+    SELECT a.oid,
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -668,7 +668,7 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') as workspace
-      FROM object a, type b  
+      FROM object a, type b
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.config.ServiceInfo';
 
@@ -692,7 +692,7 @@ data:
 
     INSERT INTO resources (oid, name, parent, content) VALUES (0, '', NULL, NULL);
 
-    -- only the required table(s) to support distributed locking, from 
+    -- only the required table(s) to support distributed locking, from
     -- spring-integration-jdbc-<version>.jar/org/springframework/integration/jdbc/schema-postgresql.sql
     -- Table named RESOURCE_LOCK instead of INT_LOCK
     CREATE TABLE RESOURCE_LOCK  (
