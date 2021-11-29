@@ -4,3 +4,4 @@
 /charts/
 /tests/*actual.yaml
 */__pycache__/*
+.venv/

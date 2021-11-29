@@ -39,6 +39,9 @@ postgresql:
 geoserver:
   name: geoserver
 
+  ingress:
+    deploy: true
+
   serviceAccount:
     create: true
     annotations: {}
