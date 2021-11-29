@@ -1,0 +1,3 @@
+tests/chart/templates/**/*.yaml
+tests/expected.yaml
+tests/acctual.yaml
