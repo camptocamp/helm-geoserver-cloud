@@ -1,0 +1,44 @@
+---
+name: Continuous integration
+
+on:
+  push:
+  pull_request:
+
+env:
+  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+    name: Continuous integration
+    timeout-minutes: 20
+    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: camptocamp/initialise-gopass-summon-action@v2
+        with:
+          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
+          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
+
+      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
+      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+
+      - name: Checks
+        run: c2cciutils-checks
+
+      - uses: azure/setup-helm@v1
+      - run: helm lint .
+
+      - run: helm dependency update tests/chart
+      - run: helm lint tests/chart
+      - run: helm template --namespace=default test tests/chart > tests/actual.yaml
+      - run: diff -Naur --ignore-trailing-space tests/expected.yaml tests/actual.yaml
+
+      - name: Publish
+        run: c2cciutils-publish
