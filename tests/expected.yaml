@@ -41,7 +41,7 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  postgresql-postgres-password: "WTQzTzdqNUdhZA=="
+  postgresql-postgres-password: "dFVwZ2pQOHh6Vg=="
   postgresql-password: "cGFzc3dvcmQ="
 ---
 # Source: testgeoserver/charts/geoserver/charts/postgresql/templates/tls-secrets.yaml
@@ -56,9 +56,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 type: kubernetes.io/tls
 data:
-  ca.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvVENDQWVXZ0F3SUJBZ0lSQUphUWRiNGJCdGd6VmFPaGpmS2pkSkV3RFFZSktvWklodmNOQVFFTEJRQXcKR0RFV01CUUdBMVVFQXhNTmNHOXpkR2R5WlhOeGJDMWpZVEFlRncweU1URXhNamt4TXpRek16VmFGdzB5TWpFeApNamt4TXpRek16VmFNQmd4RmpBVUJnTlZCQU1URFhCdmMzUm5jbVZ6Y1d3dFkyRXdnZ0VpTUEwR0NTcUdTSWIzCkRRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ3JpNjh2RmZOZG5HMFNtenRXNXZoemVxVitkdlNuV2xuaDdGaWoKMnFNQXE5K1AvR0trNjNya1hYNGJCRHUwN0xMcm82TjdubENyWURJNVd0c1FCSlVvOGg3ZTZ0b0NOM21id29nVgpZbzFrY2dObFdCY291Z25odVZ0ZEszWEJYRUtBZnpzNkY0T2FIMFJRWkMyNzdCMVZqQ254Z29aRE5hbHVsRkh2CktRQVQwSUh6eUR6QXFYaXZKM0J4NGVIeTlpNWpFaXpQeXZibjNDZ0dGYUgyV0tGMXlzdlVpMmxKRnppY1BTRi8KZW40RVJPR3llTm5aU2pjM0ZWeVQ2a3h2RjRPeFp3ZDdLNnFwTnVSQVdzQ2RaYUdVNnJodGRWODBiVkh3WVhIQgpRTEszWmRza050emlXR2JqcTdRNkJKajFXdDVuNkZyYUVoTSsxVEZEbkxDTU9hNFpBZ01CQUFHalFqQkFNQTRHCkExVWREd0VCL3dRRUF3SUNwREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0R3WUQKVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFnN3d5bGtLeFNZbUl1dTVyQUFnVApCeno2RHk4OFhKQ3JRN2tKS0F2Zm5QSlVDUndTc3BaVmJCRzJOalk0QnJjTVlQenlGaWp6SHpaY1YrRE5nQXBqCjVmN3orMmptZ2xGVjdCendkMEhVMmt3bkUybzlEZWtyOWRZMjUvRzBCTDJBYVpidURLbXdsSmFhdDd1VGF3MXgKYjFJYWJ1cGloaFNxYXhwckFBK1RoaUsyZ201dkowL3BXWVlNa0hTV2xwRzhxMFhXTFY2eERoYjRKckEwdm5YTwp1VmY4UDU2ZENrZCtSelp4UlZncXFQdUY4cGQrTW1aWS9scVdHRFVCTmdvTVNoRUpSRHJaUDFWMzU0QmJoV0RxCkZPdW8ybjRaTjROL3JTOEp1K1VkNUlZK0VUMlEwSW96SXh3VFB6NHVBNjNSMG1mMEl4UUNBWnd4S0FsVStteW0KVnc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
-  tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQxVENDQXIyZ0F3SUJBZ0lSQU5lOStrd2NpYyt5dUh0L0Jud2kwL2d3RFFZSktvWklodmNOQVFFTEJRQXcKR0RFV01CUUdBMVVFQXhNTmNHOXpkR2R5WlhOeGJDMWpZVEFlRncweU1URXhNamt4TXpRek16WmFGdzB5TWpFeApNamt4TXpRek16WmFNQm94R0RBV0JnTlZCQU1URDNSbGMzUXRjRzl6ZEdkeVpYTnhiRENDQVNJd0RRWUpLb1pJCmh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTG0vKzA2WmkwVU51V3VNdDU4b29qZHdmcnA2UWI4NGNuaW8KeVEvYktaamxzWHNCUnVKTWxBSGVMbjdnV1dxdnc1MzN5WEcwRmdPYS9nMjM4R0Y5dmFtRm04elVaWENiTUQ2aworNDdPNUdiM0ZyeE56WnVWU0JRSjByTnhpNmUwMzdsay84MnlSQ0plQzR4b1dEc09QNDJSalBsVXoxNUF4cSswCjVsUlkxMkhhVUhValdJR1hKQVRTRXM2RXFjNEEvam1DcDhjRjFYc0NLMkRVb1h0WmZWMXVsajFRMUN1a24vUHUKdUt5TXZsVGtaZTVBQXBYcVNMQVhFelV1OUdSZkJxeHRRVHJqV3hMd04vUEQ4QnR0RDk4Nk1nUTVtNDgzdHlVVworbTBWYWJwdmxCbm5JNTBGVkl0OHYrMGdBbjhUbFZTalozdHFIcVppRjF2MmhIOUZPQmtDQXdFQUFhT0NBUll3CmdnRVNNQTRHQTFVZER3RUIvd1FFQXdJRm9EQWRCZ05WSFNVRUZqQVVCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUgKQXdJd0RBWURWUjBUQVFIL0JBSXdBRENCMGdZRFZSMFJCSUhLTUlISGdpZ3FMblJsYzNRdGNHOXpkR2R5WlhOeApiQzVrWldaaGRXeDBMbk4yWXk0bElYTW9QRzVwYkQ0cGdpWjBaWE4wTFhCdmMzUm5jbVZ6Y1d3dVpHVm1ZWFZzCmRDNXpkbU11SlNGektEeHVhV3crS1lJeEtpNTBaWE4wTFhCdmMzUm5jbVZ6Y1d3dGFHVmhaR3hsYzNNdVpHVm0KWVhWc2RDNXpkbU11SlNGektEeHVhV3crS1lJdmRHVnpkQzF3YjNOMFozSmxjM0ZzTFdobFlXUnNaWE56TG1SbApabUYxYkhRdWMzWmpMaVVoY3lnOGJtbHNQaW1DRDNSbGMzUXRjRzl6ZEdkeVpYTnhiREFOQmdrcWhraUc5dzBCCkFRc0ZBQU9DQVFFQVJOdXNyUW1kTHJ1bFNUekk5TU1vWDFnQnRZcVg4Ui9ZaDdQNVN3SUFLNm12b1Blai94TFkKNWZScWZ3S01WRGozV05SYnZsTVh5ZTg0YmxaTG0wZFhiMlJmeFVqdFE5N204TzJ4T3ovYXF2T3ROdlRIaDZRdgpxUk1RYWFNanVuaThjTEYvektOUVJMbWpkNkRPcFNvMDVscXZJR2hHRmtRTUV2ZjR1YWZVWW9NVlZ1cmNYbFBLCldHcStOL3NJQzQ2RFF2aklYdW5yUElLOVNPRk9XbHNyUjNXNGhRNVd6OFFESVF3azk2eXZVZWQ1cW5JcXhnbVQKdWs3Q2h5NWJIVzV2UU8yTGNkTm5Sd2NrZisydjVLWHdWSDNPeGV6VytyZGRNeTZMWGh5UTl0dUVGRURub2sxTgpQQVg2SFNjNW1PeEwrbFg3MXp1M1FOSnhwa0JHQUxsdVZnPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
-  tls.key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBdWIvN1RwbUxSUTI1YTR5M255aWlOM0IrdW5wQnZ6aHllS2pKRDlzcG1PV3hld0ZHCjRreVVBZDR1ZnVCWmFxL0RuZmZKY2JRV0E1citEYmZ3WVgyOXFZV2J6TlJsY0pzd1BxVDdqczdrWnZjV3ZFM04KbTVWSUZBblNzM0dMcDdUZnVXVC96YkpFSWw0TGpHaFlPdzQvalpHTStWVFBYa0RHcjdUbVZGalhZZHBRZFNOWQpnWmNrQk5JU3pvU3B6Z0QrT1lLbnh3WFZld0lyWU5TaGUxbDlYVzZXUFZEVUs2U2Y4KzY0ckl5K1ZPUmw3a0FDCmxlcElzQmNUTlM3MFpGOEdyRzFCT3VOYkV2QTM4OFB3RzIwUDN6b3lCRG1ianplM0pSYjZiUlZwdW0rVUdlY2oKblFWVWkzeS83U0FDZnhPVlZLTm5lMm9lcG1JWFcvYUVmMFU0R1FJREFRQUJBb0lCQUJFdHRTTXV4aGVMem1Nbwo3MjV6eHBUVC9aUm5iQjh3TEQ0R2RobldUZ0dLOUtBSW5US2VuRzJUeTc4R0pwN2NSSDRlaFczVGx0bWNndlJuCjEzNWNyNmEyNlpMRzdkNjlLM2dQc0Fna0VER0psbnV4d2xzcU1qRlFPMEZITmdBN2xSbERRdmtXRElFVks0SS8Kd0RFdC95aXJsbHNVd2R6WXBzZG5Ob29FY1Y3bU5vVCtvMktJK21qdkNUUncvdzNGT1E3MEtLMEVLMXpPTnlwNApUNHNXbmZ4Q1Q4OXVhekNvTk1sbENZb2tIQlRGSGlEUUVqblJ3eG1oaHZVTS9XQjVhRGZuNDU0WWs4R3FMVU1XCnRXUlhZWS9lRzhxM3ZsQ3NkM2RFWGpmbzdROGZ5ZmhkVXovVTZON2o2bG8vWVpnbXhOVzhVWFFhSVNDSlZFaVoKOTkrYUlJRUNnWUVBMWM0QS9oNEwzVFlxb0FEbkFnQkt3a0R3UStZT1dsVVY1eklScS84Q0hqZHkvMFdXcXFIZQpuc2R5cXhnN0VrZXF0YUpxYTNycVR6U0kxcEtRNmRuN0UyUUJ3SWVLQVNLejdnRFl0TWY2b0lFWThwdFJ6SnhDCm5WUmpicmZYbXNZQ2c0Qk45bUp6OFpUTnE1YVdwaWdvdmZ4Tk00K1dDcDFFQzVoVEJxVnBQc2tDZ1lFQTNtaVMKKzlyRHRUZ2FDRUs3TTEyRW5Oc1V2LzJuQU1teHo2blNIeDFpbW9vSHdFbGN0UXRzMHEvNkFkOURRb0YvQVJsYQpOcTYwUHgyQ1RSVldBak5EbkF5NzhVNUVYWnBUNXc5dUpaMHBIWUJiSUlxc05kSkdadE16U3YwZmhvN2FFMEVrCkhIOEhIVWZVcVF4cjRzSVpwQUZuN3puR0ZvcXVsdVdMWlhTK1J0RUNnWUFDcUtnc2dOVW04QmlCbXVGRWpocGYKNWd6VzIxS01Yd2lCc29henU5MGI0UmFtQkFpR29MS3pDTW50Uk1UZlNsTGVKV0hyYWtEbHNVS09ZSTQ2eWtJcwpFSTlSQko1N3V5Ry9zUFVBOG9lMFhVYWhKYnRUcnhISkFSYW5kdFBRa2V2UUZOVmpYZ0FSSGdlY3ZhZXI4MDNtClp1L1MxMU5IV0lOVEhaYlN1MVhldVFLQmdHbmJpa0lYb05qclIvQ3dtbHRiWXBncDZsbHJTSWFtZVZ4bTd0emkKWnFFNW0zRFpPaWZ0dFRFZWt6YzY1YytNeFQ5bnFybW1NNkpxMEM4U1BhcTBiYlNqbHZ6R2pPR2taOVR0VWpiUwo4OVBYMlFmSEdTcFEyRE51eU5ZalhsTDBRVFd5NXBZdG05eEM2U1JCQmtTYXNBdVFvOENJVmhFNmx0aTVqcnlPCmNWWlJBb0dBSWE5amlXOGlOdWI3cTZiQmVFcG9jRjlXa2UrODdPUnNCMlJ4UVBZVWNLT1cvUXByb2NBQkpqKzUKeUhJYWxPUXQ2TFRBMVFVMGpOM1dvQ0tTUHhBbGk1TEM5T0NPWFlIL20rc2lGRGRmTHRZMjVzcUpwRnZFZVlBbwprYVZ3M0xYWGVYZW5qZ0ZNNDk4OTBRYWprSUs2WkdPdW84bEZVc0ZkYWxvcE11NE9YYlE9Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg=="
+  ca.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvVENDQWVXZ0F3SUJBZ0lSQU1vd29ROUpYT3ZpODk2aTlpUjduYjh3RFFZSktvWklodmNOQVFFTEJRQXcKR0RFV01CUUdBMVVFQXhNTmNHOXpkR2R5WlhOeGJDMWpZVEFlRncweU1URXhNamt4TkRFME1UZGFGdzB5TWpFeApNamt4TkRFME1UZGFNQmd4RmpBVUJnTlZCQU1URFhCdmMzUm5jbVZ6Y1d3dFkyRXdnZ0VpTUEwR0NTcUdTSWIzCkRRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ3JQViswamNjb3Z3MUFtN1JFYktlVmlzZ0JnTVBQeWZlbG1HbXMKZ2FWcTNOYWk5dllLSGZ3ZnRibE9TdThVZG51T2hwYUhTMGlLazh2VFFydnk5QzJpenhDSjU2aEp5blcyZWxGYQpNNXdlVkZXeXd1VThqaEZpMjVYZkN1UGhsQ2I4UU9zcitkK2xQNFZVd2h0emF4bDNTdGw4alFseXhDM3hoZ3c3CkgxSElHcExTNEpkUUVPVFkyZGdSTEF2bVFMdUtaNVVXWHQ4dUJLczJSMk5VSW54SnV4a1hheklPd2gwWmNMMXAKZjdUZDBaN09lNnpzOFAvb0RzcVl2ZzF6dGx5cW9OWkF2OUlQRE5YNHNlaUVVVmxYM3RqSU5rcW9HWUtBTjZzbAppTHFyRkQ1R0Y1VHJpNGpCNUxuYnFIVUdHK24xdkFwZHFoUmNpV2N0MU9QRWp5M0pBZ01CQUFHalFqQkFNQTRHCkExVWREd0VCL3dRRUF3SUNwREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0R3WUQKVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFHaHZlVkNWcjh4QzNuRnNRaldCeQpNUEluNmhIekpJK1pDaG8xbUl1ajRSN0VqZytmbWxMUUh6Y0l0U3g3Q2NSQXpZNnpITlRRazBwV05BNlNIUk9yClpOVzFGRVZ1WUtIZHJSUnVUaC9jRkdMT0lyQVpOVmgvcXN1TGs2QkJXakdEVHRFdjgwVTlONVJzTlA3VDFUZDkKdVRmSGJpZkRpWHZycU5KZjlIMy9XR3AzaHVrNS9HaS9ySjdNdGEvYm1IYURtbHBSRHFJa0dWcGZPVHVDSkdPRgpibVFyQ1c1MDhxNU9ieEpLSEdHSjdXRG9CV0JmRkM1cVVRUyt0MTRLQVpoUGt6eTVWazZRWjRGNEJTcVlrMUNPCmlGS0l6cmYxVlczN1NHaHhWTm5uamxtb2U0bVUvNHpjYkx4RG1lOHVlL0JBYURUdDBkZW52NXZnejVGNVZzTTIKR1E9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+  tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQxRENDQXJ5Z0F3SUJBZ0lRTVVPQnFucEZHcExCdkZtd2hNYno1akFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFERXcxd2IzTjBaM0psYzNGc0xXTmhNQjRYRFRJeE1URXlPVEUwTVRReE4xb1hEVEl5TVRFeQpPVEUwTVRReE4xb3dHakVZTUJZR0ExVUVBeE1QZEdWemRDMXdiM04wWjNKbGMzRnNNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF2dGdZVlcwakhEcFhyWWk3dGRpSHZ4d0hOZnJmWWhZbVFRdisKSWtVWEhFM0hiUlZtSHBTWm51WG9kVVhzMjJFQXFqdklSUS91L2hmQ2l2UnR1Z3dKZkV2WE1JWG4rdkFOREg1SApLQmN1eUNWcVhrQW9OeE1KR1pBZEY5ZWRYVVlXS000cG81ektMcmdvTlJjY1gxZk1kL0ZuQkJOUnBBNU9LUE1kClhneWdtb1hNNlFUZGNzWkh0c3NPRzBTeDBVMTN4Nmd2eVJQWlhWR1U3MmRCa25sakxuNlppMnhocjhzNVMvMUEKREtxZE9yRnl6aS9ZUjhtc2hheWlTUFoxK21TQTRURzNOZnY5ZkV6S242cWFsRFJ2MzhMMm4xbDBnano2bzBOTwpSaElXalg1WVYySG42YUk2N0NsSmhOTzVnbG52OWU0em9WT0FmVi93NGo4Zi9uSkxUUUlEQVFBQm80SUJGakNDCkFSSXdEZ1lEVlIwUEFRSC9CQVFEQWdXZ01CMEdBMVVkSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0QKQWpBTUJnTlZIUk1CQWY4RUFqQUFNSUhTQmdOVkhSRUVnY293Z2NlQ0tDb3VkR1Z6ZEMxd2IzTjBaM0psYzNGcwpMbVJsWm1GMWJIUXVjM1pqTGlVaGN5ZzhibWxzUGltQ0puUmxjM1F0Y0c5emRHZHlaWE54YkM1a1pXWmhkV3gwCkxuTjJZeTRsSVhNb1BHNXBiRDRwZ2pFcUxuUmxjM1F0Y0c5emRHZHlaWE54YkMxb1pXRmtiR1Z6Y3k1a1pXWmgKZFd4MExuTjJZeTRsSVhNb1BHNXBiRDRwZ2k5MFpYTjBMWEJ2YzNSbmNtVnpjV3d0YUdWaFpHeGxjM011WkdWbQpZWFZzZEM1emRtTXVKU0Z6S0R4dWFXdytLWUlQZEdWemRDMXdiM04wWjNKbGMzRnNNQTBHQ1NxR1NJYjNEUUVCCkN3VUFBNElCQVFCbTRtcFlHUWlQVUpQeXRKcnh0MlpOcm56bnNicXdrRXVvSGtRQzB0cFVjdHoycW1WMkpHdmoKYUM1N2dOZW5zOFp4dVVFeEhMTjhUWVFMWjhCZkd5Z2lOWStraFBUeGJob293aXA5MWd1dVNGazFUbGNXejRHcgpxMXd4ZVg1eWJtUUhuTDlWRWF4WFpTRGN0Zi9aTS9lcUtldmZaWWE2dEttcjB6VnNtVGk2MkRiOTBycFpiZFl4CnBzdkVUeU1oTUd2Q2NnM2d1U1pQT3FFY09rQjhPWGhHWkhBV2dmTDlhNElrdDJFdU9GajRzVy95T1E0U2o3bjIKQmVJdFBoSEd2VFh5S3hIb0JBY3hUVnJVWXZiS014dnpSUUFBblRxb2NhaGt4TmxucHpPZ3dadVBJZTJzT091dgpnZGdGK0haa0tVamhBd3FYR1Z0cDhHcFRSUGgwb2crZgotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+  tls.key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBdnRnWVZXMGpIRHBYcllpN3RkaUh2eHdITmZyZlloWW1RUXYrSWtVWEhFM0hiUlZtCkhwU1pudVhvZFVYczIyRUFxanZJUlEvdS9oZkNpdlJ0dWd3SmZFdlhNSVhuK3ZBTkRINUhLQmN1eUNWcVhrQW8KTnhNSkdaQWRGOWVkWFVZV0tNNHBvNXpLTHJnb05SY2NYMWZNZC9GbkJCTlJwQTVPS1BNZFhneWdtb1hNNlFUZApjc1pIdHNzT0cwU3gwVTEzeDZndnlSUFpYVkdVNzJkQmtubGpMbjZaaTJ4aHI4czVTLzFBREtxZE9yRnl6aS9ZClI4bXNoYXlpU1BaMSttU0E0VEczTmZ2OWZFektuNnFhbERSdjM4TDJuMWwwZ2p6Nm8wTk9SaElXalg1WVYySG4KNmFJNjdDbEpoTk81Z2xudjllNHpvVk9BZlYvdzRqOGYvbkpMVFFJREFRQUJBb0lCQVFDNU81RlN5UjA4OXJ2SApLV0hZUEpSMVA4VVg5YW4vMERQTkN0RGRmbVhTQ1FRNXNuMXR6Um5XQ3B5M3h1a0FmWVJodHFqSnI0OXVmSzFNCnBiWWkwREFjdnBmYzl2dVVxbzVmdytsWTFqZUgrQmpuNWltaVd3MklERUxRczJ4LzdkandQanBZSFlSNEdES2UKWlJJYTBHTWJQK21YSVJFcXhOL0VDMFJEMXNuRGI5QitxRkQ3aUREL2htOTdqR01rYU9XVW1ZZU1SL3dMMW1pZwpaRGprTEdwTkRSOVJsNjNhdG5YUkNRNE1YS1RDWkY0ckg2MEtvR0Y4UzJodkliUHJSOU53YzdJMFpkOFhCbDZFCm5nZzlTRlpxeGpnNnc3M2k1c2pmbjluL3VsZC8yNVdrd0d2NXI0ejB3ZkRTWGRRekRTamthSUU1Q3JPM1RCR3YKU2NhZWgrMlpBb0dCQU15MnB1dzJsejhvc1BBcU9mMm9TdkNrOTlNM1A4OXhpeGpPeXNsS2tsVG1WNnA5VUxuQwpYV2FabE5RRVpQaVBlNUZYSVBxeHhVMzVWVUdtOStVVmJQRzJyOEhuU0YySEtFVkFiNmd1NzBsRmlBdlJ0N3lCClUwaXg1UE5BbWtiUE13ZEE1eG1OWDFDazZ4Z1ZQN05wKzBOdkxpMnE5M0dERUZBUTIwSDlIUGpuQW9HQkFPNm4KN1poYnJNZ1ZWaHhLcFBQMEtOK2pCc3FzWUR4Ylo5L2VOQUVPaUIrVzVmUE5HWkxRTDM5RE11QVlDWStGRDczNApoeFBUeTd4YmJvUDdaeFl5NUJIUkxMdDFZcFM5M1MwUjZLeVFsbmkyNGRlbWpiOFhtYlpzclZXWEJwQ0NXMHZPCmFJUUc2VU1qZUNmdnpoUk9aOW1lYnMxRVJFTXhKRnhRcCtITm1ZK3JBb0dCQUxyR1ExSHRGTjJwTUpaTzBJNGcKU0E5N1ZDay9sVmFkVDcyWW51Zzh3M24ybHpHVUdGMERldGdyYytCbENnTEdWb1ZxcTBwUGU2Y0N2OGlnb0RoQQo3aDh6QVBTM0lnMURUWGl4cTY0VTlIa3ptVWEvVnhZRUlJcUkxRTBrT2g0MDJXZmF6WDlBdnlBQytBUUhEeEdRCnRwRDJGWG5STE9aQ0lGWU1xeDl2NGtrdEFvR0FQSUVZYkdMNWgvUlkwMjFkS25nQkVNbDlCRTcxU3ZnRmVxMFQKMUJ6Q0IvZ3lyaitXTnpGT2lWNFkvTlU3UDBhRnVpelMyZ1Q5QnZETE1PekFzdEVPSHpJL3UvckRsbUFZUGIvbgpsREJINWF5L3p2TnJ4a0dPZDhCUHBYNVhiTFdQdmNWRG5BMUFnQVB6QjNUMWN4SjVvNk5XQmZaRHRDRTJUYTBwCkVzY1VJbWNDZ1lCMFV6SUZETXA2d0xkbDdsWUx1Vm94RWFnTzEzYUdKczdVbTR5TGFYVGtkb29TcEN5T2Z4K2QKYlZRdDJwdDZvS3ZNbDBoVElHTkxBNW9iM2JhZDNPdXBNUEhGNy9USWptN0Zkd0paR2N1MHhaQW0zK3lBNW9NdQpraTZzZGdoTzU2SE1Ed2Z0ODJ5bE9FcDlBYzhEMExtRnJOWGMwVDhBd25hdWV3NUd5WXJBUHc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo="
 ---
 # Source: testgeoserver/charts/geoserver/templates/secrets/secret_postgres.yaml
 apiVersion: v1
@@ -132,61 +132,61 @@ metadata:
 data:
   init-db.sql: |
     -- tables
-    CREATE TABLE object (
-      oid serial NOT NULL,
-      type_id int4 NOT NULL,
-      id text NOT NULL,
-      blob text NOT NULL,
+    CREATE TABLE object ( 
+      oid serial NOT NULL, 
+      type_id int4 NOT NULL, 
+      id text NOT NULL, 
+      blob text NOT NULL, 
       PRIMARY KEY (oid)
     );
 
     CREATE TABLE object_property (
-      oid int4 NOT NULL,
-      property_type int4 NOT NULL,
-      id text NOT NULL,
-      related_oid int4,
-      related_property_type int4,
-      colindex int4 NOT NULL,
-      value text,
+      oid int4 NOT NULL, 
+      property_type int4 NOT NULL, 
+      id text NOT NULL, 
+      related_oid int4, 
+      related_property_type int4, 
+      colindex int4 NOT NULL, 
+      value text, 
       PRIMARY KEY (oid, property_type, colindex)
     );
 
     CREATE TABLE type (
       oid serial NOT NULL,
-      typename text NOT NULL,
+      typename text NOT NULL, 
       PRIMARY KEY (OID)
     );
 
     CREATE TABLE property_type (
-      oid  serial NOT NULL,
-      target_property int4,
-      type_id int4 NOT NULL,
-      name text NOT NULL,
-      collection bool NOT NULL,
-      text bool NOT NULL,
+      oid  serial NOT NULL, 
+      target_property int4, 
+      type_id int4 NOT NULL, 
+      name text NOT NULL, 
+      collection bool NOT NULL, 
+      text bool NOT NULL, 
       PRIMARY KEY (oid)
     );
 
     CREATE TABLE default_object (
-      def_key text NOT NULL,
+      def_key text NOT NULL, 
       id text NOT NULL
 
     );
 
     -- foreign keys
-    ALTER TABLE object_property ADD CONSTRAINT fk_object_property
+    ALTER TABLE object_property ADD CONSTRAINT fk_object_property 
       FOREIGN KEY (oid) REFERENCES object (oid) ON DELETE CASCADE;
 
-    ALTER TABLE property_type ADD CONSTRAINT
+    ALTER TABLE property_type ADD CONSTRAINT 
       fk_type_property_type FOREIGN KEY (type_id) REFERENCES type (oid);
 
-    ALTER TABLE object ADD CONSTRAINT
+    ALTER TABLE object ADD CONSTRAINT 
       fk_object_type FOREIGN KEY (type_id) REFERENCES type (oid);
 
-    ALTER TABLE property_type ADD CONSTRAINT
+    ALTER TABLE property_type ADD CONSTRAINT 
       fk_property_type_target_property FOREIGN KEY (target_property) REFERENCES property_type (oid);
 
-    ALTER TABLE object_property ADD CONSTRAINT
+    ALTER TABLE object_property ADD CONSTRAINT 
       fk_object_property_property_type FOREIGN KEY (property_type) REFERENCES property_type (oid);
 
     -- indexes
@@ -214,20 +214,20 @@ data:
     CREATE INDEX default_object_id_idx ON default_object (id);
 
     -- views
-    -- workspace view
+    -- workspace view 
     CREATE OR REPLACE VIEW workspace AS
-    SELECT a.oid,
-          a.id,
-          (SELECT c.value
-              FROM object_property c, property_type d
+    SELECT a.oid, 
+          a.id, 
+          (SELECT c.value 
+              FROM object_property c, property_type d 
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
-              AND d.name = 'name') as name,
+              AND d.name = 'name') as name, 
           (SELECT e.value
               FROM object_property e, property_type f
             WHERE e.property_type = f.oid
-              AND e.oid = (SELECT g.oid
-                              FROM object_property g, property_type h
+              AND e.oid = (SELECT g.oid 
+                              FROM object_property g, property_type h 
                             WHERE g.property_type = h.oid
                               AND g.value = (SELECT i.value
                                                 FROM object_property i, property_type j
@@ -238,11 +238,11 @@ data:
               AND f.name = 'URI') as uri
       FROM object a, type b
     WHERE a.type_id = b.oid
-      AND b.typename = 'org.geoserver.catalog.WorkspaceInfo';
-
+      AND b.typename = 'org.geoserver.catalog.WorkspaceInfo'; 
+        
     -- datastore view
     CREATE OR REPLACE VIEW datastore AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -269,13 +269,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.DataStoreInfo';
 
     -- feature type view
     CREATE OR REPLACE VIEW featuretype AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -327,13 +327,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'namespace.id') namespace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.FeatureTypeInfo';
 
     -- coveragestore view
     CREATE OR REPLACE VIEW coveragestore AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -360,13 +360,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.CoverageStoreInfo';
 
     -- coverage view
     CREATE OR REPLACE VIEW coverage AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -418,13 +418,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'namespace.id') namespace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.CoverageInfo';
 
     -- wmsstore view
     CREATE OR REPLACE VIEW wmsstore AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -456,13 +456,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.WMSStoreInfo';
 
     -- wms layer view
     CREATE OR REPLACE VIEW wmslayer AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -514,13 +514,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'namespace.id') namespace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.WMSLayerInfo';
 
     -- style view
     CREATE OR REPLACE VIEW style AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -537,13 +537,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.StyleInfo';
 
     -- layer view
     CREATE OR REPLACE VIEW layer AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -580,15 +580,15 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'resource.id') resource
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.LayerInfo';
 
     -- layergroup styles
     CREATE OR REPLACE VIEW layer_style AS
     SELECT a.oid, b.related_oid as style
-      FROM object a, object_property b, property_type c, type d
-    WHERE a.oid = b.oid
+      FROM object a, object_property b, property_type c, type d 
+    WHERE a.oid = b.oid 
       AND a.type_id = d.oid
       AND b.property_type = c.oid
       AND c.name = 'styles.id'
@@ -596,7 +596,7 @@ data:
 
     -- layer group view
     CREATE OR REPLACE VIEW layergroup AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -623,25 +623,25 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.catalog.LayerGroupInfo';
 
     -- layergroup layers
     CREATE OR REPLACE VIEW layergroup_layer AS
     SELECT a.oid, b.related_oid as layer
-      FROM object a, object_property b, property_type c, type d
-    WHERE a.oid = b.oid
+      FROM object a, object_property b, property_type c, type d 
+    WHERE a.oid = b.oid 
       AND a.type_id = d.oid
       AND b.property_type = c.oid
       AND c.name = 'layers.id'
       AND d.typename = 'org.geoserver.catalog.LayerGroupInfo';
-
+      
     -- layergroup styles
     CREATE OR REPLACE VIEW layergroup_style AS
     SELECT a.oid, b.related_oid as style
-      FROM object a, object_property b, property_type c, type d
-    WHERE a.oid = b.oid
+      FROM object a, object_property b, property_type c, type d 
+    WHERE a.oid = b.oid 
       AND a.type_id = d.oid
       AND b.property_type = c.oid
       AND c.name = 'styles.id'
@@ -649,7 +649,7 @@ data:
 
     -- global view
     CREATE OR REPLACE VIEW global AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -676,7 +676,7 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'settings.id') as settings
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.config.GeoServerInfo';
 
@@ -729,13 +729,13 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') as workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.config.SettingsInfo';
 
     -- service view
     CREATE OR REPLACE VIEW service AS
-    SELECT a.oid,
+    SELECT a.oid, 
           a.id,
           (SELECT c.value
               FROM object_property c, property_type d
@@ -792,7 +792,7 @@ data:
             WHERE c.oid = a.oid
               AND c.property_type = d.oid
               AND d.name = 'workspace.id') as workspace
-      FROM object a, type b
+      FROM object a, type b  
     WHERE a.type_id = b.oid
       AND b.typename = 'org.geoserver.config.ServiceInfo';
 
@@ -816,7 +816,7 @@ data:
 
     INSERT INTO resources (oid, name, parent, content) VALUES (0, '', NULL, NULL);
 
-    -- only the required table(s) to support distributed locking, from
+    -- only the required table(s) to support distributed locking, from 
     -- spring-integration-jdbc-<version>.jar/org/springframework/integration/jdbc/schema-postgresql.sql
     -- Table named RESOURCE_LOCK instead of INT_LOCK
     CREATE TABLE RESOURCE_LOCK  (
@@ -859,7 +859,7 @@ data:
           # Minimum amount of worker threads.
           min-spare: 2 #default: 10
           # Maximum amount of worker threads.
-          max: 20 #default: 200
+          max: 20 #defaul: 200
 
     # Common configuration for all services. Override or add service specific config
     # properties on each <service-name>-service.yml file
@@ -875,14 +875,14 @@ data:
       bus:
         # whether to send distributed events (i.e. acts as master). All instances receive remote events.
         send-events: true
-        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false,
+        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false, 
         # not all possible payload types are properly tested, and full object payload is not needed.
         send-object: ${geoserver.backend.data-directory.enabled}
         # whether to send a diff of changes as payload with the event. Set to false, not all possible payload types are properly tested nor needed.
         send-diff: ${geoserver.backend.data-directory.enabled}
       backend:
         # configure catalog backends and decide which backend to use on this service.
-        # All backends are disabled, enable the required one on each service. For example, the catalog microservice
+        # All backends are disabled, enable the required one on each service. For example, the catalog microservice 
         # will enable one backend type, and the front services the catalog-service backend.
         # revisit: Could be split into profiles
         catalog-service:
@@ -894,7 +894,7 @@ data:
           fallback-resource-directory: ${java.io.tmpdir}/cngs/catalog-client/fallback_resource_store
         data-directory:
           enabled: ${backend.data-directory:false}
-          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory}
+          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory} 
         jdbcconfig:
           enabled: ${backend.jdbcconfig:false}
           initdb: false
@@ -932,7 +932,7 @@ data:
           atlas.enabled: false
 
     spring:
-      rabbitmq:
+      rabbitmq: 
         host: test-geoserver-rabbitmq
         port: 5672
         username: geoserver
@@ -1059,7 +1059,7 @@ data:
         enabled-by-default: true
         web.exposure.include: "*"
         #web.exposure.include: gateway, info, health
-
+        
     spring:
       cloud:
         gateway:
@@ -1083,7 +1083,7 @@ data:
             uri: lb://wfs-service
             predicates:
             - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
+            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively 
     # WMS routes
           - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
             uri: lb://wms-service #load balanced to the wms-service instances
@@ -1093,7 +1093,7 @@ data:
             uri: lb://wms-service
             predicates:
             - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
+            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively 
     # WCS routes
           - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
             uri: lb://wcs-service #load balanced to the wps-service instances
@@ -1103,7 +1103,7 @@ data:
             uri: lb://wcs-service
             predicates:
             - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
+            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively 
     # WPS routes
           - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
             uri: lb://wps-service #load balanced to the wps-service instances
@@ -1113,7 +1113,7 @@ data:
             uri: lb://wps-service
             predicates:
             - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
+            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively 
     # REST configuration routes
           - id: restconfig
             uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
@@ -1165,21 +1165,21 @@ data:
     ---
     spring.profiles: local
     server.port: 9106
-
+    
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
     spring.profiles: local
     server.port: 9105
-
+    
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
     spring.profiles: local
     server.port: 9101
-
+      
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
@@ -1312,7 +1312,7 @@ spec:
     - name: http-stats
       port: 15672
       targetPort: stats
-  selector:
+  selector: 
     app.kubernetes.io/name: rabbitmq
     app.kubernetes.io/instance: test
 ---
@@ -1346,7 +1346,7 @@ spec:
       port: 15672
       targetPort: stats
       nodePort: null
-  selector:
+  selector: 
     app.kubernetes.io/name: rabbitmq
     app.kubernetes.io/instance: test
 ---
@@ -2471,10 +2471,10 @@ spec:
         app.kubernetes.io/managed-by: Helm
         role: primary
         app.kubernetes.io/component: primary
-    spec:
+    spec:      
       affinity:
         podAffinity:
-
+          
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
             - podAffinityTerm:
@@ -2488,7 +2488,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
-
+          
       securityContext:
         fsGroup: 1001
       automountServiceAccountToken: false
@@ -2648,7 +2648,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
       annotations:
     spec:
-
+      
       serviceAccountName: test-rabbitmq
       securityContext:
         fsGroup: 1001
