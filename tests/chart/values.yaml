@@ -3,6 +3,8 @@
 # Declare variables to be passed into your templates.
 
 geoserver:
+  postgresql:
+    enabled: false
   geoserver:
     ingress:
       deploy: false
