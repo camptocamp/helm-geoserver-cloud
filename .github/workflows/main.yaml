@@ -35,6 +35,7 @@ jobs:
       - uses: azure/setup-helm@v1
       - run: helm lint .
 
+      - run: helm dependency update .
       - run: helm dependency update tests/chart
       - run: helm lint tests/chart
       - run: helm template --namespace=default test tests/chart > tests/actual.yaml
