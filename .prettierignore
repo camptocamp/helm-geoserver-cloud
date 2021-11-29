@@ -1,3 +1,2 @@
-tests/chart/templates/**/*.yaml
+templates/**/*.yaml
 tests/expected.yaml
-tests/acctual.yaml
