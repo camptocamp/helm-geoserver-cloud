@@ -36,7 +36,7 @@ wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | TAG
 
 ### create a cluster on your machine
 
-The following configuration will create a single-node "cluster" on your machine, the kubelet paramaters ensure that it works also if you have an almost full development PC. It will also bind the port `localhost:8081` of your machine with the ingress controller port `80`, just adapt accordingly to your needs. You also need a local image registry to push your local images into the cluster.
+The following configuration will create a single-node "cluster" on your machine, the kubelet parameters ensure that it works also if you have an almost full development PC. It will also bind the port `localhost:8081` of your machine with the ingress controller port `80`, just adapt accordingly to your needs. You also need a local image registry to push your local images into the cluster.
 
 ```bash
 # create a local registry
@@ -57,7 +57,7 @@ helm install geoserver .
 
 ### test that it is working.
 
-If everything went well you should see something similiar with kubectl:
+If everything went well you should see something similar with kubectl:
 
 ```bash
 ~# kubectl get po

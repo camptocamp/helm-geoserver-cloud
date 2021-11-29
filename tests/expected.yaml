@@ -859,7 +859,7 @@ data:
           # Minimum amount of worker threads.
           min-spare: 2 #default: 10
           # Maximum amount of worker threads.
-          max: 20 #defaul: 200
+          max: 20 #default: 200
 
     # Common configuration for all services. Override or add service specific config
     # properties on each <service-name>-service.yml file
