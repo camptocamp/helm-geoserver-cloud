@@ -3,7 +3,7 @@ entries:
   geoserver:
   - apiVersion: v2
     appVersion: 1.0-M2
-    created: "2021-11-30T06:50:01.742937137Z"
+    created: "2021-11-30T06:54:05.331589281Z"
     dependencies:
     - name: rabbitmq
       repository: https://charts.bitnami.com/bitnami
@@ -13,9 +13,9 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 10.13.8
     description: A Helm chart for Geoserver
-    digest: fcfdc505d0ea1c8ad26a15c460d92ff936d39e6a9086cb15273d085ce2edb753
+    digest: 9174736e62b027d820fcdddbb5d0d862324cf0358ee938cdbaf235f59100fee4
     name: geoserver
     urls:
-    - https://github.com/camptocamp/helm-geoserver-cloud/releases/download/0.0.1/geoserver-0.0.1.tgz
-    version: 0.0.1
-generated: "2021-11-30T06:50:01.742953437Z"
+    - https://github.com/camptocamp/helm-geoserver-cloud/releases/download/0.0.2/geoserver-0.0.2.tgz
+    version: 0.0.2
+generated: "2021-11-30T06:54:05.331602481Z"
