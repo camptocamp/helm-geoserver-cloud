@@ -4,7 +4,20 @@
 
 A Helm chart for Geoserver
 
-## Developing in the chart
+## include this chart as dependency of your own chart:
+
+just include the following section in your `Chart.yaml`:
+
+```yaml
+dependencies:
+  - name: geoserver
+    repository: https://camptocamp.github.io/helm-geoserver-cloud
+    version: <version-numer-here>
+```
+
+See the value file for configuration options.
+
+## Developing on geoserver-cloud code using this chart
 
 To develop in this chart, we recommend that you use `k3d` if you want to use your machine. Please follow the following steps to ensure that you have all the requirements for development:
 
