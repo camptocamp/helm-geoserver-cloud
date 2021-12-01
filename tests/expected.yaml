@@ -25,7 +25,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: testgeoserver/charts/geoserver/templates/secrets/secret_postgres.yaml
@@ -95,7 +95,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
 data:
   init-db.sql: |
@@ -807,7 +807,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: "config"
 data:
@@ -1276,7 +1276,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: config
 spec:
@@ -1303,7 +1303,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: discovery
 spec:
@@ -1330,7 +1330,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: gateway
 spec:
@@ -1357,7 +1357,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: rest
 spec:
@@ -1384,7 +1384,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: wcs
 spec:
@@ -1411,7 +1411,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: webui
 spec:
@@ -1438,7 +1438,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: wfs
 spec:
@@ -1465,7 +1465,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: wms
 spec:
@@ -1492,7 +1492,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: "config"
   annotations:
@@ -1550,12 +1550,12 @@ spec:
         - name: geoserver-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-config:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-discovery:8761/actuator/health -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
@@ -1642,7 +1642,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: discovery
   annotations:
@@ -1669,7 +1669,7 @@ spec:
         - name: geoserver-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1720,7 +1720,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: gateway
   annotations:
@@ -1747,13 +1747,13 @@ spec:
         - name: geoserver-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
 
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-config:8080/gateway-service/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
@@ -1800,7 +1800,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: rest
   annotations:
@@ -1827,12 +1827,12 @@ spec:
         - name: geoserver-rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-rest:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-config:8080/restconfig-service/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
@@ -1914,7 +1914,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: wcs
   annotations:
@@ -1941,12 +1941,12 @@ spec:
         - name: geoserver-wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-config:8080/wcs-service/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
@@ -2026,7 +2026,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: webui
   annotations:
@@ -2053,12 +2053,12 @@ spec:
         - name: geoserver-webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-webui:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-config:8080/web-ui/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
@@ -2140,7 +2140,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: wfs
   annotations:
@@ -2167,12 +2167,12 @@ spec:
         - name: geoserver-wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-config:8080/wfs-service/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
@@ -2252,7 +2252,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-M2"
+    app.kubernetes.io/version: "1.0-RC2"
     app.kubernetes.io/managed-by: Helm
     gs-service: wms
   annotations:
@@ -2279,12 +2279,12 @@ spec:
         - name: geoserver-wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-SNAPSHOT"
+          image: "geoservercloud/geoserver-cloud-wms:1.0-RC2"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://test-geoserver-config:8080/wms-service/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://test-geoserver-discovery:8761/eureka
