@@ -1507,6 +1507,8 @@ spec:
       gs-service: "config"
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -1657,6 +1659,8 @@ spec:
       gs-service: discovery
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -1735,6 +1739,8 @@ spec:
       gs-service: gateway
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -1815,6 +1821,8 @@ spec:
       gs-service: rest
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -1929,6 +1937,8 @@ spec:
       gs-service: wcs
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -2041,6 +2051,8 @@ spec:
       gs-service: webui
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -2155,6 +2167,8 @@ spec:
       gs-service: wfs
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
@@ -2267,6 +2281,8 @@ spec:
       gs-service: wms
   template:
     metadata:
+      annotations:
+        checksum/config: ddc8091a4d6ad9b66b547ebed99d1295fc7fda775716b26b7266e9d39940b7ad
       labels:
         app.kubernetes.io/name: geoserver
         app.kubernetes.io/instance: test
