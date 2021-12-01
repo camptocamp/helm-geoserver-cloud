@@ -16,10 +16,11 @@ spec:
       gs-service: "config"
   template:
     metadata:
-    {{- with .Values.geoserver.config.podAnnotations }}
       annotations:
+      {{- with .Values.geoserver.config.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum }}
       labels:
         {{- include "geoserver.selectorLabels" . | nindent 8 }}
         gs-service: "config"
