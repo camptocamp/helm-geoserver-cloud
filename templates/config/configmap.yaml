@@ -38,14 +38,14 @@ data:
       bus:
         # whether to send distributed events (i.e. acts as master). All instances receive remote events.
         send-events: true
-        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false, 
+        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false,
         # not all possible payload types are properly tested, and full object payload is not needed.
         send-object: ${geoserver.backend.data-directory.enabled}
         # whether to send a diff of changes as payload with the event. Set to false, not all possible payload types are properly tested nor needed.
         send-diff: ${geoserver.backend.data-directory.enabled}
       backend:
         # configure catalog backends and decide which backend to use on this service.
-        # All backends are disabled, enable the required one on each service. For example, the catalog microservice 
+        # All backends are disabled, enable the required one on each service. For example, the catalog microservice
         # will enable one backend type, and the front services the catalog-service backend.
         # revisit: Could be split into profiles
         catalog-service:
@@ -57,7 +57,7 @@ data:
           fallback-resource-directory: ${java.io.tmpdir}/cngs/catalog-client/fallback_resource_store
         data-directory:
           enabled: ${backend.data-directory:false}
-          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory} 
+          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory}
         jdbcconfig:
           enabled: ${backend.jdbcconfig:false}
           initdb: false
@@ -218,7 +218,7 @@ data:
         enabled-by-default: true
         web.exposure.include: "*"
         #web.exposure.include: gateway, info, health
-        
+
     spring:
       cloud:
         gateway:
@@ -236,53 +236,53 @@ data:
           - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
             uri: lb://wfs-service #load balanced to the wfs-service instances
             predicates:
-            - Path=/wfs,/{segment}/wfs,/schemas/wfs/**
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/wfs,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wfs,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wfs/**
     # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
           - id: wfs_ows
             uri: lb://wfs-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively 
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
     # WMS routes
           - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
             uri: lb://wms-service #load balanced to the wms-service instances
             predicates:
-            - Path=/wms,/{segment}/wms,/schemas/wms/**,/openlayers/**,/openlayers3/**
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/wms,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wms,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wms/**,{{ .Values.geoserver.ingress.baseUrl }}/openlayers/**,{{ .Values.geoserver.ingress.baseUrl }}/openlayers3/**
           - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
             uri: lb://wms-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively 
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
     # WCS routes
           - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
             uri: lb://wcs-service #load balanced to the wps-service instances
             predicates:
-            - Path=/wcs,/{segment}/wcs,/schemas/wcs/**
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/wcs,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wcs,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wcs/**
           - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
             uri: lb://wcs-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively 
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
     # WPS routes
           - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
             uri: lb://wps-service #load balanced to the wps-service instances
             predicates:
-            - Path=/wps,/{segment}/wps,/schemas/wps/**
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/wps,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wps,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wps/**
           - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
             uri: lb://wps-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively 
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
     # REST configuration routes
           - id: restconfig
             uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
             predicates:
-            - Path=/rest/**
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/rest/**
     # Web UI configuration routes
           - id: restconfig
             uri: lb://web-ui
             predicates:
-            - Path=/,/index.html,/web,/web/**,/j_spring_security_check,/j_spring_security_logout
+            - Path={{ .Values.geoserver.ingress.baseUrl }}/,{{ .Values.geoserver.ingress.baseUrl }}/index.html,{{ .Values.geoserver.ingress.baseUrl }}/web,{{ .Values.geoserver.ingress.baseUrl }}/web/**,{{ .Values.geoserver.ingress.baseUrl }}/j_spring_security_check,{{ .Values.geoserver.ingress.baseUrl }}/j_spring_security_logout
 
     logging:
       level:
@@ -324,21 +324,21 @@ data:
     ---
     spring.profiles: local
     server.port: 9106
-    
+
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
     spring.profiles: local
     server.port: 9105
-    
+
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
     spring.profiles: local
     server.port: 9101
-      
+
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
