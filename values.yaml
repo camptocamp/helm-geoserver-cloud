@@ -39,6 +39,7 @@ geoserver:
 
   ingress:
     deploy: true
+    baseUrl: '/geoserver-cloud'
 
   serviceAccount:
     create: true

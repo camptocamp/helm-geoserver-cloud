@@ -10,14 +10,14 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: {{ .Values.geoserver.ingress.baseUrl }}/
         pathType: Prefix
         backend:
           service:
             name: {{ include "geoserver.fullname" . }}-gateway
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
-      - path: /web/
+      - path: {{ .Values.geoserver.ingress.baseUrl }}/web/
         pathType: Prefix
         backend:
           service:
