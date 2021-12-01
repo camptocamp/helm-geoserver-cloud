@@ -39,7 +39,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - exec wait-for -t 120 http://{{ include "geoserver.fullname" . }}-config:8080/wcs-service/default -- java org.springframework.boot.loader.JarLauncher
+            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
               value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
