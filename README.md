@@ -10,7 +10,7 @@ just include the following section in your `Chart.yaml`:
 
 ```yaml
 dependencies:
-  - name: geoserver
+  - name: geoserver-cloud
     repository: https://camptocamp.github.io/helm-geoserver-cloud
     version: <version-numer-here>
 ```
