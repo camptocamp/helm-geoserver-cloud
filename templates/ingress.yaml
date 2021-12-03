@@ -24,4 +24,11 @@ spec:
             name: {{ include "geoserver.fullname" . }}-webui
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
+      - path: {{ .Values.geoserver.ingress.baseUrl }}/discovery/
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "geoserver.fullname" . }}-discovery
+            port:
+              number: {{ .Values.geoserver.gateway.discovery.port }}
 {{ end }}

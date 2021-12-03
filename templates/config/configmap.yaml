@@ -219,6 +219,8 @@ data:
         web.exposure.include: "*"
         #web.exposure.include: gateway, info, health
 
+    context.base: {{ .Values.geoserver.ingress.baseUrl }}
+
     spring:
       cloud:
         gateway:
@@ -236,59 +238,60 @@ data:
           - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
             uri: lb://wfs-service #load balanced to the wfs-service instances
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/wfs,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wfs,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wfs/**
+            - Path=${context.base}/wfs,${context.base}/{segment}/wfs,${context.base}/schemas/wfs/**
     # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
           - id: wfs_ows
             uri: lb://wfs-service
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - Path=${context.base}/ows,${context.base}/{segment}/ows
             - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
     # WMS routes
           - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
             uri: lb://wms-service #load balanced to the wms-service instances
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/wms,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wms,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wms/**,{{ .Values.geoserver.ingress.baseUrl }}/openlayers/**,{{ .Values.geoserver.ingress.baseUrl }}/openlayers3/**
+            - Path=${context.base}/wms,${context.base}/{segment}/wms,${context.base}/schemas/wms/**,${context.base}/openlayers/**,${context.base}/openlayers3/**
           - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
             uri: lb://wms-service
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - Path=${context.base}/ows,${context.base}/{segment}/ows
             - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
     # WCS routes
           - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
             uri: lb://wcs-service #load balanced to the wps-service instances
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/wcs,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wcs,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wcs/**
+            - Path=${context.base}/wcs,${context.base}/{segment}/wcs,${context.base}/schemas/wcs/**
           - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
             uri: lb://wcs-service
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - Path=${context.base}/ows,${context.base}/{segment}/ows
             - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
     # WPS routes
           - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
             uri: lb://wps-service #load balanced to the wps-service instances
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/wps,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/wps,{{ .Values.geoserver.ingress.baseUrl }}/schemas/wps/**
+            - Path=${context.base}/wps,${context.base}/{segment}/wps,${context.base}/schemas/wps/**
           - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
             uri: lb://wps-service
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/ows,{{ .Values.geoserver.ingress.baseUrl }}/{segment}/ows
+            - Path=${context.base}/ows,${context.base}/{segment}/ows
             - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
     # REST configuration routes
           - id: restconfig
             uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/rest/**
+            - Path=${context.base}/rest/**
     # Web UI configuration routes
           - id: restconfig
             uri: lb://web-ui
             predicates:
-            - Path={{ .Values.geoserver.ingress.baseUrl }}/,{{ .Values.geoserver.ingress.baseUrl }}/index.html,{{ .Values.geoserver.ingress.baseUrl }}/web,{{ .Values.geoserver.ingress.baseUrl }}/web/**,{{ .Values.geoserver.ingress.baseUrl }}/j_spring_security_check,{{ .Values.geoserver.ingress.baseUrl }}/j_spring_security_logout
+            - Path=${context.base}/,${context.base}/index.html,${context.base}/web,${context.base}/web/**,${context.base}/j_spring_security_check,${context.base}/j_spring_security_logout
 
     logging:
       level:
         root: WARN
         com.netflix.discovery: WARN
         com.netflix.eureka: WARN
+        org.springframework.cloud.gateway: DEBUG
 
   web-ui.yml: |
     geoserver:
