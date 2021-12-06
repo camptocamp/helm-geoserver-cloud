@@ -87,20 +87,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /wfs?SERVICE=WFS&REQUEST=GetCapabilities
+              path: /actuator/health
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /wfs?SERVICE=WFS&REQUEST=GetCapabilities
+              path: /actuator/health
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /wfs?SERVICE=WFS&REQUEST=GetCapabilities
+              path: /actuator/health
               port: http
             periodSeconds: 5
 
