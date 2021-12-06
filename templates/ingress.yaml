@@ -18,39 +18,11 @@ spec:
             name: {{ include "geoserver.fullname" . }}-gateway
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
-      # - path: "/geoserver-cloud/wms"
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: {{ include "geoserver.fullname" . }}-wms
-      #       port:
-      #         number: {{ .Values.geoserver.wms.service.port }}
-      # - path: "/geoserver-cloud/{(.*)?wms}"
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: {{ include "geoserver.fullname" . }}-wms
-      #       port:
-      #         number: {{ .Values.geoserver.wms.service.port }}
-      # - path: "/geoserver-cloud/{(.*)?wcs}"
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: {{ include "geoserver.fullname" . }}-wcs
-      #       port:
-      #         number: {{ .Values.geoserver.wcs.service.port }}
-      # - path: "/geoserver-cloud/{(.*)?wfs}"
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: {{ include "geoserver.fullname" . }}-wfs
-      #       port:
-      #         number: {{ .Values.geoserver.wfs.service.port }}
-      # - path: "/geoserver-cloud/{(.*)?rest}"
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: {{ include "geoserver.fullname" . }}-rest
-      #       port:
-      #         number: {{ .Values.geoserver.rest.service.port }}
+      - path: "/geoserver-cloud/{(.*)?wms}"
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "geoserver.fullname" . }}-wms
+            port:
+              number: {{ .Values.geoserver.wms.service.port }}
 {{ end }}
