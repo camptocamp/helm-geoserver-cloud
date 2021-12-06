@@ -18,7 +18,7 @@ spec:
             name: {{ include "geoserver.fullname" . }}-gateway
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
-      - path: "/geoserver-cloud/{(.*)?wms}"
+      - path: {{ if (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ printf "%s{(.*)?wms}" .Values.geoserver.ingress.baseUrl }} {{else}} {{ printf "%s/{(.*)?wms}"  .Values.geoserver.ingress.baseUrl }} {{ end }}
         pathType: Prefix
         backend:
           service:
