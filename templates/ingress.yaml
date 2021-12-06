@@ -19,14 +19,3 @@ spec:
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
 {{ end }}
-
-
-{{ if (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ printf "%s{(.*)?wms}" .Values.geoserver.ingress.baseUrl }} {{else}} {{ printf ""  .Values.geoserver.ingress.baseUrl }} {{ end }}
-
-
-/geoserver-cloud/{(.*)?wms}
-
-
-/geoserver-cloud/{(.*)?ows}
-
-/geoserver-cloud/(.*)?ows
