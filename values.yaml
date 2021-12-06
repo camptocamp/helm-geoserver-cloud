@@ -6,7 +6,7 @@ global:
   app_environment_name: 'master'
   cluster_environment: dev
   image:
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 rabbitmq:
   image:

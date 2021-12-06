@@ -10,25 +10,18 @@ spec:
   rules:
   - http:
       paths:
-      - path: {{ .Values.geoserver.ingress.baseUrl }}/
+      - path: {{ if (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ .Values.geoserver.ingress.baseUrl }} {{else}} {{ printf "%s/"  .Values.geoserver.ingress.baseUrl }} {{ end }}
         pathType: Prefix
         backend:
           service:
             name: {{ include "geoserver.fullname" . }}-gateway
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
-      - path: {{ .Values.geoserver.ingress.baseUrl }}/web/
+      - path: /geoserver-cloud/wms
         pathType: Prefix
         backend:
           service:
-            name: {{ include "geoserver.fullname" . }}-webui
+            name: {{ include "geoserver.fullname" . }}-wms
             port:
-              number: {{ .Values.geoserver.gateway.service.port }}
-      - path: {{ .Values.geoserver.ingress.baseUrl }}/discovery/
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ include "geoserver.fullname" . }}-discovery
-            port:
-              number: {{ .Values.geoserver.gateway.discovery.port }}
+              number: {{ .Values.geoserver.wms.service.port }}
 {{ end }}
