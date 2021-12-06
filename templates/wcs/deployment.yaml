@@ -87,20 +87,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /wcs?SERVICE=WCS&REQUEST=GetCapabilities
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /wcs?SERVICE=WCS&REQUEST=GetCapabilities
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /wcs?SERVICE=WCS&REQUEST=GetCapabilities
               port: http
             periodSeconds: 5
 
