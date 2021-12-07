@@ -60,7 +60,7 @@ data:
           location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory}
         jdbcconfig:
           enabled: ${backend.jdbcconfig:false}
-          initdb: false
+          initdb: true
           web.enabled: true
           cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
           datasource:

@@ -31,37 +31,6 @@ spec:
       serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.geoserver.config.podSecurityContext | nindent 8 }}
-      initContainers:
-        - name: configure-db
-          image: postgres:12
-          command:
-            - psql
-            - -f
-            - /data/init-db.sql
-          env:
-            - name: PGHOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
-                  key: HOST
-            - name: PGDATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
-                  key: DATABASE_NAME
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
-                  key: ROLE
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
-                  key: PASSWORD
-          volumeMounts:
-            - name: init-db
-              mountPath: /data
       containers:
         - name: {{ .Chart.Name }}-config
           securityContext:
@@ -141,9 +110,6 @@ spec:
         - name: configs
           configMap:
             name: {{ include "geoserver.fullname" . }}-config-configs
-        - name: init-db
-          configMap:
-            name: {{ include "geoserver.fullname" . }}-init-db
 
       {{- with .Values.geoserver.config.nodeSelector }}
       nodeSelector:
