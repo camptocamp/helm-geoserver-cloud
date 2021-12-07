@@ -6,7 +6,7 @@ global:
   app_environment_name: 'master'
   cluster_environment: dev
   image:
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 rabbitmq:
   image:
@@ -39,6 +39,7 @@ geoserver:
 
   ingress:
     deploy: true
+    baseUrl: '/geoserver-cloud/'
 
   serviceAccount:
     create: true

@@ -25,7 +25,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogs-cloud/charts/geoserver-cloud/templates/secrets/secret_postgres.yaml
@@ -95,7 +95,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
 data:
   init-db.sql: |
@@ -807,7 +807,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: "config"
 data:
@@ -901,7 +901,7 @@ data:
 
     spring:
       rabbitmq:
-        host: test-geoserver-cloud-rabbitmq
+        host: test-rabbitmq
         port: 5672
         username: geoserver
         password: ${RABBITMQ_PASSWORD}
@@ -1016,21 +1016,38 @@ data:
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
 
   gateway-service.yml: |
+    # Defines the root base path at which the gateway exposes all geoserver request paths
+    # We're not setting the spring.webflux.base-path because spring-cloud Gateway doesn't
+    # work properly with it. See https://github.com/spring-cloud/spring-cloud-gateway/issues/1759
+    # For example, if geoserver.base-path=/geoserver-cloud, then geoserver requests will be served
+    # under that path prefix (e.g. http://localhost:9090/geoserver-cloud/web, http://localhost:9090/geoserver-cloud/wfs, etc)
+    # Examples:
+    #geoserver.base-path:
+    #geoserver.base-path: /geoserver-cloud
+    #geoserver.base-path: /geoserver/cloud
+    # Leave it empty for no additional path, setting it to / won't work currently
+    #
+    # Please note any other prefix than the empty string will require a trailing slash in the root URL
+    # for the redirection to the web-ui to work. This is something we need to fix. For example:
+    # http://localhost:9090/geoserver-cloud will return 404, but http://localhost:9090/geoserver-cloud/ will work.
+    geoserver.base-path:  /geoserver-cloud
+
+    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
     server:
       compression:
         enabled: true
-    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
 
     management:
       endpoint.gateway.enabled: true # default value
       endpoints:
         enabled-by-default: true
         web.exposure.include: "*"
-        #web.exposure.include: gateway, info, health
 
     spring:
       cloud:
         gateway:
+          default-filters:
+          - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
           actuator:
             verbose:
               enabled: true
@@ -1038,66 +1055,74 @@ data:
           - id: catalog
             uri: lb://catalog-service
             predicates:
-            - Path=/api/v1/**
+            - Path=${geoserver.base-path}/api/v1/**
             filters: # Expose the catalog and configuration API only if the dev profile is active
             - RouteProfile=dev,403
     # WFS routes
           - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
             uri: lb://wfs-service #load balanced to the wfs-service instances
             predicates:
-            - Path=/wfs,/{segment}/wfs,/schemas/wfs/**
+            - Path=${geoserver.base-path}/wfs,${geoserver.base-path}/{workspace}/wfs,${geoserver.base-path}/{workspace}/{layer}/wfs,${geoserver.base-path}/schemas/wfs/**
     # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
           - id: wfs_ows
             uri: lb://wfs-service
             predicates:
-            - Path=/ows,/{segment}/ows
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
             - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
     # WMS routes
           - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
             uri: lb://wms-service #load balanced to the wms-service instances
             predicates:
-            - Path=/wms,/{segment}/wms,/schemas/wms/**,/openlayers/**,/openlayers3/**
+            - Path=${geoserver.base-path}/wms,${geoserver.base-path}/{workspace}/wms,${geoserver.base-path}/{workspace}/{layer}/wms,${geoserver.base-path}/schemas/wms/**,${geoserver.base-path}/openlayers/**,${geoserver.base-path}/openlayers3/**
           - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
             uri: lb://wms-service
             predicates:
-            - Path=/ows,/{segment}/ows
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
             - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
     # WCS routes
           - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
             uri: lb://wcs-service #load balanced to the wps-service instances
             predicates:
-            - Path=/wcs,/{segment}/wcs,/schemas/wcs/**
+            - Path=${geoserver.base-path}/wcs,${geoserver.base-path}/{workspace}/wcs,${geoserver.base-path}/{workspace}/{layer}/wcs,${geoserver.base-path}/schemas/wcs/**
           - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
             uri: lb://wcs-service
             predicates:
-            - Path=/ows,/{segment}/ows
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
             - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
     # WPS routes
           - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
             uri: lb://wps-service #load balanced to the wps-service instances
             predicates:
-            - Path=/wps,/{segment}/wps,/schemas/wps/**
+            - Path=${geoserver.base-path}/wps,${geoserver.base-path}/{segment}/wps,${geoserver.base-path}/schemas/wps/**
           - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
             uri: lb://wps-service
             predicates:
-            - Path=/ows,/{segment}/ows
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{segment}/ows
             - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
     # REST configuration routes
           - id: restconfig
             uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
             predicates:
-            - Path=/rest/**
+            - Path=${geoserver.base-path}/rest/**
     # Web UI configuration routes
-          - id: restconfig
+          - id: webui
             uri: lb://web-ui
             predicates:
-            - Path=/,/index.html,/web,/web/**,/j_spring_security_check,/j_spring_security_logout
+            - Path=${geoserver.base-path}/**
+            #- Path=${geoserver.base-path},${geoserver.base-path}/,${geoserver.base-path}/index.html,${geoserver.base-path}/web,${geoserver.base-path}/web/**,${geoserver.base-path}/j_spring_security_check,${geoserver.base-path}/j_spring_security_logout
 
     logging:
       level:
         root: WARN
         com.netflix.discovery: WARN
         com.netflix.eureka: WARN
+        org.springframework.cloud.gateway: info
+        reactor.netty: INFO
+    ---
+    spring.profiles: local
+    server.port: 9000
+
+
 
   web-ui.yml: |
     geoserver:
@@ -1276,7 +1301,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: config
 spec:
@@ -1303,7 +1328,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: discovery
 spec:
@@ -1330,7 +1355,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: gateway
 spec:
@@ -1357,7 +1382,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: rest
 spec:
@@ -1384,7 +1409,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: wcs
 spec:
@@ -1411,7 +1436,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: webui
 spec:
@@ -1438,7 +1463,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: wfs
 spec:
@@ -1465,7 +1490,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: wms
 spec:
@@ -1492,7 +1517,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: "config"
   annotations:
@@ -1508,7 +1533,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -1552,8 +1577,8 @@ spec:
         - name: geoserver-cloud-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-config:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c
@@ -1644,7 +1669,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: discovery
   annotations:
@@ -1660,7 +1685,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -1673,8 +1698,8 @@ spec:
         - name: geoserver-cloud-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
               value: test-geoserver-cloud-discovery
@@ -1724,7 +1749,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: gateway
   annotations:
@@ -1740,7 +1765,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -1753,8 +1778,8 @@ spec:
         - name: geoserver-cloud-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
 
             - /bin/sh
@@ -1806,7 +1831,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: rest
   annotations:
@@ -1822,7 +1847,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -1835,8 +1860,8 @@ spec:
         - name: geoserver-cloud-rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-rest:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c
@@ -1886,20 +1911,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
             periodSeconds: 5
 
@@ -1922,7 +1947,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: wcs
   annotations:
@@ -1938,7 +1963,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -1951,8 +1976,8 @@ spec:
         - name: geoserver-cloud-wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c
@@ -2036,7 +2061,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: webui
   annotations:
@@ -2052,7 +2077,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -2065,8 +2090,8 @@ spec:
         - name: geoserver-cloud-webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-webui:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c
@@ -2116,20 +2141,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
             periodSeconds: 5
 
@@ -2152,7 +2177,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: wfs
   annotations:
@@ -2168,7 +2193,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -2181,8 +2206,8 @@ spec:
         - name: geoserver-cloud-wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c
@@ -2266,7 +2291,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC2"
+    app.kubernetes.io/version: "1.0-SNAPSHOT"
     app.kubernetes.io/managed-by: Helm
     gs-service: wms
   annotations:
@@ -2282,7 +2307,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 13b2cc29f319f9976305dbbdd3d3d77557e9e67bb1c99897f2da78963b2f8548
+        checksum/config: 01d886424c6714813a45105be742974861feae1b9130a27e206ba2e8d7de19d9
       labels:
         app.kubernetes.io/name: geoserver-cloud
         app.kubernetes.io/instance: test
@@ -2295,8 +2320,8 @@ spec:
         - name: geoserver-cloud-wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-RC2"
-          imagePullPolicy: IfNotPresent
+          image: "geoservercloud/geoserver-cloud-wms:1.0-SNAPSHOT"
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c

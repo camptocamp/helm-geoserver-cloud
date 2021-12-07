@@ -38,14 +38,14 @@ data:
       bus:
         # whether to send distributed events (i.e. acts as master). All instances receive remote events.
         send-events: true
-        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false, 
+        # whether to send the object (CatalogInfo/config info) as payload with the event. Set to false,
         # not all possible payload types are properly tested, and full object payload is not needed.
         send-object: ${geoserver.backend.data-directory.enabled}
         # whether to send a diff of changes as payload with the event. Set to false, not all possible payload types are properly tested nor needed.
         send-diff: ${geoserver.backend.data-directory.enabled}
       backend:
         # configure catalog backends and decide which backend to use on this service.
-        # All backends are disabled, enable the required one on each service. For example, the catalog microservice 
+        # All backends are disabled, enable the required one on each service. For example, the catalog microservice
         # will enable one backend type, and the front services the catalog-service backend.
         # revisit: Could be split into profiles
         catalog-service:
@@ -57,7 +57,7 @@ data:
           fallback-resource-directory: ${java.io.tmpdir}/cngs/catalog-client/fallback_resource_store
         data-directory:
           enabled: ${backend.data-directory:false}
-          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory} 
+          location: ${GEOSERVER_DATA_DIR:/opt/app/data_directory}
         jdbcconfig:
           enabled: ${backend.jdbcconfig:false}
           initdb: false
@@ -207,21 +207,38 @@ data:
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
 
   gateway-service.yml: |
+    # Defines the root base path at which the gateway exposes all geoserver request paths
+    # We're not setting the spring.webflux.base-path because spring-cloud Gateway doesn't
+    # work properly with it. See https://github.com/spring-cloud/spring-cloud-gateway/issues/1759
+    # For example, if geoserver.base-path=/geoserver-cloud, then geoserver requests will be served
+    # under that path prefix (e.g. http://localhost:9090/geoserver-cloud/web, http://localhost:9090/geoserver-cloud/wfs, etc)
+    # Examples:
+    #geoserver.base-path:
+    #geoserver.base-path: /geoserver-cloud
+    #geoserver.base-path: /geoserver/cloud
+    # Leave it empty for no additional path, setting it to / won't work currently
+    #
+    # Please note any other prefix than the empty string will require a trailing slash in the root URL
+    # for the redirection to the web-ui to work. This is something we need to fix. For example:
+    # http://localhost:9090/geoserver-cloud will return 404, but http://localhost:9090/geoserver-cloud/ will work.
+    geoserver.base-path: {{ if not (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ .Values.geoserver.ingress.baseUrl }} {{else}} {{ trimSuffix "/" .Values.geoserver.ingress.baseUrl }} {{ end }}
+
+    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
     server:
       compression:
         enabled: true
-    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
 
     management:
       endpoint.gateway.enabled: true # default value
       endpoints:
         enabled-by-default: true
         web.exposure.include: "*"
-        #web.exposure.include: gateway, info, health
-        
+
     spring:
       cloud:
         gateway:
+          default-filters:
+          - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
           actuator:
             verbose:
               enabled: true
@@ -229,66 +246,74 @@ data:
           - id: catalog
             uri: lb://catalog-service
             predicates:
-            - Path=/api/v1/**
+            - Path=${geoserver.base-path}/api/v1/**
             filters: # Expose the catalog and configuration API only if the dev profile is active
             - RouteProfile=dev,403
     # WFS routes
           - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
             uri: lb://wfs-service #load balanced to the wfs-service instances
             predicates:
-            - Path=/wfs,/{segment}/wfs,/schemas/wfs/**
+            - Path=${geoserver.base-path}/wfs,${geoserver.base-path}/{workspace}/wfs,${geoserver.base-path}/{workspace}/{layer}/wfs,${geoserver.base-path}/schemas/wfs/**
     # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
           - id: wfs_ows
             uri: lb://wfs-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively 
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
     # WMS routes
           - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
             uri: lb://wms-service #load balanced to the wms-service instances
             predicates:
-            - Path=/wms,/{segment}/wms,/schemas/wms/**,/openlayers/**,/openlayers3/**
+            - Path=${geoserver.base-path}/wms,${geoserver.base-path}/{workspace}/wms,${geoserver.base-path}/{workspace}/{layer}/wms,${geoserver.base-path}/schemas/wms/**,${geoserver.base-path}/openlayers/**,${geoserver.base-path}/openlayers3/**
           - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
             uri: lb://wms-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively 
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
     # WCS routes
           - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
             uri: lb://wcs-service #load balanced to the wps-service instances
             predicates:
-            - Path=/wcs,/{segment}/wcs,/schemas/wcs/**
+            - Path=${geoserver.base-path}/wcs,${geoserver.base-path}/{workspace}/wcs,${geoserver.base-path}/{workspace}/{layer}/wcs,${geoserver.base-path}/schemas/wcs/**
           - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
             uri: lb://wcs-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively 
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
     # WPS routes
           - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
             uri: lb://wps-service #load balanced to the wps-service instances
             predicates:
-            - Path=/wps,/{segment}/wps,/schemas/wps/**
+            - Path=${geoserver.base-path}/wps,${geoserver.base-path}/{segment}/wps,${geoserver.base-path}/schemas/wps/**
           - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
             uri: lb://wps-service
             predicates:
-            - Path=/ows,/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively 
+            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{segment}/ows
+            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
     # REST configuration routes
           - id: restconfig
             uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
             predicates:
-            - Path=/rest/**
+            - Path=${geoserver.base-path}/rest/**
     # Web UI configuration routes
-          - id: restconfig
+          - id: webui
             uri: lb://web-ui
             predicates:
-            - Path=/,/index.html,/web,/web/**,/j_spring_security_check,/j_spring_security_logout
+            - Path=${geoserver.base-path}/**
+            #- Path=${geoserver.base-path},${geoserver.base-path}/,${geoserver.base-path}/index.html,${geoserver.base-path}/web,${geoserver.base-path}/web/**,${geoserver.base-path}/j_spring_security_check,${geoserver.base-path}/j_spring_security_logout
 
     logging:
       level:
         root: WARN
         com.netflix.discovery: WARN
         com.netflix.eureka: WARN
+        org.springframework.cloud.gateway: info
+        reactor.netty: INFO
+    ---
+    spring.profiles: local
+    server.port: 9000
+
+
 
   web-ui.yml: |
     geoserver:
@@ -324,21 +349,21 @@ data:
     ---
     spring.profiles: local
     server.port: 9106
-    
+
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
     spring.profiles: local
     server.port: 9105
-    
+
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
     spring.profiles: local
     server.port: 9101
-      
+
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}

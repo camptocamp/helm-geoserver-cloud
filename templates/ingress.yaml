@@ -6,22 +6,16 @@ metadata:
   name: nginx
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: {{ if (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ .Values.geoserver.ingress.baseUrl }} {{else}} {{ printf "%s/"  .Values.geoserver.ingress.baseUrl }} {{ end }}
         pathType: Prefix
         backend:
           service:
             name: {{ include "geoserver.fullname" . }}-gateway
-            port:
-              number: {{ .Values.geoserver.gateway.service.port }}
-      - path: /web/
-        pathType: Prefix
-        backend:
-          service:
-            name: {{ include "geoserver.fullname" . }}-webui
             port:
               number: {{ .Values.geoserver.gateway.service.port }}
 {{ end }}

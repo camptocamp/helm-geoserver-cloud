@@ -68,7 +68,7 @@ Create the name of the service account to use
 Generate content of spring config for rabbitmq
 */}}
 {{- define "geoserver.spring.rabbitmq" -}}
-host: {{ include "geoserver.fullname" . }}-rabbitmq
+host: {{ .Release.Name }}-rabbitmq
 port: 5672
 username: {{ .Values.rabbitmq.auth.username }}
 password: ${RABBITMQ_PASSWORD}

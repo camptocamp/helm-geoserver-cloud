@@ -8,3 +8,4 @@ geoserver-cloud:
   geoserver:
     ingress:
       deploy: false
+      #baseUrl: '/geoserver-cloud/'
