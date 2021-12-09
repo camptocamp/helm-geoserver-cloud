@@ -1,9 +1,9 @@
 apiVersion: v2
 appVersion: '1.0'
 description: Test
-name: ogs-cloud
+name: ogsCloud
 version: 0.1.0
 dependencies:
-  - name: geoserver-cloud
+  - name: geoserverCloud
     repository: file://../..
-    version: 0.0.5
+    version: 0.0.6

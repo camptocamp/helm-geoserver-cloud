@@ -1,8 +1,8 @@
 apiVersion: v2
 appVersion: '1.0-RC3'
 description: A Helm chart for Geoserver-cloud
-name: geoserver-cloud
-version: 0.0.5
+name: geoserverCloud
+version: 0.0.6
 dependencies:
   - name: 'rabbitmq'
     version: 8.0.1
