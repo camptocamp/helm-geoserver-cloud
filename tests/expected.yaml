@@ -57,6 +57,38 @@ metadata:
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
 ---
+# Source: ogsCloud/charts/geoserver-cloud/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-postgresql
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.13.8
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+  namespace: default
+type: Opaque
+data:
+  postgresql-postgres-password: "NVJXOFBBcTFpZg=="
+  postgresql-password: "cGFzc3dvcmQ="
+---
+# Source: ogsCloud/charts/geoserver-cloud/charts/postgresql/templates/tls-secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-postgresql-crt
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.13.8
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+type: kubernetes.io/tls
+data:
+  ca.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvVENDQWVXZ0F3SUJBZ0lSQUxwdGlDQTUrQzNLV2tBdDJqUUVoajB3RFFZSktvWklodmNOQVFFTEJRQXcKR0RFV01CUUdBMVVFQXhNTmNHOXpkR2R5WlhOeGJDMWpZVEFlRncweU1URXlNRGt4TXpBNU16ZGFGdzB5TWpFeQpNRGt4TXpBNU16ZGFNQmd4RmpBVUJnTlZCQU1URFhCdmMzUm5jbVZ6Y1d3dFkyRXdnZ0VpTUEwR0NTcUdTSWIzCkRRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRREk3dTYxbGdWd1BCRFkrNHBpZGhyMVdXK1hReTdnR21FYndKYnAKTVNPaThTcEV0MkpXWmdHUlkzYTJBUnBoWmYzUmdPYm9hdnBjSkFFYkxWWTBlYXRqQTNWZTQ2Uytwank2R2tkegpzUHI4dzFsMjdIOFF3dGxOL2pCblY2OFNPdFN6aDFZSDNEVWlJZlRyc3FzM3YxOG5nYVFHd1RSYjhCd1A5WkpuCjA3eXlSdDAvdXduWkVhSENTSlhiRkNQUSt0ODcxdTduM2ZyZDZyelBGZ2FYbGpxRUszY3RWYXZHUG5MQXpZZlEKS3IxK2hVUGpkWWx5Q2N1WGhCZmk4akRhMS9VdUd0RzM3cnRrSUZSUEdQY1owVGhtRjBWWThOZ1VGZTVzR1lxNgpZY0h4WUdYT1R3ejVvMCtTK21pWFdOU05hRXI0ajdIVlQ5bUhXbkk5Sk5kTzlTdDVBZ01CQUFHalFqQkFNQTRHCkExVWREd0VCL3dRRUF3SUNwREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0R3WUQKVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFFVmRmNU5sNmFaSnNnZ2N2TVRMYwpBdURacUovbFZUanA5bEJLelRUc3grYm84MzhQeGl1VThNZ1Q1ZDlWeHpTcUhDN2xBTStGcmR5bEVON1ppa2hjCkdhZlFpNzU0dGpHRW04ZHFFWiswZzFZbGtOTmhQTHhmbWZEM0o2R0ZrM3U5d0RsNklrTlNWMWh2eURTWVRwTkMKT0YvbGJYcnRqVzZwR3V2cGRIR3JEb0R0dlhHMmxFMHhyZXZBVFRudzNPd3hnaXB0N0ZUT1R3MlkwT0U5SjVBegovN3hCdytHZk5RZ21hQndwdGM4TURJYXR2RUF0RWVOY1EyYWQvOTBKamluVHZIcHdmRVhNZXpoS2xReWwrQkdmCjg2VTNXVml5OXhQaXdyK2dXVU9Fejd0RW5YMHFhQWcyUDRwVGFYR0Q2T3QyUXpBOHI4WTV5ejlpdWU5V29oeS8KaGc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+  tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQxRENDQXJ5Z0F3SUJBZ0lRY01wcmZYV2o4bWNaM0VRV1hZL2pFVEFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFERXcxd2IzTjBaM0psYzNGc0xXTmhNQjRYRFRJeE1USXdPVEV6TURrek4xb1hEVEl5TVRJdwpPVEV6TURrek4xb3dHakVZTUJZR0ExVUVBeE1QZEdWemRDMXdiM04wWjNKbGMzRnNNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUE0SFdVTHUwWDk0WEtibm9PS3pHelJ3bGJnYS95bTlwWVRtejMKbG9GV2R3MnVQdjZCVW9PempmZkpyL0NqcTVwam9nc2Z4K1J5QmYzUEorUG9Vd0pKMTJkU0hacmwzQjZoNGpUZwpZUUp4WWZoS0NwTnhBWlh4K0NmSFNoVEdHRHBYZ2JOQ0R3dkdFdll4RitWRVdMMUtpZmx5VERJcDBtcG42aGdkClR2WGU3NktDVERZNklmQXJ1d2UvMHA4bzhuMGc3QTVrd1VhblV3K1pvbWsyODI1RUhHOTFLT2pZQThrbC80eHIKd21WaUdjeXVIOFVYUW04OUVqd2pvcE95c0lxaTIwRHdSaGl0SWRkSnRvSk1rek8yOHh5MGE2QUlQTWkvTk1IQQpUU2dsRE5hRlk1Zzk0U0h6TWU2NG9yd0dNeE1rWUpkd0hhRng5cStDVDQyU3RaZjRpUUlEQVFBQm80SUJGakNDCkFSSXdEZ1lEVlIwUEFRSC9CQVFEQWdXZ01CMEdBMVVkSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0QKQWpBTUJnTlZIUk1CQWY4RUFqQUFNSUhTQmdOVkhSRUVnY293Z2NlQ0tDb3VkR1Z6ZEMxd2IzTjBaM0psYzNGcwpMbVJsWm1GMWJIUXVjM1pqTGlVaGN5ZzhibWxzUGltQ0puUmxjM1F0Y0c5emRHZHlaWE54YkM1a1pXWmhkV3gwCkxuTjJZeTRsSVhNb1BHNXBiRDRwZ2pFcUxuUmxjM1F0Y0c5emRHZHlaWE54YkMxb1pXRmtiR1Z6Y3k1a1pXWmgKZFd4MExuTjJZeTRsSVhNb1BHNXBiRDRwZ2k5MFpYTjBMWEJ2YzNSbmNtVnpjV3d0YUdWaFpHeGxjM011WkdWbQpZWFZzZEM1emRtTXVKU0Z6S0R4dWFXdytLWUlQZEdWemRDMXdiM04wWjNKbGMzRnNNQTBHQ1NxR1NJYjNEUUVCCkN3VUFBNElCQVFDdVdOWWkwVkxwbkVwSEhURTRtZW93Yy9GYUtaOWJ5VjAxRjRENjh2YWp1QisySGY0WXZsNVYKWW1NUmNOdDRhbWZtNWh1SFhIV2ZBNkZKNkFCaU02emplZFJTOVp1L0JFRUtVVCt3MzRYZzE4NFgwWTJWRHB4YwpVZTFYNnllTml0VzR4SndOVFcwS0JYYnFuMVR6S1E2QVRpdW5WN04raU4vdm15T3ptVjFyeUdmcjRvRnF6UEdwCldHRXFLYW9vYXFvVktRUmhtVXlHSWg0d2Y3ZHB4SXhjYjJaOWhLcGlwVlI1L1JDOW9zak5IUGZLN0EzbkpJQ0IKaGFrb0wxU0MrNm0ycnExWWpCNnNONHdkR0JwVlZCYUlyKytXQ2ZiMjZKR3UvRkVQM0xNenl6aG1jS0FZUkhieQp2MWszdjRwdmtmd1Y2QmM1ZDlxTUFzU2N1UW83ZmFxTAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+  tls.key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBNEhXVUx1MFg5NFhLYm5vT0t6R3pSd2xiZ2EveW05cFlUbXozbG9GV2R3MnVQdjZCClVvT3pqZmZKci9DanE1cGpvZ3NmeCtSeUJmM1BKK1BvVXdKSjEyZFNIWnJsM0I2aDRqVGdZUUp4WWZoS0NwTngKQVpYeCtDZkhTaFRHR0RwWGdiTkNEd3ZHRXZZeEYrVkVXTDFLaWZseVRESXAwbXBuNmhnZFR2WGU3NktDVERZNgpJZkFydXdlLzBwOG84bjBnN0E1a3dVYW5Vdytab21rMjgyNUVIRzkxS09qWUE4a2wvNHhyd21WaUdjeXVIOFVYClFtODlFandqb3BPeXNJcWkyMER3UmhpdElkZEp0b0pNa3pPMjh4eTBhNkFJUE1pL05NSEFUU2dsRE5hRlk1ZzkKNFNIek1lNjRvcndHTXhNa1lKZHdIYUZ4OXErQ1Q0MlN0WmY0aVFJREFRQUJBb0lCQUM3bW9xWURpS1NCNGtDZgpaR0tHS2czSDJNVUtmTWt3SUkrU21WRnJpU09yU2lPRGpvWXRXdEZwVzAxV0hQejRiNlVtYWVlY3htNldFRGtuCm1CM3dObm01N3lDY2d6Y3hkMllLNG0raTBRcEZsVU1NZCtwNjZHcVA5VVozZk1VSE84MndKVGQ3b0ZISis0d2cKcmQxVkFFUkFTUysrczVweC9YQ2V4VkVBY3lyakI3WGhBUFpKVXdCOGhnOVg2NGE4OWJkbjlTZkFwUllNUFZzNwprMUdsNWNKd3k4RFN0MzRpeTQrOXBGbFJyUFZzTFY1WWZlK2g4dzNSRWNNbk15VHlhSC9uZmJYQ3RhTWM2TlcwCmRDd2xOS3BINGJ5cERQaVArSFpRN0Q5NWhidFRPVm1ONzVyV2NJQ0pib2dtaXdEWk16KzNHS1owNDJGSDgxMjQKbUhwZWErRUNnWUVBNFlxbVJZVHZCeDJ4a1kzelJpY1poL1ZZTThQVWNocEE4UTJHUUdLQjAvUTRiajhXT24yTApEcUZxbnB0VzA0ZjNUbXFkbk5lbVFZZXgzZ3BxMzBGYisyb2M3NWx0ZmZrUzRHQldKU0wrdFkwZXNzK0pldjNmClFTdW9BVnR0RlBnWnNSd2ZyYmVVcVlKSGorUWtTeHJYOXJWSEpwMnZLdDZWL3J3cmk5d3dBMzBDZ1lFQS9zV0QKSFpFdkxvYXdJS2xJM1ZMTk5rQTVUWVhoaVJ2ckgxWjNyMUZncHkvVTgvYm1ZMVRyNnEyaW1vS29sOGk4ZFU3NQpRclNxekEvZG5uYUhjM1IyWURYMFlIRFd5bVp5d1hNOG0zcy9ra0JvQ2tZVVdrclNTczdKS2E1dmVsTGNFdERaCm84Ymg2U0ZqODZrUytzZGtvL3l6eFgwbW4vYTVZQ3pBZDN1eGZ2MENnWUFsaXV2RWRLMUpGUE5DMUVzamFVekIKcWVCRnRabythQXBaVmJQOE1hbUV1NGxOS0trdGtVbzlaRGNZTWFsUlNyZXEwT3B0ZWlRTmttWFVIUTNQSGRVTwowNG4vaEIyS3M1UWx6ME5ucVJ5VzRlZXpRZ0tUZTREWEcwbzY5NW4vdkpDaVA1a3lWSFdsaGE4ZHo0OFBCV2ZmCmhDdFV6VGlrUFNyZ25UZnVidmQ3RFFLQmdGL3ZNKzRnUzJuem9jTEt1L3RMUUtiYkREamEzeEJvQ09ObUJlOW8KYjBMRlNpVUxwYmxsc3VoTnRkc0V0RU5qZlVPWEYxazgrc3VZZGRWRHdNR0M2MGhUU05BLzdVR056a3gxL2k1MQovSHd2OEgxZDRqQVYySlgrdzlVRU1Fb1poWEU0WDV2Q09qTTFOWlA4Nkg2eU1uMWxuTFFTNmtaMSsxdnh2ZysvCjdoaHBBb0dCQU52eUNmQmhYQjhueFY2VVJlQTFibDVZVXBVdVJvWjBKSXpJeDNadnRVclpxbi9BYUkrdlgvQlMKREtIK1dEeUVGT2pGUE9RMHRZMmtHZmRib2UwSFpXWFlCSWluUGlEUnBKMGMveTUrTTQ4dEk4Rmp4bGNnSEZFZwpLcTFERTRPNk9wQ3hFenkrSi9GaHJ3SUphcHNLd0FUQ3NNMkhWSkc2aExMMVJOTGJ2Zk5wCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg=="
+---
 # Source: ogsCloud/charts/geoserver-cloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
 data:
@@ -80,38 +112,6 @@ metadata:
   name: geoserver-rabbitmq
   #namespace: sig-dev
 type: Opaque
----
-# Source: ogsCloud/charts/geoserverCloud/charts/postgresql/templates/secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: test-postgresql
-  labels:
-    app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-10.13.8
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/managed-by: Helm
-  namespace: default
-type: Opaque
-data:
-  postgresql-postgres-password: "NHhtZFlncWRBeA=="
-  postgresql-password: "cGFzc3dvcmQ="
----
-# Source: ogsCloud/charts/geoserverCloud/charts/postgresql/templates/tls-secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: test-postgresql-crt
-  labels:
-    app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-10.13.8
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/managed-by: Helm
-type: kubernetes.io/tls
-data:
-  ca.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvRENDQWVTZ0F3SUJBZ0lRTS9ReGxFN2d6VGY0WkZRcFluRWJmakFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFERXcxd2IzTjBaM0psYzNGc0xXTmhNQjRYRFRJeE1USXdPVEV6TURRd05sb1hEVEl5TVRJdwpPVEV6TURRd05sb3dHREVXTUJRR0ExVUVBeE1OY0c5emRHZHlaWE54YkMxallUQ0NBU0l3RFFZSktvWklodmNOCkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFNNjJNVDZiZDB6dmVTRkthUnN1SjVIdURndVdKYk5xTEpNWVlZZTMKTjRpeXlWM3J6WGhVSzUxdElMWFFmTDhEdm9XVUxBb1VmRzdtblNMK3ZuVk16K0ZKZ2hsVWhPeTM0RDFEdFNuZwo5RTFEc3Zja3c3SXJSMnYvcGJYRGVnRXd6M2xrS1JNZVRVQWZDcFdYT0ZKL25QUTRhcFVtNXBMalBkRXgyVG1FCkd5UDR1ZlpvSVJRaXBlQm8wRVdPbG1lUGRUQjN4RDYwSmZwSmRQM3ZDZk81TGF3ZmJvM2tYaTdvRWZiYlQxd0QKd0RQR3hwV1g3dnVqN28zRHk2U3ZFK1pHME9jNnVnQ2I2bHJVWlpMWU1kb1E2R2llbitxU20wSHRYckdDM21wRApsWHlWQURNbUQ2bWhOdmFNMWtVMUNQUVRIK2ZmeEJLcWxWQU1pd1ZYeHJTYzVtTUNBd0VBQWFOQ01FQXdEZ1lEClZSMFBBUUgvQkFRREFnS2tNQjBHQTFVZEpRUVdNQlFHQ0NzR0FRVUZCd01CQmdnckJnRUZCUWNEQWpBUEJnTlYKSFJNQkFmOEVCVEFEQVFIL01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ2E2NGR4aTRaejFlWVExcW1ac0h6eQpESVZZbEtzSGRpc21RRG51d3YxR0cxeXl0SkMvOEF5dUwvdnRGdFpKcTIra2Vjai8rYWl4SWF2bU9XMlk5azgxCnF3YTM5REpRbmI0SGdROGlEQzEvdk54NUR5RHdlOTM0REMyTzZpYjhhbFd0Umsxenlsd3hiQlVPY2RjdGt0enMKWHhIMTczVXlGS3F5VVpCVmVnSTdoMUJpMFBDVVZEa1cwUFl5ZUtVcGZoMUphaU9nb2NDYThYWE5aVFhYMzZGdQprTnh2Uk0wVXAwM3R6QndlRVFJZk9SZ2xnZThPc3daVG5Mb1ZLOS9tb3ZFa3hzU2p4YU5SWlQ2VU00MTVkZ1BECkluR29MNDliWnB6dlBjcFRaSmlqZUlmWlgyRVdSb0pEZ05iemdRSGNiLzBpNjRwZVpFY1Z0Tlkxemc5MlRob0cKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
-  tls.crt: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUQxRENDQXJ5Z0F3SUJBZ0lRTzFLWm5IeUcxMWgxMnowY1RKbWVGakFOQmdrcWhraUc5dzBCQVFzRkFEQVkKTVJZd0ZBWURWUVFERXcxd2IzTjBaM0psYzNGc0xXTmhNQjRYRFRJeE1USXdPVEV6TURRd04xb1hEVEl5TVRJdwpPVEV6TURRd04xb3dHakVZTUJZR0ExVUVBeE1QZEdWemRDMXdiM04wWjNKbGMzRnNNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUEyYUUvR3IyWVpSeHhGZHROeWVKWmJvTGhlZUFMQkI4d2VzNm0KQlU2MEI4QUdmRllha243SXFGK0Qyelp1dVdDdzZpSTBNUERsdVNwV0dDd3RqSi84UlRkTDE4RzJwNXRMdUw5egp4bzdreG85bXNRRTdWTmRBdkJFNzRKSktYZzF5bmx5U094aExRWE5YZVI1L1JNQzZjbVFSaXhpay9OaFJLdVZKCmt5ejBUUy9FM25tenZzVmdZamRlQlJWSXRYUGxvUTR6dXBZU0J2bE5wcnRNbHZGSUltUXU1L0xqQXdHVmhJSDEKUVc2WVh2VnRRQndlcWl6eTVvY0VEQXUzd0ZTdDJSdE5IWDRmeUdweHVtNGI5L3cyOWdMU0l5cC95dTcreDBvTQppYmlXY1RQQWJWaWpJYWlrL2I4UEMwOEZyRnVIWklMQ0VnTitZSmV1L2I0dTlIeUtQd0lEQVFBQm80SUJGakNDCkFSSXdEZ1lEVlIwUEFRSC9CQVFEQWdXZ01CMEdBMVVkSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0QKQWpBTUJnTlZIUk1CQWY4RUFqQUFNSUhTQmdOVkhSRUVnY293Z2NlQ0tDb3VkR1Z6ZEMxd2IzTjBaM0psYzNGcwpMbVJsWm1GMWJIUXVjM1pqTGlVaGN5ZzhibWxzUGltQ0puUmxjM1F0Y0c5emRHZHlaWE54YkM1a1pXWmhkV3gwCkxuTjJZeTRsSVhNb1BHNXBiRDRwZ2pFcUxuUmxjM1F0Y0c5emRHZHlaWE54YkMxb1pXRmtiR1Z6Y3k1a1pXWmgKZFd4MExuTjJZeTRsSVhNb1BHNXBiRDRwZ2k5MFpYTjBMWEJ2YzNSbmNtVnpjV3d0YUdWaFpHeGxjM011WkdWbQpZWFZzZEM1emRtTXVKU0Z6S0R4dWFXdytLWUlQZEdWemRDMXdiM04wWjNKbGMzRnNNQTBHQ1NxR1NJYjNEUUVCCkN3VUFBNElCQVFBVjBaNDBiSHIzaytKS1E4T2xJTFMrc2dhNzVWa25ldUttNEVseTZOYmx3d2t0c2JGREVjK3AKUlNsc3dGU0lSK0piVHJaUFh5SEgzYldwMTBSbXV5b1N3UkRVbnJlWjh1dVVrUEJyQzc3NERHSWcwK0dGYnhZTQpEZEJyZXB3ZjdXLzI5d2xHV3VqR3I0K2psL1luTE9rSjcwcXFyam5PVnVyY3djbEJ3WUw5T3h4eDlUdElWeTVFCmpSUTZ1YkRBczZnSUVpeHpZNlVFd0VUdmVWVnVVdkxxcnF2YTBlVkV2UGZoalhDdVFKREp0TjVvUnljVkZtRDMKVGFlaW9GQ0ttbmN3NDY2MDRqemNyN0IrSklzb1VBdmo3ZWpmV1gzcTBSYXlUYTRtQnB1cndzYjFWQlpLazhJawpjRXRWajJyTVhEY1VaMk15bjQ2aURqbHM4cW5zcTBrTAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
-  tls.key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBMmFFL0dyMllaUnh4RmR0TnllSlpib0xoZWVBTEJCOHdlczZtQlU2MEI4QUdmRllhCmtuN0lxRitEMnpadXVXQ3c2aUkwTVBEbHVTcFdHQ3d0akovOFJUZEwxOEcycDV0THVMOXp4bzdreG85bXNRRTcKVk5kQXZCRTc0SkpLWGcxeW5seVNPeGhMUVhOWGVSNS9STUM2Y21RUml4aWsvTmhSS3VWSmt5ejBUUy9FM25tegp2c1ZnWWpkZUJSVkl0WFBsb1E0enVwWVNCdmxOcHJ0TWx2RklJbVF1NS9MakF3R1ZoSUgxUVc2WVh2VnRRQndlCnFpenk1b2NFREF1M3dGU3QyUnROSFg0ZnlHcHh1bTRiOS93MjlnTFNJeXAveXU3K3gwb01pYmlXY1RQQWJWaWoKSWFpay9iOFBDMDhGckZ1SFpJTENFZ04rWUpldS9iNHU5SHlLUHdJREFRQUJBb0lCQUViTjZVUC83emJtTy95SwpieEtCcStzQ2RlMDY4UnFVTXllaFYrNWVIc0J1dnkxd3JoQi9ZelUwYmlmQjIrQkFEdzc5dGRFK2J0OEJZU1ZZCktqR1lVM0VKZm9saG90V0E5dS9TaWc1TnF5eld0dWhicUR3QUZEV2J2Y2xnandWdWhwM3pMRGhCdlNvOEpuZG4KYnF5bHI0TkwvMUVyNFhISnh3Nlhyb3BOaytZUVRQbUhxRmRvMXIwZUs2SURCTkc3S3VjVG9VOUliL3N6SjZTYQo1RENpNmNzbllpMUhzODBESnI3dVF3OG1ZWFNGWnV2c0tQWGhiajdJSXVmeUhJZlU2ZHZ2T1MvVTRVcG4xbGpJClZxa1lhZzFhdlR1Q3ZPSzgxTEtDZTNmcGRPZGJTOWtWWnBCbU9GaGpTODFQeFFpUFh1eUhpRmdaM3BnTjlXRHcKTzZ0c3A1RUNnWUVBNlV0eGRudlpxNzZLckpmTHc2a1VHZU5WTzFlLzVQQ2tRdi9TUnlsSzFlL0swMnV0MzRqMgpGQjZYMmczd3gvNDFGUkQ2S2FjSVZybnl0RmQ5Uk4xRHRoWXJFdXhCMHVPclJLTFlTNUVsVERCdWJGZk5rUkFVCndaSTdlK3ZURFVtN0gwdWU5ZFpvRXQreUFxQUxxSGljdzZQVThPWUh4RlNDOTNEUnZtUGlMUU1DZ1lFQTdzK0QKUWhsamRKa016cC9OWFNGUVFJTWdBUjJpaUpTSGxBNU5nVXF5eUpJYmtBUnloMTdIYnFTbDBHaVEvaTcyYllvZwp4UlVUYWxoWm1wbWdQSXY2aXlwbGQ5Z3I0dHlkN3ZhMEdkREZXWmZzQTF6ejVWOEg5MWFLWC94NHhhNDZlRTQwCnVQZHdOQUVNUVBuQ2pqVk5HQzdGb0pNTEluU2dOc0poY2xKbjh4VUNnWUVBb1FPZzI5Vys5Zm9jVytLb2ovSXkKSFd2NWQydW8xYW9BdFAwN2RFSGJsS3hib0cvQklYYTE0RXo5SVZKZHpLcDJtSU9QSlJCVGdRZjFxdUozWXdBVApxNmpCTWQ0OXovK3lSVHpmYThoUnBiUUhnbDlYVWJkM20rSUJqQlhISkhTdTRYcWZ5NnlmUitkOFJMT1JXRVZtCmJPQzJKMDJjTHJUbGIwSStnTmtQVVdFQ2dZQnFmVTVpb3orZU5zRm5RZ3NwaERsdEN3dXljNnlPaXUwS01IYVAKT09nUVdGYkNHYm1ZYzhNcXEzRGxSanVoblA5MlNTbmp1RW80R2IyYkd2WkJDWXBubERnN0FNSlJIMSt0dDRVSQpIZmhpdzBRVEc5Z0dhQ0g5UVRIaks0b1BYR25tUzdsbTRhKy9BTmllQU1HbytFdXdoT3JMZDhaM1R0cENrTnN6ClIxdmpJUUtCZ1FEVml0RU92d3RQZnpncndUSVdnb3pyb0hoRlNSQTI5OGt6MXNNRnR5Z3BtTmEyNU9UbU9kdUoKWnZSbDZ5OUFLelZGVEplbVRPSFNrazdhQUlkVWk0Y010MmhwOWx3V2FRRUpibW51NC9ZL0RYYTdrT2ZYRlc2WQo0Y2ZxcG5vY1NrWElhT01FMXJLYTlTL2FHQmozLzJtTGZXSnRtcU9XZTRiMkY1V0M3a0pqYmc9PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo="
 ---
 # Source: ogsCloud/charts/geoserverCloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
@@ -1057,6 +1057,60 @@ roleRef:
   kind: Role
   name: test-rabbitmq-endpoint-reader
 ---
+# Source: ogsCloud/charts/geoserver-cloud/charts/postgresql/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-postgresql-headless
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.13.8
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+    # Use this annotation in addition to the actual publishNotReadyAddresses
+    # field below because the annotation will stop being respected soon but the
+    # field is broken in some versions of Kubernetes:
+    # https://github.com/kubernetes/kubernetes/issues/58662
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  namespace: default
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: test
+---
+# Source: ogsCloud/charts/geoserver-cloud/charts/postgresql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-postgresql
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.13.8
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: test
+    role: primary
+---
 # Source: ogsCloud/charts/geoserver-cloud/charts/rabbitmq/templates/svc-headless.yaml
 apiVersion: v1
 kind: Service
@@ -1336,60 +1390,6 @@ spec:
     app.kubernetes.io/name: geoserver-cloud
     app.kubernetes.io/instance: test
     gs-service: wms
----
-# Source: ogsCloud/charts/geoserverCloud/charts/postgresql/templates/svc-headless.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: test-postgresql-headless
-  labels:
-    app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-10.13.8
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/managed-by: Helm
-    # Use this annotation in addition to the actual publishNotReadyAddresses
-    # field below because the annotation will stop being respected soon but the
-    # field is broken in some versions of Kubernetes:
-    # https://github.com/kubernetes/kubernetes/issues/58662
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  namespace: default
-spec:
-  type: ClusterIP
-  clusterIP: None
-  # We want all pods in the StatefulSet to have their addresses published for
-  # the sake of the other Postgresql pods even before they're ready, since they
-  # have to be able to talk to each other in order to become ready.
-  publishNotReadyAddresses: true
-  ports:
-    - name: tcp-postgresql
-      port: 5432
-      targetPort: tcp-postgresql
-  selector:
-    app.kubernetes.io/name: postgresql
-    app.kubernetes.io/instance: test
----
-# Source: ogsCloud/charts/geoserverCloud/charts/postgresql/templates/svc.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: test-postgresql
-  labels:
-    app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-10.13.8
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/managed-by: Helm
-  annotations:
-  namespace: default
-spec:
-  type: ClusterIP
-  ports:
-    - name: tcp-postgresql
-      port: 5432
-      targetPort: tcp-postgresql
-  selector:
-    app.kubernetes.io/name: postgresql
-    app.kubernetes.io/instance: test
-    role: primary
 ---
 # Source: ogsCloud/charts/geoserverCloud/charts/rabbitmq/templates/svc-headless.yaml
 apiVersion: v1
@@ -3379,6 +3379,186 @@ spec:
               cpu: 100m
               memory: 400Mi
 ---
+# Source: ogsCloud/charts/geoserver-cloud/charts/postgresql/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: test-postgresql
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.13.8
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+  namespace: default
+spec:
+  serviceName: test-postgresql-headless
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/instance: test
+      role: primary
+  template:
+    metadata:
+      name: test-postgresql
+      labels:
+        app.kubernetes.io/name: postgresql
+        helm.sh/chart: postgresql-10.13.8
+        app.kubernetes.io/instance: test
+        app.kubernetes.io/managed-by: Helm
+        role: primary
+        app.kubernetes.io/component: primary
+    spec:
+      affinity:
+        podAffinity:
+
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/instance: test
+                    app.kubernetes.io/component: primary
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+
+      securityContext:
+        fsGroup: 1001
+      automountServiceAccountToken: false
+      initContainers:
+        - name: init-chmod-data
+          image: docker.io/bitnami/bitnami-shell:10-debian-10-r248
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          command:
+            - /bin/sh
+            - -cx
+            - |
+              chmod -R 777 /dev/shm
+              cp /tmp/certs/* /opt/bitnami/postgresql/certs/
+              chown -R 1001:1001 /opt/bitnami/postgresql/certs/
+              chmod 600 /opt/bitnami/postgresql/certs/tls.key
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+            - name: raw-certificates
+              mountPath: /tmp/certs
+            - name: postgresql-certificates
+              mountPath: /opt/bitnami/postgresql/certs
+      containers:
+        - name: test-postgresql
+          image: docker.io/bitnami/postgresql:11.14.0-debian-10-r0
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            - name: POSTGRES_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: test-postgresql
+                  key: postgresql-postgres-password
+            - name: POSTGRES_USER
+              value: "username"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: test-postgresql
+                  key: postgresql-password
+            - name: POSTGRES_DB
+              value: "config"
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "yes"
+            - name: POSTGRESQL_TLS_PREFER_SERVER_CIPHERS
+              value: "yes"
+            - name: POSTGRESQL_TLS_CERT_FILE
+              value: /opt/bitnami/postgresql/certs/tls.crt
+            - name: POSTGRESQL_TLS_KEY_FILE
+              value: /opt/bitnami/postgresql/certs/tls.key
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "username" -d "dbname=config" -h 127.0.0.1 -p 5432
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  exec pg_isready -U "username" -d "dbname=config sslcert=/opt/bitnami/postgresql/certs/tls.crt sslkey=/opt/bitnami/postgresql/certs/tls.key" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          volumeMounts:
+            - name: postgresql-certificates
+              mountPath: /opt/bitnami/postgresql/certs
+              readOnly: true
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: raw-certificates
+          secret:
+            secretName: test-postgresql-crt
+        - name: postgresql-certificates
+          emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+        - name: data
+          emptyDir: {}
+---
 # Source: ogsCloud/charts/geoserver-cloud/charts/rabbitmq/templates/statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
@@ -3521,186 +3701,6 @@ spec:
             items:
               - key: rabbitmq.conf
                 path: rabbitmq.conf
-        - name: data
-          emptyDir: {}
----
-# Source: ogsCloud/charts/geoserverCloud/charts/postgresql/templates/statefulset.yaml
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: test-postgresql
-  labels:
-    app.kubernetes.io/name: postgresql
-    helm.sh/chart: postgresql-10.13.8
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: primary
-  annotations:
-  namespace: default
-spec:
-  serviceName: test-postgresql-headless
-  replicas: 1
-  updateStrategy:
-    type: RollingUpdate
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: postgresql
-      app.kubernetes.io/instance: test
-      role: primary
-  template:
-    metadata:
-      name: test-postgresql
-      labels:
-        app.kubernetes.io/name: postgresql
-        helm.sh/chart: postgresql-10.13.8
-        app.kubernetes.io/instance: test
-        app.kubernetes.io/managed-by: Helm
-        role: primary
-        app.kubernetes.io/component: primary
-    spec:
-      affinity:
-        podAffinity:
-
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: postgresql
-                    app.kubernetes.io/instance: test
-                    app.kubernetes.io/component: primary
-                namespaces:
-                  - default
-                topologyKey: kubernetes.io/hostname
-              weight: 1
-        nodeAffinity:
-
-      securityContext:
-        fsGroup: 1001
-      automountServiceAccountToken: false
-      initContainers:
-        - name: init-chmod-data
-          image: docker.io/bitnami/bitnami-shell:10-debian-10-r248
-          imagePullPolicy: "IfNotPresent"
-          resources:
-            requests:
-              cpu: 250m
-              memory: 256Mi
-          command:
-            - /bin/sh
-            - -cx
-            - |
-              chmod -R 777 /dev/shm
-              cp /tmp/certs/* /opt/bitnami/postgresql/certs/
-              chown -R 1001:1001 /opt/bitnami/postgresql/certs/
-              chmod 600 /opt/bitnami/postgresql/certs/tls.key
-          securityContext:
-            runAsUser: 0
-          volumeMounts:
-            - name: dshm
-              mountPath: /dev/shm
-            - name: raw-certificates
-              mountPath: /tmp/certs
-            - name: postgresql-certificates
-              mountPath: /opt/bitnami/postgresql/certs
-      containers:
-        - name: test-postgresql
-          image: docker.io/bitnami/postgresql:11.14.0-debian-10-r0
-          imagePullPolicy: "IfNotPresent"
-          resources:
-            requests:
-              cpu: 250m
-              memory: 256Mi
-          securityContext:
-            runAsUser: 1001
-          env:
-            - name: BITNAMI_DEBUG
-              value: "false"
-            - name: POSTGRESQL_PORT_NUMBER
-              value: "5432"
-            - name: POSTGRESQL_VOLUME_DIR
-              value: "/bitnami/postgresql"
-            - name: PGDATA
-              value: "/bitnami/postgresql/data"
-            - name: POSTGRES_POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: test-postgresql
-                  key: postgresql-postgres-password
-            - name: POSTGRES_USER
-              value: "username"
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: test-postgresql
-                  key: postgresql-password
-            - name: POSTGRES_DB
-              value: "config"
-            - name: POSTGRESQL_ENABLE_LDAP
-              value: "no"
-            - name: POSTGRESQL_ENABLE_TLS
-              value: "yes"
-            - name: POSTGRESQL_TLS_PREFER_SERVER_CIPHERS
-              value: "yes"
-            - name: POSTGRESQL_TLS_CERT_FILE
-              value: /opt/bitnami/postgresql/certs/tls.crt
-            - name: POSTGRESQL_TLS_KEY_FILE
-              value: /opt/bitnami/postgresql/certs/tls.key
-            - name: POSTGRESQL_LOG_HOSTNAME
-              value: "false"
-            - name: POSTGRESQL_LOG_CONNECTIONS
-              value: "false"
-            - name: POSTGRESQL_LOG_DISCONNECTIONS
-              value: "false"
-            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
-              value: "off"
-            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
-              value: "error"
-            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
-              value: "pgaudit"
-          ports:
-            - name: tcp-postgresql
-              containerPort: 5432
-          livenessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - exec pg_isready -U "username" -d "dbname=config" -h 127.0.0.1 -p 5432
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-            successThreshold: 1
-            failureThreshold: 6
-          readinessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - -e
-                - |
-                  exec pg_isready -U "username" -d "dbname=config sslcert=/opt/bitnami/postgresql/certs/tls.crt sslkey=/opt/bitnami/postgresql/certs/tls.key" -h 127.0.0.1 -p 5432
-                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 5
-            successThreshold: 1
-            failureThreshold: 6
-          volumeMounts:
-            - name: postgresql-certificates
-              mountPath: /opt/bitnami/postgresql/certs
-              readOnly: true
-            - name: dshm
-              mountPath: /dev/shm
-      volumes:
-        - name: raw-certificates
-          secret:
-            secretName: test-postgresql-crt
-        - name: postgresql-certificates
-          emptyDir: {}
-        - name: dshm
-          emptyDir:
-            medium: Memory
         - name: data
           emptyDir: {}
 ---
@@ -3849,7 +3849,7 @@ spec:
         - name: data
           emptyDir: {}
 ---
-# Source: ogsCloud/charts/geoserverCloud/templates/ingress.yaml
+# Source: ogsCloud/charts/geoserver-cloud/templates/ingress.yaml
 # apiVersion: networking.k8s.io/v1beta1 # for k3s < v1.19
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -3866,6 +3866,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: test-geoserverCloud-gateway
+            name: test-geoserver-cloud-gateway
             port:
               number: 8080
