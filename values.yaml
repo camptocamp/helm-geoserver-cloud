@@ -319,19 +319,168 @@ geoserver:
       type: ClusterIP
       port: 8080
 
-  ## Terraform job for Geoserver configuration
-  terraform_job:
+services:
+  webui:
+    replicaCount: 1
     image:
-      pullPolicy: IfNotPresent
-      registry: ''
-      name: sig/geoserver-tf
-      tag: master
-    extraNamespaces: []
-    extraEnvs: []
+      repository: geoservercloud/geoserver-cloud-webui
+      tag: ''
+
+    env: []
+
+    podAnnotations: {}
+
+    podSecurityContext:
+      runAsUser: 630
+
+    securityContext: {}
+
     resources:
-      limits:
-        cpu: 200m
-        memory: 128Mi
       requests:
-        cpu: 100m
-        memory: 64Mi
+        memory: '512Mi'
+        cpu: '300m'
+      limits:
+        memory: '1Gi'
+    #        cpu: "600m"
+
+    nodeSelector: {}
+
+    tolerations: {}
+
+    affinity: {}
+
+    service:
+      type: ClusterIP
+      port: 8080
+
+  rest:
+    replicaCount: 1
+    image:
+      repository: geoservercloud/geoserver-cloud-rest
+      tag: ''
+
+    env: []
+
+    podAnnotations: {}
+
+    podSecurityContext:
+      runAsUser: 630
+
+    securityContext: {}
+
+    resources:
+      requests:
+        memory: '512Mi'
+        cpu: '200m'
+      limits:
+        memory: '1Gi'
+    #        cpu: "400m"
+
+    nodeSelector: {}
+
+    tolerations: {}
+
+    affinity: {}
+
+    service:
+      type: ClusterIP
+      port: 8080
+
+  wfs:
+    replicaCount: 1
+    image:
+      repository: geoservercloud/geoserver-cloud-wfs
+      tag: ''
+
+    env: []
+
+    podAnnotations: {}
+
+    podSecurityContext:
+      runAsUser: 630
+
+    securityContext: {}
+
+    resources:
+      requests:
+        memory: '400Mi'
+        cpu: '200m'
+      limits:
+        memory: '800Mi'
+    #        cpu: "400m"
+
+    nodeSelector: {}
+
+    tolerations: {}
+
+    affinity: {}
+
+    service:
+      type: ClusterIP
+      port: 8080
+
+  wms:
+    replicaCount: 1
+    image:
+      repository: geoservercloud/geoserver-cloud-wms
+      tag: ''
+
+    env: []
+
+    podAnnotations: {}
+
+    podSecurityContext:
+      runAsUser: 630
+
+    securityContext: {}
+
+    resources:
+      requests:
+        memory: '400Mi'
+        cpu: '100m'
+      limits:
+        memory: '800Mi'
+    #        cpu: "300m"
+
+    nodeSelector: {}
+
+    tolerations: {}
+
+    affinity: {}
+
+    service:
+      type: ClusterIP
+      port: 8080
+
+  wcs:
+    replicaCount: 1
+    image:
+      repository: geoservercloud/geoserver-cloud-wcs
+      tag: ''
+
+    env: []
+
+    podAnnotations: {}
+
+    podSecurityContext:
+      runAsUser: 630
+
+    securityContext: {}
+
+    resources:
+      requests:
+        memory: '400Mi'
+        cpu: '100m'
+      limits:
+        memory: '800Mi'
+    #        cpu: "300m"
+
+    nodeSelector: {}
+
+    tolerations: {}
+
+    affinity: {}
+
+    service:
+      type: ClusterIP
+      port: 8080

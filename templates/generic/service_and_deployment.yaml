@@ -1,0 +1,156 @@
+{{- $geoserverName := (include "geoserver.fullname" .) -}}
+{{- $geoserverLabels := (include "geoserver.labels" .) -}}
+{{- $geoserverSelectorLabels := (include "geoserver.selectorLabels" .) -}}
+{{- $geoserverServiceAccountName := (include "geoserver.serviceAccountName" .) }}
+{{- $chart := .Chart -}}
+{{- $shaConfigmap := (include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum) -}}
+
+{{- $values := .Values -}}
+
+{{- range $serviceName, $serviceDefinition := $values.services }}
+---
+# service {{ $serviceName }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $geoserverName }}-{{ $serviceName }}
+  labels:
+    {{ $geoserverLabels | nindent 4 }}
+    gs-service: {{ $serviceName }}
+spec:
+  type: {{ $serviceDefinition.service.type }}
+  ports:
+    - port: {{ $serviceDefinition.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{ $geoserverSelectorLabels | nindent 4  }}
+    gs-service: {{ $serviceName }}
+
+---
+# deployment {{ $serviceName }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $geoserverName }}-{{ $serviceName }}
+  labels:
+    {{ $geoserverLabels  | nindent 4 }}
+    gs-service: rest
+  annotations:
+    argocd.argoproj.io/sync-wave: "9"
+spec:
+  revisionHistoryLimit: 3
+  replicas: {{ $serviceDefinition.replicaCount }}
+  selector:
+    matchLabels:
+      {{ $geoserverSelectorLabels | nindent 6 }}
+      gs-service: rest
+  template:
+    metadata:
+      annotations:
+      {{- with $serviceDefinition.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        checksum/config: {{ $shaConfigmap }}
+      labels:
+        {{ $geoserverSelectorLabels | nindent 8 }}
+        gs-service: rest
+        {{- if $values.global.custom_pod_labels }}
+          {{- toYaml $values.global.custom_pod_labels | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ $geoserverServiceAccountName }}
+      securityContext:
+        {{- toYaml $serviceDefinition.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $chart.Name }}-{{ $serviceName }}
+          securityContext:
+            {{- toYaml $serviceDefinition.securityContext | nindent 12 }}
+          image: "{{ $serviceDefinition.image.repository }}:{{ $serviceDefinition.image.tag | default $chart.AppVersion }}"
+          imagePullPolicy: {{ $values.global.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: EUREKA_SERVER_URL
+              value: http://{{ $geoserverName }}-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
+                  key: PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: {{ $geoserverName }}-rabbitmq
+{{- if $values.geoserver.config.env }}
+{{ toYaml $values.geoserver.config.env | indent 12 }}
+{{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            periodSeconds: 5
+
+          resources:
+            {{- toYaml $serviceDefinition.resources | nindent 12 }}
+      {{- with $serviceDefinition.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $serviceDefinition.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $serviceDefinition.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+{{- end }}
