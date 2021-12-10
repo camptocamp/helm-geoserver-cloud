@@ -15,7 +15,7 @@ kind: Service
 metadata:
   name: {{ $geoserverName }}-{{ $serviceName }}
   labels:
-    {{ $geoserverLabels | nindent 4 }}
+    {{- $geoserverLabels | nindent 4 }}
     gs-service: {{ $serviceName }}
 spec:
   type: {{ $serviceDefinition.service.type }}
@@ -35,7 +35,7 @@ kind: Deployment
 metadata:
   name: {{ $geoserverName }}-{{ $serviceName }}
   labels:
-    {{ $geoserverLabels  | nindent 4 }}
+    {{- $geoserverLabels  | nindent 4 }}
     gs-service: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"

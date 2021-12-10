@@ -19,7 +19,7 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -88,7 +88,7 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -582,7 +582,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -609,7 +609,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -636,7 +636,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -657,13 +657,14 @@ spec:
     app.kubernetes.io/instance: test
     gs-service: gateway
 ---
-# Source: ogscloud/charts/geoservercloud/templates/rest/service.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# service rest
 apiVersion: v1
 kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -680,17 +681,19 @@ spec:
       protocol: TCP
       name: http
   selector:
+
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
     gs-service: rest
 ---
-# Source: ogscloud/charts/geoservercloud/templates/wcs/service.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# service wcs
 apiVersion: v1
 kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -707,17 +710,19 @@ spec:
       protocol: TCP
       name: http
   selector:
+
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
     gs-service: wcs
 ---
-# Source: ogscloud/charts/geoservercloud/templates/webui/service.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# service webui
 apiVersion: v1
 kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -734,17 +739,19 @@ spec:
       protocol: TCP
       name: http
   selector:
+
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
     gs-service: webui
 ---
-# Source: ogscloud/charts/geoservercloud/templates/wfs/service.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# service wfs
 apiVersion: v1
 kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -761,17 +768,19 @@ spec:
       protocol: TCP
       name: http
   selector:
+
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
     gs-service: wfs
 ---
-# Source: ogscloud/charts/geoservercloud/templates/wms/service.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# service wms
 apiVersion: v1
 kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -788,6 +797,7 @@ spec:
       protocol: TCP
       name: http
   selector:
+
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
     gs-service: wms
@@ -798,7 +808,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -820,7 +830,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -916,7 +926,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -938,7 +948,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -996,7 +1006,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1018,7 +1028,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1072,13 +1082,14 @@ spec:
               cpu: 100m
               memory: 400Mi
 ---
-# Source: ogscloud/charts/geoservercloud/templates/rest/deployment.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# deployment rest
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1094,14 +1105,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
+
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
       gs-service: rest
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
+
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
         gs-service: rest
@@ -1188,13 +1201,14 @@ spec:
               cpu: 200m
               memory: 512Mi
 ---
-# Source: ogscloud/charts/geoservercloud/templates/wcs/deployment.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# deployment wcs
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1202,25 +1216,27 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: wcs
+    gs-service: rest
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
+
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: wcs
+      gs-service: rest
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
+
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: wcs
+        gs-service: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1271,6 +1287,8 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoservercloud-rabbitmq
 
           ports:
             - name: http
@@ -1278,20 +1296,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
             periodSeconds: 5
 
@@ -1302,13 +1320,14 @@ spec:
               cpu: 100m
               memory: 400Mi
 ---
-# Source: ogscloud/charts/geoservercloud/templates/webui/deployment.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# deployment webui
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1316,25 +1335,27 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: webui
+    gs-service: rest
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
+
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: webui
+      gs-service: rest
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
+
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: webui
+        gs-service: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1418,13 +1439,14 @@ spec:
               cpu: 300m
               memory: 512Mi
 ---
-# Source: ogscloud/charts/geoservercloud/templates/wfs/deployment.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# deployment wfs
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1432,25 +1454,27 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: wfs
+    gs-service: rest
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
+
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: wfs
+      gs-service: rest
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
+
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: wfs
+        gs-service: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1501,6 +1525,8 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoservercloud-rabbitmq
 
           ports:
             - name: http
@@ -1508,20 +1534,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
             periodSeconds: 5
 
@@ -1532,13 +1558,14 @@ spec:
               cpu: 200m
               memory: 400Mi
 ---
-# Source: ogscloud/charts/geoservercloud/templates/wms/deployment.yaml
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# deployment wms
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.7
+    helm.sh/chart: geoservercloud-0.0.8
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1546,25 +1573,27 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: wms
+    gs-service: rest
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
   selector:
     matchLabels:
+
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: wms
+      gs-service: rest
   template:
     metadata:
       annotations:
-        checksum/config: 5463e664e8f7e69ceae28fed716650359745babe509f52a9de45020d62101e5d
+        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
       labels:
+
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: wms
+        gs-service: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1615,6 +1644,8 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoservercloud-rabbitmq
 
           ports:
             - name: http
@@ -1622,20 +1653,20 @@ spec:
               protocol: TCP
           startupProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/liveness
               port: http
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: http
             periodSeconds: 5
 
