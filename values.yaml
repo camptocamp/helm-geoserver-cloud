@@ -154,333 +154,168 @@ geoserver:
       type: ClusterIP
       port: 8761
 
-  webui:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-webui
-      tag: ''
+  services:
+    webui:
+      replicaCount: 1
+      image:
+        repository: geoservercloud/geoserver-cloud-webui
+        tag: ''
 
-    env: []
+      env: []
 
-    podAnnotations: {}
+      podAnnotations: {}
 
-    podSecurityContext:
-      runAsUser: 630
+      podSecurityContext:
+        runAsUser: 630
 
-    securityContext: {}
+      securityContext: {}
 
-    resources:
-      requests:
-        memory: '512Mi'
-        cpu: '300m'
-      limits:
-        memory: '1Gi'
-    #        cpu: "600m"
+      resources:
+        requests:
+          memory: '512Mi'
+          cpu: '300m'
+        limits:
+          memory: '1Gi'
+      #        cpu: "600m"
 
-    nodeSelector: {}
+      nodeSelector: {}
 
-    tolerations: {}
+      tolerations: {}
 
-    affinity: {}
+      affinity: {}
 
-    service:
-      type: ClusterIP
-      port: 8080
+      service:
+        type: ClusterIP
+        port: 8080
 
-  rest:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-rest
-      tag: ''
+    rest:
+      replicaCount: 1
+      image:
+        repository: geoservercloud/geoserver-cloud-rest
+        tag: ''
 
-    env: []
+      env: []
 
-    podAnnotations: {}
+      podAnnotations: {}
 
-    podSecurityContext:
-      runAsUser: 630
+      podSecurityContext:
+        runAsUser: 630
 
-    securityContext: {}
+      securityContext: {}
 
-    resources:
-      requests:
-        memory: '512Mi'
-        cpu: '200m'
-      limits:
-        memory: '1Gi'
-    #        cpu: "400m"
+      resources:
+        requests:
+          memory: '512Mi'
+          cpu: '200m'
+        limits:
+          memory: '1Gi'
+      #        cpu: "400m"
 
-    nodeSelector: {}
+      nodeSelector: {}
 
-    tolerations: {}
+      tolerations: {}
 
-    affinity: {}
+      affinity: {}
 
-    service:
-      type: ClusterIP
-      port: 8080
+      service:
+        type: ClusterIP
+        port: 8080
 
-  wfs:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-wfs
-      tag: ''
+    wfs:
+      replicaCount: 1
+      image:
+        repository: geoservercloud/geoserver-cloud-wfs
+        tag: ''
 
-    env: []
+      env: []
 
-    podAnnotations: {}
+      podAnnotations: {}
 
-    podSecurityContext:
-      runAsUser: 630
+      podSecurityContext:
+        runAsUser: 630
 
-    securityContext: {}
+      securityContext: {}
 
-    resources:
-      requests:
-        memory: '400Mi'
-        cpu: '200m'
-      limits:
-        memory: '800Mi'
-    #        cpu: "400m"
+      resources:
+        requests:
+          memory: '400Mi'
+          cpu: '200m'
+        limits:
+          memory: '800Mi'
+      #        cpu: "400m"
 
-    nodeSelector: {}
+      nodeSelector: {}
 
-    tolerations: {}
+      tolerations: {}
 
-    affinity: {}
+      affinity: {}
 
-    service:
-      type: ClusterIP
-      port: 8080
+      service:
+        type: ClusterIP
+        port: 8080
 
-  wms:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-wms
-      tag: ''
+    wms:
+      replicaCount: 1
+      image:
+        repository: geoservercloud/geoserver-cloud-wms
+        tag: ''
 
-    env: []
+      env: []
 
-    podAnnotations: {}
+      podAnnotations: {}
 
-    podSecurityContext:
-      runAsUser: 630
+      podSecurityContext:
+        runAsUser: 630
 
-    securityContext: {}
+      securityContext: {}
 
-    resources:
-      requests:
-        memory: '400Mi'
-        cpu: '100m'
-      limits:
-        memory: '800Mi'
-    #        cpu: "300m"
+      resources:
+        requests:
+          memory: '400Mi'
+          cpu: '100m'
+        limits:
+          memory: '800Mi'
+      #        cpu: "300m"
 
-    nodeSelector: {}
+      nodeSelector: {}
 
-    tolerations: {}
+      tolerations: {}
 
-    affinity: {}
+      affinity: {}
 
-    service:
-      type: ClusterIP
-      port: 8080
+      service:
+        type: ClusterIP
+        port: 8080
 
-  wcs:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-wcs
-      tag: ''
+    wcs:
+      replicaCount: 1
+      image:
+        repository: geoservercloud/geoserver-cloud-wcs
+        tag: ''
 
-    env: []
+      env: []
 
-    podAnnotations: {}
+      podAnnotations: {}
 
-    podSecurityContext:
-      runAsUser: 630
+      podSecurityContext:
+        runAsUser: 630
 
-    securityContext: {}
+      securityContext: {}
 
-    resources:
-      requests:
-        memory: '400Mi'
-        cpu: '100m'
-      limits:
-        memory: '800Mi'
-    #        cpu: "300m"
+      resources:
+        requests:
+          memory: '400Mi'
+          cpu: '100m'
+        limits:
+          memory: '800Mi'
+      #        cpu: "300m"
 
-    nodeSelector: {}
+      nodeSelector: {}
 
-    tolerations: {}
+      tolerations: {}
 
-    affinity: {}
+      affinity: {}
 
-    service:
-      type: ClusterIP
-      port: 8080
-
-services:
-  webui:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-webui
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: '512Mi'
-        cpu: '300m'
-      limits:
-        memory: '1Gi'
-    #        cpu: "600m"
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
-
-  rest:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-rest
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: '512Mi'
-        cpu: '200m'
-      limits:
-        memory: '1Gi'
-    #        cpu: "400m"
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
-
-  wfs:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-wfs
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: '400Mi'
-        cpu: '200m'
-      limits:
-        memory: '800Mi'
-    #        cpu: "400m"
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
-
-  wms:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-wms
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: '400Mi'
-        cpu: '100m'
-      limits:
-        memory: '800Mi'
-    #        cpu: "300m"
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
-
-  wcs:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-wcs
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: '400Mi'
-        cpu: '100m'
-      limits:
-        memory: '800Mi'
-    #        cpu: "300m"
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
+      service:
+        type: ClusterIP
+        port: 8080

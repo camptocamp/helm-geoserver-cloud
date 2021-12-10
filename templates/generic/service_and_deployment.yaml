@@ -7,7 +7,7 @@
 
 {{- $values := .Values -}}
 
-{{- range $serviceName, $serviceDefinition := $values.services }}
+{{- range $serviceName, $serviceDefinition := $values.geoserver.services }}
 ---
 # service {{ $serviceName }}
 apiVersion: v1
