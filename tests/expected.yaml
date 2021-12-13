@@ -96,7 +96,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: "config"
+    app.kubernetes.io/component: "config"
 data:
   application.yml: |
     server:
@@ -590,7 +590,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: config
+    app.kubernetes.io/component: config
 spec:
   type: ClusterIP
   ports:
@@ -601,7 +601,7 @@ spec:
   selector:
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: config
+    app.kubernetes.io/component: config
 ---
 # Source: ogscloud/charts/geoservercloud/templates/discovery/service.yaml
 apiVersion: v1
@@ -617,7 +617,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: discovery
+    app.kubernetes.io/component: discovery
 spec:
   type: ClusterIP
   ports:
@@ -628,7 +628,7 @@ spec:
   selector:
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: discovery
+    app.kubernetes.io/component: discovery
 ---
 # Source: ogscloud/charts/geoservercloud/templates/gateway/service.yaml
 apiVersion: v1
@@ -644,7 +644,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: gateway
+    app.kubernetes.io/component: gateway
 spec:
   type: ClusterIP
   ports:
@@ -655,7 +655,7 @@ spec:
   selector:
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: gateway
+    app.kubernetes.io/component: gateway
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # service rest
@@ -672,7 +672,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: rest
+    app.kubernetes.io/component: rest
 spec:
   type: ClusterIP
   ports:
@@ -684,7 +684,7 @@ spec:
 
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: rest
+    app.kubernetes.io/component: rest
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # service wcs
@@ -701,7 +701,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: wcs
+    app.kubernetes.io/component: wcs
 spec:
   type: ClusterIP
   ports:
@@ -713,7 +713,7 @@ spec:
 
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: wcs
+    app.kubernetes.io/component: wcs
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # service webui
@@ -730,7 +730,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: webui
+    app.kubernetes.io/component: webui
 spec:
   type: ClusterIP
   ports:
@@ -742,7 +742,7 @@ spec:
 
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: webui
+    app.kubernetes.io/component: webui
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # service wfs
@@ -759,7 +759,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: wfs
+    app.kubernetes.io/component: wfs
 spec:
   type: ClusterIP
   ports:
@@ -771,7 +771,7 @@ spec:
 
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: wfs
+    app.kubernetes.io/component: wfs
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # service wms
@@ -788,7 +788,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: wms
+    app.kubernetes.io/component: wms
 spec:
   type: ClusterIP
   ports:
@@ -800,7 +800,7 @@ spec:
 
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    gs-service: wms
+    app.kubernetes.io/component: wms
 ---
 # Source: ogscloud/charts/geoservercloud/templates/config/deployment.yaml
 apiVersion: apps/v1
@@ -816,7 +816,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: "config"
+    app.kubernetes.io/component: "config"
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
@@ -826,15 +826,15 @@ spec:
     matchLabels:
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: "config"
+      app.kubernetes.io/component: "config"
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: "config"
+        app.kubernetes.io/component: "config"
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -934,7 +934,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: discovery
+    app.kubernetes.io/component: discovery
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -944,15 +944,15 @@ spec:
     matchLabels:
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: discovery
+      app.kubernetes.io/component: discovery
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: discovery
+        app.kubernetes.io/component: discovery
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1014,7 +1014,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: gateway
+    app.kubernetes.io/component: gateway
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
@@ -1024,15 +1024,15 @@ spec:
     matchLabels:
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: gateway
+      app.kubernetes.io/component: gateway
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: gateway
+        app.kubernetes.io/component: gateway
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1097,7 +1097,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: rest
+    app.kubernetes.io/component: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1108,22 +1108,22 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: rest
+      app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: rest
+        app.kubernetes.io/component: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
       containers:
-        - name: geoservercloud-rest
+        - name: rest
           securityContext:
             {}
           image: "geoservercloud/geoserver-cloud-rest:1.0-RC3"
@@ -1216,7 +1216,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: rest
+    app.kubernetes.io/component: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1227,22 +1227,22 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: rest
+      app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: rest
+        app.kubernetes.io/component: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
       containers:
-        - name: geoservercloud-wcs
+        - name: wcs
           securityContext:
             {}
           image: "geoservercloud/geoserver-cloud-wcs:1.0-RC3"
@@ -1335,7 +1335,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: rest
+    app.kubernetes.io/component: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1346,22 +1346,22 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: rest
+      app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: rest
+        app.kubernetes.io/component: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
       containers:
-        - name: geoservercloud-webui
+        - name: webui
           securityContext:
             {}
           image: "geoservercloud/geoserver-cloud-webui:1.0-RC3"
@@ -1454,7 +1454,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: rest
+    app.kubernetes.io/component: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1465,22 +1465,22 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: rest
+      app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: rest
+        app.kubernetes.io/component: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
       containers:
-        - name: geoservercloud-wfs
+        - name: wfs
           securityContext:
             {}
           image: "geoservercloud/geoserver-cloud-wfs:1.0-RC3"
@@ -1573,7 +1573,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    gs-service: rest
+    app.kubernetes.io/component: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1584,22 +1584,22 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      gs-service: rest
+      app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
-        checksum/config: f64d6014e2042f6e8bdb6935186fd00d3ab5055732f5688d6f68f18997678ff6
+        checksum/config: d81c3f6a4b8bc4d0a203b8d812e73e54586fad6946dbc0d7922c43bd06ce3d34
       labels:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        gs-service: rest
+        app.kubernetes.io/component: rest
     spec:
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
       containers:
-        - name: geoservercloud-wms
+        - name: wms
           securityContext:
             {}
           image: "geoservercloud/geoserver-cloud-wms:1.0-RC3"

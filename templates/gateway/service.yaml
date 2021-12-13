@@ -4,7 +4,7 @@ metadata:
   name: {{ include "geoserver.fullname" . }}-gateway
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
-    gs-service: gateway
+    app.kubernetes.io/component: gateway
 spec:
   type: {{ .Values.geoserver.gateway.service.type }}
   ports:
@@ -14,4 +14,4 @@ spec:
       name: http
   selector:
     {{- include "geoserver.selectorLabels" . | nindent 4 }}
-    gs-service: gateway
+    app.kubernetes.io/component: gateway

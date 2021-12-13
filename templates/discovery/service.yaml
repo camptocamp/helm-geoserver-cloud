@@ -4,7 +4,7 @@ metadata:
   name: {{ include "geoserver.fullname" . }}-discovery
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
-    gs-service: discovery
+    app.kubernetes.io/component: discovery
 spec:
   type: {{ .Values.geoserver.discovery.service.type }}
   ports:
@@ -14,4 +14,4 @@ spec:
       name: http
   selector:
     {{- include "geoserver.selectorLabels" . | nindent 4 }}
-    gs-service: discovery
+    app.kubernetes.io/component: discovery

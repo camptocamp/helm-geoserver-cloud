@@ -16,7 +16,7 @@ metadata:
   name: {{ $geoserverName }}-{{ $serviceName }}
   labels:
     {{- $geoserverLabels | nindent 4 }}
-    gs-service: {{ $serviceName }}
+    app.kubernetes.io/component: {{ $serviceName }}
 spec:
   type: {{ $serviceDefinition.service.type }}
   ports:
@@ -26,7 +26,7 @@ spec:
       name: http
   selector:
     {{ $geoserverSelectorLabels | nindent 4  }}
-    gs-service: {{ $serviceName }}
+    app.kubernetes.io/component: {{ $serviceName }}
 
 ---
 # deployment {{ $serviceName }}
@@ -36,7 +36,7 @@ metadata:
   name: {{ $geoserverName }}-{{ $serviceName }}
   labels:
     {{- $geoserverLabels  | nindent 4 }}
-    gs-service: rest
+    app.kubernetes.io/component: rest
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -45,7 +45,7 @@ spec:
   selector:
     matchLabels:
       {{ $geoserverSelectorLabels | nindent 6 }}
-      gs-service: rest
+      app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
@@ -55,7 +55,7 @@ spec:
         checksum/config: {{ $shaConfigmap }}
       labels:
         {{ $geoserverSelectorLabels | nindent 8 }}
-        gs-service: rest
+        app.kubernetes.io/component: rest
         {{- if $values.global.custom_pod_labels }}
           {{- toYaml $values.global.custom_pod_labels | nindent 8 }}
         {{- end }}
