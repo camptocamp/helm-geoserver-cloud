@@ -64,7 +64,7 @@ spec:
       securityContext:
         {{- toYaml $serviceDefinition.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ $chart.Name }}-{{ $serviceName }}
+        - name: {{ $serviceName }}
           securityContext:
             {{- toYaml $serviceDefinition.securityContext | nindent 12 }}
           image: "{{ $serviceDefinition.image.repository }}:{{ $serviceDefinition.image.tag | default $chart.AppVersion }}"
