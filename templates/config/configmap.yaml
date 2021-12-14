@@ -4,7 +4,7 @@ metadata:
   name: {{ include "geoserver.fullname" . }}-config-configs
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
-    gs-service: "config"
+    app.kubernetes.io/component: "config"
 data:
   application.yml: |
     server:

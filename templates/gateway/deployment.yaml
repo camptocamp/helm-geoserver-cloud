@@ -4,7 +4,7 @@ metadata:
   name: {{ include "geoserver.fullname" . }}-gateway
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
-    gs-service: gateway
+    app.kubernetes.io/component: gateway
   annotations:
     argocd.argoproj.io/sync-wave: "3"
 spec:
@@ -13,7 +13,7 @@ spec:
   selector:
     matchLabels:
       {{- include "geoserver.selectorLabels" . | nindent 6 }}
-      gs-service: gateway
+      app.kubernetes.io/component: gateway
   template:
     metadata:
       annotations:
@@ -23,7 +23,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum }}
       labels:
         {{- include "geoserver.selectorLabels" . | nindent 8 }}
-        gs-service: gateway
+        app.kubernetes.io/component: gateway
         {{- if .Values.global.custom_pod_labels }}
           {{- toYaml .Values.global.custom_pod_labels | nindent 8 }}
         {{- end }}
