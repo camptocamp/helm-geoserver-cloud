@@ -37,6 +37,16 @@ postgresql:
 geoserver:
   name: geoserver
 
+  # volumeMounts only work for the moment only if
+  # NFS PV is used, and that the PV is already defined
+  # within the cluster
+  # example
+  # volumeMounts:
+  #   - mountPath: '/var/geoserver/nfsrasters'
+  #     mountName: 'nfs-pv-storage-rasters'
+  #     pvcName: 'nfs-rasters-pv-claim'
+  volumeMounts: {}
+
   ingress:
     deploy: true
     baseUrl: '/geoserver-cloud/'

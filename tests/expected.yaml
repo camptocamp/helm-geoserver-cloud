@@ -1119,6 +1119,11 @@ spec:
         app.kubernetes.io/instance: test
         app.kubernetes.io/component: rest
     spec:
+      volumes:
+        - name: nfs-pv-storage-rasters
+          persistentVolumeClaim:
+           claimName: nfs-rasters-pv-claim
+
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
@@ -1175,6 +1180,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - mountPath: "/var/geoserver/nfsrasters"
+              name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -1238,6 +1246,11 @@ spec:
         app.kubernetes.io/instance: test
         app.kubernetes.io/component: rest
     spec:
+      volumes:
+        - name: nfs-pv-storage-rasters
+          persistentVolumeClaim:
+           claimName: nfs-rasters-pv-claim
+
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
@@ -1294,6 +1307,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - mountPath: "/var/geoserver/nfsrasters"
+              name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -1357,6 +1373,11 @@ spec:
         app.kubernetes.io/instance: test
         app.kubernetes.io/component: rest
     spec:
+      volumes:
+        - name: nfs-pv-storage-rasters
+          persistentVolumeClaim:
+           claimName: nfs-rasters-pv-claim
+
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
@@ -1413,6 +1434,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - mountPath: "/var/geoserver/nfsrasters"
+              name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -1476,6 +1500,11 @@ spec:
         app.kubernetes.io/instance: test
         app.kubernetes.io/component: rest
     spec:
+      volumes:
+        - name: nfs-pv-storage-rasters
+          persistentVolumeClaim:
+           claimName: nfs-rasters-pv-claim
+
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
@@ -1532,6 +1561,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - mountPath: "/var/geoserver/nfsrasters"
+              name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -1595,6 +1627,11 @@ spec:
         app.kubernetes.io/instance: test
         app.kubernetes.io/component: rest
     spec:
+      volumes:
+        - name: nfs-pv-storage-rasters
+          persistentVolumeClaim:
+           claimName: nfs-rasters-pv-claim
+
       serviceAccountName: test-geoservercloud
       securityContext:
         runAsUser: 630
@@ -1651,6 +1688,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - mountPath: "/var/geoserver/nfsrasters"
+              name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
