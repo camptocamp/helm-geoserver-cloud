@@ -45,7 +45,7 @@ geoserver:
   #   - mountPath: '/var/geoserver/nfsrasters'
   #     mountName: 'nfs-pv-storage-rasters'
   #     pvcName: 'nfs-rasters-pv-claim'
-  volumeMounts: {}
+  volumeMounts: []
 
   ingress:
     deploy: true
