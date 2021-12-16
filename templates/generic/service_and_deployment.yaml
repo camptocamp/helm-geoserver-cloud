@@ -65,7 +65,7 @@ spec:
       {{- range $mountPointName := $values.geoserver.volumeMounts }}
         - name: {{ $mountPointName.mountName }}
           persistentVolumeClaim:
-           claimName: {{ $mountPointName.pvcName }}
+           claimName: {{ $mountPointName.pvcName }}-{{ $serviceName }}
       {{- end }}
       {{- end }}
 

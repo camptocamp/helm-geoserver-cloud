@@ -1122,7 +1122,7 @@ spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim
+           claimName: nfs-rasters-pv-claim-rest
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1249,7 +1249,7 @@ spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim
+           claimName: nfs-rasters-pv-claim-wcs
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1376,7 +1376,7 @@ spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim
+           claimName: nfs-rasters-pv-claim-webui
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1503,7 +1503,7 @@ spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim
+           claimName: nfs-rasters-pv-claim-wfs
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1630,7 +1630,7 @@ spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim
+           claimName: nfs-rasters-pv-claim-wms
 
       serviceAccountName: test-geoservercloud
       securityContext:
