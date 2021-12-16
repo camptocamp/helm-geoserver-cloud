@@ -60,6 +60,15 @@ spec:
           {{- toYaml $values.global.custom_pod_labels | nindent 8 }}
         {{- end }}
     spec:
+      {{- if $values.geoserver.volumeMounts }}
+      volumes:
+      {{- range $mountPointName := $values.geoserver.volumeMounts }}
+        - name: {{ $mountPointName.mountName }}
+          persistentVolumeClaim:
+           claimName: {{ $mountPointName.pvcName }}
+      {{- end }}
+      {{- end }}
+
       serviceAccountName: {{ $geoserverServiceAccountName }}
       securityContext:
         {{- toYaml $serviceDefinition.podSecurityContext | nindent 8 }}
@@ -119,6 +128,13 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          {{- if $values.geoserver.volumeMounts }}
+          volumeMounts:
+          {{- range $mountPointName := $values.geoserver.volumeMounts }}
+            - mountPath: {{ $mountPointName.mountPath | quote }}
+              name: {{ $mountPointName.mountName }}
+          {{- end }}
+          {{- end }}
           startupProbe:
             httpGet:
               path: /actuator/health/liveness

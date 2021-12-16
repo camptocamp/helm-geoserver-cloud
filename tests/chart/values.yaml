@@ -6,6 +6,10 @@ geoservercloud:
   postgresql:
     enabled: false
   geoserver:
+    volumeMounts:
+      - mountPath: '/var/geoserver/nfsrasters'
+        mountName: 'nfs-pv-storage-rasters'
+        pvcName: 'nfs-rasters-pv-claim'
     ingress:
       deploy: false
       #baseUrl: '/geoserver-cloud/'
