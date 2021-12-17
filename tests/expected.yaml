@@ -1122,7 +1122,7 @@ spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim-rest
+           claimName: nfs-rasters-pv-claim
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1224,7 +1224,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: rest
+    app.kubernetes.io/component: wcs
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1235,7 +1235,7 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      app.kubernetes.io/component: rest
+      app.kubernetes.io/component: wcs
   template:
     metadata:
       annotations:
@@ -1244,12 +1244,12 @@ spec:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        app.kubernetes.io/component: rest
+        app.kubernetes.io/component: wcs
     spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim-wcs
+           claimName: nfs-rasters-pv-claim
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1351,7 +1351,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: rest
+    app.kubernetes.io/component: webui
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1362,7 +1362,7 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      app.kubernetes.io/component: rest
+      app.kubernetes.io/component: webui
   template:
     metadata:
       annotations:
@@ -1371,12 +1371,12 @@ spec:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        app.kubernetes.io/component: rest
+        app.kubernetes.io/component: webui
     spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim-webui
+           claimName: nfs-rasters-pv-claim
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1478,7 +1478,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: rest
+    app.kubernetes.io/component: wfs
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1489,7 +1489,7 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      app.kubernetes.io/component: rest
+      app.kubernetes.io/component: wfs
   template:
     metadata:
       annotations:
@@ -1498,12 +1498,12 @@ spec:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        app.kubernetes.io/component: rest
+        app.kubernetes.io/component: wfs
     spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim-wfs
+           claimName: nfs-rasters-pv-claim
 
       serviceAccountName: test-geoservercloud
       securityContext:
@@ -1605,7 +1605,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.0-RC3"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: rest
+    app.kubernetes.io/component: wms
   annotations:
     argocd.argoproj.io/sync-wave: "9"
 spec:
@@ -1616,7 +1616,7 @@ spec:
 
       app.kubernetes.io/name: geoservercloud
       app.kubernetes.io/instance: test
-      app.kubernetes.io/component: rest
+      app.kubernetes.io/component: wms
   template:
     metadata:
       annotations:
@@ -1625,12 +1625,12 @@ spec:
 
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
-        app.kubernetes.io/component: rest
+        app.kubernetes.io/component: wms
     spec:
       volumes:
         - name: nfs-pv-storage-rasters
           persistentVolumeClaim:
-           claimName: nfs-rasters-pv-claim-wms
+           claimName: nfs-rasters-pv-claim
 
       serviceAccountName: test-geoservercloud
       securityContext:
