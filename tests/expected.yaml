@@ -19,13 +19,13 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -88,13 +88,13 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
@@ -582,13 +582,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: config
 spec:
@@ -609,13 +609,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
 spec:
@@ -636,13 +636,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -664,13 +664,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -693,13 +693,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -722,13 +722,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
 spec:
@@ -751,13 +751,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -780,13 +780,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -808,13 +808,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
   annotations:
@@ -830,7 +830,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -843,7 +843,7 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-config:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -926,13 +926,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
   annotations:
@@ -948,7 +948,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -961,7 +961,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC5"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1006,13 +1006,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -1028,7 +1028,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1041,7 +1041,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1089,13 +1089,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
   annotations:
@@ -1112,7 +1112,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1131,7 +1131,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-rest:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1216,13 +1216,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
   annotations:
@@ -1239,7 +1239,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1258,7 +1258,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1343,13 +1343,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -1366,7 +1366,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1385,7 +1385,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-webui:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1470,13 +1470,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
   annotations:
@@ -1493,7 +1493,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1512,7 +1512,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1597,13 +1597,13 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.13
+    helm.sh/chart: geoservercloud-0.0.14
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC3"
+    app.kubernetes.io/version: "1.0-RC5"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
   annotations:
@@ -1620,7 +1620,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: c5ef5ba39c690e41ac9a8e0d976134a4cbcc76cbf61081e428a69b30a6c34099
+        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1639,7 +1639,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-RC3"
+          image: "geoservercloud/geoserver-cloud-wms:1.0-RC5"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
