@@ -73,3 +73,77 @@ port: 5672
 username: {{ .Values.rabbitmq.auth.username }}
 password: ${RABBITMQ_PASSWORD}
 {{- end }}
+
+
+{{- define "geoserver.common.env.variables" -}}
+- name: EUREKA_SERVER_URL
+  value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
+- name: BACKEND_CATALOG
+  value: "false"
+- name: BACKEND_DATA_DIRECTORY
+  value: "false"
+- name: BACKEND_JDBCCONFIG
+  value: "true"
+- name: SPRING_PROFILES_ACTIVE
+  value: "jdbcconfig"
+- name: JDBCCONFIG_DATABASE
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+      key: DATABASE_NAME
+{{- if not .Values.postgresql.fromSecret.enabled }}
+- name: JDBCCONFIG_HOST
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+      key: HOST
+- name: JDBCCONFIG_USERNAME
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+      key: ROLE
+- name: JDBCCONFIG_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+      key: PASSWORD
+- name: JDBCCONFIG_PORT
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+      key: PORT
+{{- else }}
+- name: JDBCCONFIG_HOST
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.fromSecret.secretName }}
+      key: name: {{ .Values.postgresql.postgresqlHostName.secretKey }}
+- name: JDBCCONFIG_USERNAME
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.fromSecret.secretName }}
+      key: name: {{ .Values.postgresql.postgresqlUsername.secretKey }}
+- name: JDBCCONFIG_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.fromSecret.secretName }}
+      key: name: {{ .Values.postgresql.postgresqlPassword.secretKey }}
+- name: JDBCCONFIG_PORT
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.fromSecret.secretName }}
+      key: name: {{ .Values.postgresql.servicePort.secretKey }}
+{{- end }}
+- name: RABBITMQ_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: geoserver-rabbitmq
+      key: rabbitmq-password
+- name: RABBITMQ_PASS
+  valueFrom:
+    secretKeyRef:
+      name: geoserver-rabbitmq
+      key: rabbitmq-password
+- name: RABBITMQ_HOST
+  value: {{ include "geoserver.fullname" . }}-rabbitmq
+{{- end }}

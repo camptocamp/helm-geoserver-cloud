@@ -4,7 +4,7 @@
 {{- $geoserverServiceAccountName := (include "geoserver.serviceAccountName" .) }}
 {{- $chart := .Chart -}}
 {{- $shaConfigmap := (include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum) -}}
-
+{{- $fullEnv := . -}}
 {{- $values := .Values -}}
 
 {{- range $serviceName, $serviceDefinition := $values.geoserver.services }}
@@ -83,74 +83,10 @@ spec:
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
-            - name: EUREKA_SERVER_URL
-              value: http://{{ $geoserverName }}-discovery:8761/eureka
-            - name: BACKEND_CATALOG
-              value: "false"
-            - name: BACKEND_DATA_DIRECTORY
-              value: "false"
-            - name: BACKEND_JDBCCONFIG
-              value: "true"
-            - name: SPRING_PROFILES_ACTIVE
-              value: "jdbcconfig"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
-                  key: DATABASE_NAME
-            {{- if not $values.postgresql.fromSecret.enabled }}
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
-                  key: PORT
-            {{- else }}
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.postgresql.fromSecret.secretName }}
-                  key: name: {{ $values.postgresql.postgresqlHostName.secretKey }}
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.postgresql.fromSecret.secretName }}
-                  key: name: {{ $values.postgresql.postgresqlUsername.secretKey }}
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.postgresql.fromSecret.secretName }}
-                  key: name: {{ $values.postgresql.postgresqlPassword.secretKey }}
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $values.postgresql.fromSecret.secretName }}
-                  key: name: {{ $values.postgresql.servicePort.secretKey }}
-            {{- end }}
-            - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
-            - name: RABBITMQ_HOST
-              value: {{ $geoserverName }}-rabbitmq
-{{- if $values.geoserver.config.env }}
-{{ toYaml $values.geoserver.config.env | indent 12 }}
-{{- end }}
+          {{ include "geoserver.common.env.variables" $fullEnv | nindent 12}}
+          {{- if $values.geoserver.config.env }}
+          {{ toYaml $values.geoserver.config.env | indent 12 }}
+          {{- end }}
 
           ports:
             - name: http

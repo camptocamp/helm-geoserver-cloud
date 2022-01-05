@@ -50,6 +50,35 @@ geoserver:
   #     pvcName: 'nfs-rasters-pv-claim'
   volumeMounts: []
 
+  jdbc:
+    external: false
+    fromSecret: {}
+    postgresqlDatabase: ''
+    postgresqlUsername: {}
+    postgresqlPassword: {}
+    postgresqlHostName: {}
+    postgresqlPort: {}
+  # example of usage with external secret for the DB connection
+  # jdbc:
+  #   external: true
+  #   fromSecret:
+  #     enabled: true
+  #     secretName: "external-database-secret"
+  #   postgresqlDatabase:
+  #     name: "configdb"
+  #   postgresqlUsername:
+  #     name: ""
+  #     secretKey: "username"
+  #   postgresqlPassword:
+  #     name: ""
+  #     secretKey: "password"
+  #   postgresqlHostName:
+  #     name: ""
+  #     secretKey: "hostname"
+  #   postgresqlPort:
+  #     name: ""
+  #     secretKey: "port"
+
   ingress:
     deploy: true
     baseUrl: '/geoserver-cloud/'
