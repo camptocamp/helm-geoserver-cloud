@@ -5,8 +5,10 @@ metadata:
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
     app.kubernetes.io/component: "config"
+  {{- if .Values.global.annotations }}
   annotations:
-    argocd.argoproj.io/sync-wave: "2"
+    {{- toYaml .Values.global.annotations | nindent 6 }}
+  {{- end }}
 spec:
   revisionHistoryLimit: 3
   replicas: {{ .Values.geoserver.config.replicaCount }}
@@ -48,7 +50,7 @@ spec:
               value: /opt/app/config
             {{ include "geoserver.common.env.variables" . | nindent 12}}
             {{- if .Values.geoserver.config.env }}
-            {{- toYaml .Values.geoserver.config.env | nindent 12 }}
+            {{ toYaml .Values.geoserver.config.env | nindent 12 }}
             {{- end }}
 
           volumeMounts:
