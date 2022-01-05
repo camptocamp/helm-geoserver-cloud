@@ -19,7 +19,7 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -35,6 +35,8 @@ data:
   HOST: dGVzdC1wb3N0Z3Jlc3Fs
   ROLE: dXNlcm5hbWU=
   PASSWORD: cGFzc3dvcmQ=
+  PORT: NTQzMg==
+
 kind: Secret
 metadata:
   name: jdbcconfig-test-geoservercloud
@@ -88,7 +90,7 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -582,7 +584,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -609,7 +611,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -636,7 +638,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -664,7 +666,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -693,7 +695,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -722,7 +724,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -751,7 +753,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -780,7 +782,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -808,7 +810,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -830,7 +832,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -876,6 +878,11 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
             - name: RABBITMQ_PASS
               valueFrom:
                 secretKeyRef:
@@ -926,7 +933,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -948,7 +955,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1006,7 +1013,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1028,7 +1035,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1089,7 +1096,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1112,7 +1119,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1168,6 +1175,11 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1216,7 +1228,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1239,7 +1251,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1295,6 +1307,11 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1343,7 +1360,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1366,7 +1383,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1422,6 +1439,11 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1470,7 +1492,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1493,7 +1515,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1549,6 +1571,11 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1597,7 +1624,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.14
+    helm.sh/chart: geoservercloud-0.0.15
     deployed_by: argocd
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1620,7 +1647,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 9feb9c6cda3c5b27f902b059559e47bf1d86a3492c1ca5a76ed6dce3c2438033
+        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1676,6 +1703,11 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:

@@ -53,6 +53,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
                   key: DATABASE_NAME
+            {{- if not .Values.postgresql.fromSecret.enabled }}
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
@@ -68,6 +69,33 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
+                  key: PORT
+            {{- else }}
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.fromSecret.secretName }}
+                  key: name: {{ .Values.postgresql.postgresqlHostName.secretKey }}
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.fromSecret.secretName }}
+                  key: name: {{ .Values.postgresql.postgresqlUsername.secretKey }}
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.fromSecret.secretName }}
+                  key: name: {{ .Values.postgresql.postgresqlPassword.secretKey }}
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgresql.fromSecret.secretName }}
+                  key: name: {{ .Values.postgresql.servicePort.secretKey }}
+            {{- end }}
             - name: RABBITMQ_PASS
               valueFrom:
                 secretKeyRef:

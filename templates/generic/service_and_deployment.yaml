@@ -98,6 +98,7 @@ spec:
                 secretKeyRef:
                   name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
                   key: DATABASE_NAME
+            {{- if not $values.postgresql.fromSecret.enabled }}
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
@@ -113,6 +114,33 @@ spec:
                 secretKeyRef:
                   name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
                   key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.geoserver.database.secretConfig }}-{{ $geoserverName }}
+                  key: PORT
+            {{- else }}
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.postgresql.fromSecret.secretName }}
+                  key: name: {{ $values.postgresql.postgresqlHostName.secretKey }}
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.postgresql.fromSecret.secretName }}
+                  key: name: {{ $values.postgresql.postgresqlUsername.secretKey }}
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.postgresql.fromSecret.secretName }}
+                  key: name: {{ $values.postgresql.postgresqlPassword.secretKey }}
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $values.postgresql.fromSecret.secretName }}
+                  key: name: {{ $values.postgresql.servicePort.secretKey }}
+            {{- end }}
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
