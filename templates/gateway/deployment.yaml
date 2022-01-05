@@ -5,8 +5,10 @@ metadata:
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
     app.kubernetes.io/component: gateway
+  {{- if .Values.global.annotations }}
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    {{- toYaml .Values.global.annotations | nindent 4 }}
+  {{- end }}
 spec:
   revisionHistoryLimit: 3
   replicas: {{ .Values.geoserver.gateway.replicaCount }}

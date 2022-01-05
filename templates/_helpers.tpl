@@ -84,12 +84,12 @@ password: ${RABBITMQ_PASSWORD}
   value: "false"
 - name: BACKEND_JDBCCONFIG
   value: "true"
+{{- if not .Values.geoserver.jdbc.external }}
 - name: JDBCCONFIG_DATABASE
   valueFrom:
     secretKeyRef:
       name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
       key: DATABASE_NAME
-{{- if not .Values.postgresql.fromSecret.enabled }}
 - name: JDBCCONFIG_HOST
   valueFrom:
     secretKeyRef:
@@ -111,26 +111,18 @@ password: ${RABBITMQ_PASSWORD}
       name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
       key: PORT
 {{- else }}
-- name: JDBCCONFIG_HOST
+# FIXME: should also be set from some secret etc
+{{- range $key, $definition := .Values.geoserver.jdbc.configVariables }}
+- name: {{ $definition.name }}
+  {{- if $definition.value -}}
+  value: {{ $definition.value }}
+  {{- else }}
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.postgresql.fromSecret.secretName }}
-      key: name: {{ .Values.postgresql.postgresqlHostName.secretKey }}
-- name: JDBCCONFIG_USERNAME
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.postgresql.fromSecret.secretName }}
-      key: name: {{ .Values.postgresql.postgresqlUsername.secretKey }}
-- name: JDBCCONFIG_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.postgresql.fromSecret.secretName }}
-      key: name: {{ .Values.postgresql.postgresqlPassword.secretKey }}
-- name: JDBCCONFIG_PORT
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.postgresql.fromSecret.secretName }}
-      key: name: {{ .Values.postgresql.servicePort.secretKey }}
+      name: {{ $definition.secretName }}
+      key: {{ $definition.secretKey }}
+  {{- end }}
+{{- end }}
 {{- end }}
 - name: RABBITMQ_PASSWORD
   valueFrom:

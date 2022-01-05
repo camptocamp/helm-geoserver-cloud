@@ -1,5 +1,5 @@
 global:
-  deployed_by: argocd
+  deployed_by: helm
   revision: HEAD
   custom_pod_labels: {}
   base_environment_name: 'dev'
@@ -7,6 +7,7 @@ global:
   cluster_environment: dev
   image:
     pullPolicy: IfNotPresent
+  annotations: {}
 
 rabbitmq:
   image:
@@ -65,18 +66,18 @@ geoserver:
   #     enabled: true
   #     secretName: "external-database-secret"
   #   postgresqlDatabase:
-  #     name: "configdb"
+  #     value: "configdb"
   #   postgresqlUsername:
-  #     name: ""
+  #     value: ""
   #     secretKey: "username"
   #   postgresqlPassword:
-  #     name: ""
+  #     value: ""
   #     secretKey: "password"
   #   postgresqlHostName:
-  #     name: ""
+  #     value: ""
   #     secretKey: "hostname"
   #   postgresqlPort:
-  #     name: ""
+  #     value: ""
   #     secretKey: "port"
 
   ingress:

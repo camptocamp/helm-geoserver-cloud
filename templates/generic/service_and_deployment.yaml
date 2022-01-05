@@ -37,8 +37,10 @@ metadata:
   labels:
     {{- $geoserverLabels  | nindent 4 }}
     app.kubernetes.io/component: {{ $serviceName }}
+  {{- if $values.global.annotations }}
   annotations:
-    argocd.argoproj.io/sync-wave: "9"
+    {{- toYaml $values.global.annotations | nindent 4 }}
+  {{- end }}
 spec:
   revisionHistoryLimit: 3
   replicas: {{ $serviceDefinition.replicaCount }}
