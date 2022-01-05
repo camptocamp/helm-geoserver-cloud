@@ -53,7 +53,7 @@ geoserver:
   jdbc:
     external: false
     fromSecret: {}
-    postgresqlDatabase: ''
+    postgresqlDatabase: {}
     postgresqlUsername: {}
     postgresqlPassword: {}
     postgresqlHostName: {}

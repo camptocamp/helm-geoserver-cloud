@@ -83,6 +83,8 @@ spec:
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
           {{ include "geoserver.common.env.variables" $fullEnv | nindent 12}}
           {{- if $values.geoserver.config.env }}
           {{ toYaml $values.geoserver.config.env | indent 12 }}

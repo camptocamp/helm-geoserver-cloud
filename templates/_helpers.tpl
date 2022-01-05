@@ -84,8 +84,6 @@ password: ${RABBITMQ_PASSWORD}
   value: "false"
 - name: BACKEND_JDBCCONFIG
   value: "true"
-- name: SPRING_PROFILES_ACTIVE
-  value: "jdbcconfig"
 - name: JDBCCONFIG_DATABASE
   valueFrom:
     secretKeyRef:
