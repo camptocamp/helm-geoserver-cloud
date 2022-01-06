@@ -53,12 +53,26 @@ geoserver:
 
   jdbc:
     external: false
-    fromSecret: {}
-    postgresqlDatabase: {}
-    postgresqlUsername: {}
-    postgresqlPassword: {}
-    postgresqlHostName: {}
-    postgresqlPort: {}
+    postgresqlDatabase:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlUsername:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlPassword:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlHostName:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlPort:
+      value: ''
+      secretKey: ''
+      secretName: ''
   # example of usage with external secret for the DB connection
   # jdbc:
   #   external: true

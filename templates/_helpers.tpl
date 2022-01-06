@@ -114,7 +114,7 @@ password: ${RABBITMQ_PASSWORD}
 # FIXME: should also be set from some secret etc
 {{- range $key, $definition := .Values.geoserver.jdbc.configVariables }}
 - name: {{ $definition.name }}
-  {{- if $definition.value -}}
+  {{- if $definition.value }}
   value: {{ $definition.value }}
   {{- else }}
   valueFrom:

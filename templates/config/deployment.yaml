@@ -49,6 +49,7 @@ spec:
             - name: CONFIG_NATIVE_PATH
               value: /opt/app/config
             {{ include "geoserver.common.env.variables" . | nindent 12}}
+
             {{- if .Values.geoserver.config.env }}
             {{ toYaml .Values.geoserver.config.env | nindent 12 }}
             {{- end }}
