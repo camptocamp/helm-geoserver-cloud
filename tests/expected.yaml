@@ -25,7 +25,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -96,7 +96,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
@@ -590,7 +590,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: config
 spec:
@@ -617,7 +617,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
 spec:
@@ -644,7 +644,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -672,7 +672,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -701,7 +701,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -730,7 +730,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
 spec:
@@ -759,7 +759,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -788,7 +788,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -816,7 +816,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 spec:
@@ -843,7 +843,7 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-config:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -951,7 +951,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
 spec:
@@ -978,7 +978,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC6"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1029,7 +1029,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -1056,7 +1056,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1110,7 +1110,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -1144,7 +1144,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-rest:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1246,7 +1246,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -1280,7 +1280,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1382,7 +1382,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
 spec:
@@ -1416,7 +1416,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-webui:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1518,7 +1518,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1552,7 +1552,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1654,7 +1654,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1688,7 +1688,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-wms:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

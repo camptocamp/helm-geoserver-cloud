@@ -96,6 +96,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           {{- if $values.geoserver.volumeMounts }}
           volumeMounts:
           {{- range $mountPointName := $values.geoserver.volumeMounts }}
@@ -106,20 +109,20 @@ spec:
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
