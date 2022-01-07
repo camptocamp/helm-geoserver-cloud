@@ -1,5 +1,5 @@
 global:
-  deployed_by: argocd
+  deployed_by: helm
   revision: HEAD
   custom_pod_labels: {}
   base_environment_name: 'dev'
@@ -7,6 +7,7 @@ global:
   cluster_environment: dev
   image:
     pullPolicy: IfNotPresent
+  annotations: {}
 
 rabbitmq:
   image:
@@ -49,6 +50,49 @@ geoserver:
   #     mountName: 'nfs-pv-storage-rasters'
   #     pvcName: 'nfs-rasters-pv-claim'
   volumeMounts: []
+
+  jdbc:
+    external: false
+    postgresqlDatabase:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlUsername:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlPassword:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlHostName:
+      value: ''
+      secretKey: ''
+      secretName: ''
+    postgresqlPort:
+      value: ''
+      secretKey: ''
+      secretName: ''
+  # example of usage with external secret for the DB connection
+  # jdbc:
+  #   external: true
+  #   fromSecret:
+  #     enabled: true
+  #     secretName: "external-database-secret"
+  #   postgresqlDatabase:
+  #     value: "configdb"
+  #   postgresqlUsername:
+  #     value: ""
+  #     secretKey: "username"
+  #   postgresqlPassword:
+  #     value: ""
+  #     secretKey: "password"
+  #   postgresqlHostName:
+  #     value: ""
+  #     secretKey: "hostname"
+  #   postgresqlPort:
+  #     value: ""
+  #     secretKey: "port"
 
   ingress:
     deploy: true

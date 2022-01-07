@@ -64,7 +64,7 @@ data:
           web.enabled: true
           cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
           datasource:
-            jdbcUrl: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
+            url: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
             username: ${jdbcconfig.username:geoserver}
             password: ${jdbcconfig.password:geo5erver}
             driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
@@ -99,7 +99,7 @@ data:
       cloud:
         bus:
           enabled: true
-          id: ${server.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
+          id: ${info.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
           trace.enabled: false #switch on tracing of acks (default off).
         stream:
           bindings:
@@ -108,8 +108,8 @@ data:
             springCloudBusInput:
               destination: gscatalog
       jackson:
-        default-property-inclusion: non_empty
-        serialization.indent_output: false #set to true if doing manual testing and want formatted output
+        default-property-inclusion: non-empty
+        serialization.indent-output: false #set to true if doing manual testing and want formatted output
 
     reactive.feign.cloud.enabled: true
     reactive.feign.hystrix.enabled: false
@@ -119,7 +119,7 @@ data:
         root: WARN
         org.springframework: ERROR
         org.springframework.cloud.bus: INFO
-        org.springframework.retry: INFO
+        org.springframework.retry: info
         # geoserver roots
         org.geoserver: INFO
         org.geoserver.catalog.plugin: INFO
@@ -145,7 +145,7 @@ data:
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
 
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     # provide environment variables that otherwise would be given by docker-compose.yml
     rabbitmq.host: localhost
 
@@ -153,22 +153,22 @@ data:
     jdbcconfig.username: geoserver
     jdbcconfig.password: geo5erver
     ---
-    spring.profiles: datadir
+    spring.config.activate.on-profile: datadir
     backend.jdbcconfig: false
     backend.catalog: false
     backend.data-directory: true
     ---
-    spring.profiles: jdbcconfig
+    spring.config.activate.on-profile: jdbcconfig
     backend.jdbcconfig: true
     backend.catalog: false
     backend.data-directory: false
     ---
-    spring.profiles: catalog
+    spring.config.activate.on-profile: catalog
     backend.catalog: true
     backend.jdbcconfig: false
     backend.data-directory: false
     ---
-    spring.profiles: debug
+    spring.config.activate.on-profile: debug
 
     logging:
       level:
@@ -205,6 +205,12 @@ data:
       level:
         root: WARN
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
+
+    ---
+    spring.config.activate.on-profile: local
+    server.port: 8888
+    eureka.server.url: http://localhost:8761/eureka
+    config.native.path: ./config
 
   gateway-service.yml: |
     # Defines the root base path at which the gateway exposes all geoserver request paths
@@ -305,12 +311,12 @@ data:
     logging:
       level:
         root: WARN
-        com.netflix.discovery: WARN
-        com.netflix.eureka: WARN
+        com.netflix.discovery: INFO
+        com.netflix.eureka: INFO
         org.springframework.cloud.gateway: info
         reactor.netty: INFO
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9000
 
 
@@ -347,33 +353,33 @@ data:
           resource-browser: true
           catalog-bulk-load: true
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9106
 
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9105
 
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9101
 
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9102
 
   wcs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9103

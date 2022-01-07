@@ -1,6 +1,6 @@
 # Helm chart for geoserver-cloud
 
-![Version: 0.0.15](https://img.shields.io/badge/Version-0.0.15-informational?style=flat-square) ![AppVersion: 1.0-RC5](https://img.shields.io/badge/AppVersion-1.0--RC5-informational?style=flat-square)
+![Version: 0.0.16](https://img.shields.io/badge/Version-0.0.16-informational?style=flat-square) ![AppVersion: 1.0-RC6](https://img.shields.io/badge/AppVersion-1.0--RC6-informational?style=flat-square)
 
 A Helm chart for Geoserver
 
@@ -44,19 +44,19 @@ follow the steps of the [official documentation](https://helm.sh/docs/intro/inst
 ### install k3d
 
 ```bash
-wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | TAG=v4.4.8 bash
+wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
 ```
 
 ### create a cluster on your machine
 
-The following configuration will create a single-node "cluster" on your machine, the kubelet parameters ensure that it works also if you have an almost full development PC. It will also bind the port `localhost:8081` of your machine with the ingress controller port `80`, just adapt accordingly to your needs. You also need a local image registry to push your local images into the cluster.
+The following configuration will create a single-node "cluster" on your machine, the kubelet parameters ensure that it works also if you have an almost full development PC. It will also bind the port `localhost:8085` of your machine with the ingress controller port `80`, just adapt accordingly to your needs. You also need a local image registry to push your local images into the cluster.
 
 ```bash
 # create a local registry
 k3d registry create registry.localhost --port 5000
 
 # create a local cluster and enable the registry
-k3d cluster create k3d-cluster-1 --registry-use k3d-registry.localhost --k3s-agent-arg '--kubelet-arg=eviction-soft-grace-period=imagefs.available=60s,nodefs.available=60s'  --k3s-agent-arg '--kubelet-arg=eviction-soft=imagefs.available<1%,nodefs.available<1%'  --k3s-agent-arg '--kubelet-arg=eviction-hard=imagefs.available<1%,nodefs.available<1%' --k3s-agent-arg '--kubelet-arg=eviction-minimum-reclaim=imagefs.available=1%,nodefs.available=1%'  -p "8081:80@loadbalancer" --agents 2
+k3d cluster create k3d-cluster-1 --k3s-arg '--kubelet-arg=eviction-soft-grace-period=imagefs.available=60s,nodefs.available=60s@all'  --k3s-arg '--kubelet-arg=eviction-hard=imagefs.available<10Mi,nodefs.available<10Mi@all' --k3s-arg '--kubelet-arg=eviction-minimum-reclaim=imagefs.available=10Mi,nodefs.available=10Mi@all'  -p "8085:80@loadbalancer"
 ```
 
 ### start the chart

@@ -19,13 +19,13 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -37,10 +37,10 @@ data:
   PASSWORD: cGFzc3dvcmQ=
   PORT: NTQzMg==
 
+
 kind: Secret
 metadata:
   name: jdbcconfig-test-geoservercloud
-  #namespace: sig-dev
 type: Opaque
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_rabbitmq.yaml
@@ -90,13 +90,13 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
@@ -158,7 +158,7 @@ data:
           web.enabled: true
           cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
           datasource:
-            jdbcUrl: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
+            url: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
             username: ${jdbcconfig.username:geoserver}
             password: ${jdbcconfig.password:geo5erver}
             driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
@@ -197,7 +197,7 @@ data:
       cloud:
         bus:
           enabled: true
-          id: ${server.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
+          id: ${info.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
           trace.enabled: false #switch on tracing of acks (default off).
         stream:
           bindings:
@@ -206,8 +206,8 @@ data:
             springCloudBusInput:
               destination: gscatalog
       jackson:
-        default-property-inclusion: non_empty
-        serialization.indent_output: false #set to true if doing manual testing and want formatted output
+        default-property-inclusion: non-empty
+        serialization.indent-output: false #set to true if doing manual testing and want formatted output
 
     reactive.feign.cloud.enabled: true
     reactive.feign.hystrix.enabled: false
@@ -217,7 +217,7 @@ data:
         root: WARN
         org.springframework: ERROR
         org.springframework.cloud.bus: INFO
-        org.springframework.retry: INFO
+        org.springframework.retry: info
         # geoserver roots
         org.geoserver: INFO
         org.geoserver.catalog.plugin: INFO
@@ -243,7 +243,7 @@ data:
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
 
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     # provide environment variables that otherwise would be given by docker-compose.yml
     rabbitmq.host: localhost
 
@@ -251,22 +251,22 @@ data:
     jdbcconfig.username: geoserver
     jdbcconfig.password: geo5erver
     ---
-    spring.profiles: datadir
+    spring.config.activate.on-profile: datadir
     backend.jdbcconfig: false
     backend.catalog: false
     backend.data-directory: true
     ---
-    spring.profiles: jdbcconfig
+    spring.config.activate.on-profile: jdbcconfig
     backend.jdbcconfig: true
     backend.catalog: false
     backend.data-directory: false
     ---
-    spring.profiles: catalog
+    spring.config.activate.on-profile: catalog
     backend.catalog: true
     backend.jdbcconfig: false
     backend.data-directory: false
     ---
-    spring.profiles: debug
+    spring.config.activate.on-profile: debug
 
     logging:
       level:
@@ -303,6 +303,12 @@ data:
       level:
         root: WARN
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
+
+    ---
+    spring.config.activate.on-profile: local
+    server.port: 8888
+    eureka.server.url: http://localhost:8761/eureka
+    config.native.path: ./config
 
   gateway-service.yml: |
     # Defines the root base path at which the gateway exposes all geoserver request paths
@@ -403,12 +409,12 @@ data:
     logging:
       level:
         root: WARN
-        com.netflix.discovery: WARN
-        com.netflix.eureka: WARN
+        com.netflix.discovery: INFO
+        com.netflix.eureka: INFO
         org.springframework.cloud.gateway: info
         reactor.netty: INFO
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9000
 
 
@@ -445,35 +451,35 @@ data:
           resource-browser: true
           catalog-bulk-load: true
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9106
 
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9105
 
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9101
 
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9102
 
   wcs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
     ---
-    spring.profiles: local
+    spring.config.activate.on-profile: local
     server.port: 9103
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/role.yaml
@@ -584,13 +590,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: config
 spec:
@@ -611,13 +617,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
 spec:
@@ -638,13 +644,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -666,13 +672,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -695,13 +701,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -724,13 +730,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
 spec:
@@ -753,13 +759,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -782,13 +788,13 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -810,17 +816,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -832,7 +836,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -845,19 +849,26 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-config:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
-            - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
             - name: SPRING_PROFILES_ACTIVE
               value: native
             - name: CONFIG_NATIVE_PATH
               value: /opt/app/config
+
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoservercloud-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -883,11 +894,18 @@ spec:
                 secretKeyRef:
                   name: jdbcconfig-test-geoservercloud
                   key: PORT
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
             - name: RABBITMQ_PASS
               valueFrom:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoservercloud-rabbitmq
 
           volumeMounts:
             - name: configs
@@ -933,17 +951,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -955,7 +971,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -968,7 +984,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC6"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1013,17 +1029,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1035,7 +1049,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1048,7 +1062,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1096,17 +1110,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1119,7 +1131,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1138,13 +1150,16 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-rest:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+
             - name: EUREKA_SERVER_URL
               value: http://test-geoservercloud-discovery:8761/eureka
             - name: BACKEND_CATALOG
@@ -1153,8 +1168,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: SPRING_PROFILES_ACTIVE
-              value: "jdbcconfig"
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -1185,6 +1198,11 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: test-geoservercloud-rabbitmq
 
@@ -1192,26 +1210,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           volumeMounts:
             - mountPath: "/var/geoserver/nfsrasters"
               name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
@@ -1228,17 +1249,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1251,7 +1270,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1270,13 +1289,16 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+
             - name: EUREKA_SERVER_URL
               value: http://test-geoservercloud-discovery:8761/eureka
             - name: BACKEND_CATALOG
@@ -1285,8 +1307,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: SPRING_PROFILES_ACTIVE
-              value: "jdbcconfig"
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -1317,6 +1337,11 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: test-geoservercloud-rabbitmq
 
@@ -1324,26 +1349,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           volumeMounts:
             - mountPath: "/var/geoserver/nfsrasters"
               name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
@@ -1360,17 +1388,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1383,7 +1409,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1402,13 +1428,16 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-webui:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+
             - name: EUREKA_SERVER_URL
               value: http://test-geoservercloud-discovery:8761/eureka
             - name: BACKEND_CATALOG
@@ -1417,8 +1446,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: SPRING_PROFILES_ACTIVE
-              value: "jdbcconfig"
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -1449,6 +1476,11 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: test-geoservercloud-rabbitmq
 
@@ -1456,26 +1488,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           volumeMounts:
             - mountPath: "/var/geoserver/nfsrasters"
               name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
@@ -1492,17 +1527,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1515,7 +1548,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1534,13 +1567,16 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+
             - name: EUREKA_SERVER_URL
               value: http://test-geoservercloud-discovery:8761/eureka
             - name: BACKEND_CATALOG
@@ -1549,8 +1585,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: SPRING_PROFILES_ACTIVE
-              value: "jdbcconfig"
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -1581,6 +1615,11 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: test-geoservercloud-rabbitmq
 
@@ -1588,26 +1627,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           volumeMounts:
             - mountPath: "/var/geoserver/nfsrasters"
               name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
@@ -1624,17 +1666,15 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.15
-    deployed_by: argocd
+    helm.sh/chart: geoservercloud-0.0.16
+    deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC5"
+    app.kubernetes.io/version: "1.0-RC6"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
-  annotations:
-    argocd.argoproj.io/sync-wave: "9"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1647,7 +1687,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 50621a8f2b5c8937666fe718c04e99e696d7a2f19ef72a570414f04e51379386
+        checksum/config: 337506e2cfbb8a135d1d91da2d62d74e426bae62fed54519ef76b2ed5710e7df
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1666,13 +1706,16 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-RC5"
+          image: "geoservercloud/geoserver-cloud-wms:1.0-RC6"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+
             - name: EUREKA_SERVER_URL
               value: http://test-geoservercloud-discovery:8761/eureka
             - name: BACKEND_CATALOG
@@ -1681,8 +1724,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: SPRING_PROFILES_ACTIVE
-              value: "jdbcconfig"
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -1713,6 +1754,11 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: test-geoservercloud-rabbitmq
 
@@ -1720,26 +1766,29 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           volumeMounts:
             - mountPath: "/var/geoserver/nfsrasters"
               name: nfs-pv-storage-rasters
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
