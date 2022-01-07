@@ -1,6 +1,6 @@
 # Helm chart for geoserver-cloud
 
-![Version: 0.0.16](https://img.shields.io/badge/Version-0.0.16-informational?style=flat-square) ![AppVersion: 1.0-RC6](https://img.shields.io/badge/AppVersion-1.0--RC6-informational?style=flat-square)
+![Version: 0.0.17](https://img.shields.io/badge/Version-0.0.17-informational?style=flat-square) ![AppVersion: 1.0-RC7](https://img.shields.io/badge/AppVersion-1.0--RC7-informational?style=flat-square)
 
 A Helm chart for Geoserver
 
@@ -20,14 +20,6 @@ See the value file for configuration options.
 ## Developing on geoserver-cloud code using this chart
 
 To develop in this chart, we recommend that you use `k3d` if you want to use your machine. Please follow the following steps to ensure that you have all the requirements for development:
-
-### install k3d
-
-basically just do:
-
-```bash
-wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | TAG=v4.4.8 bash
-```
 
 ### install kubectl
 
@@ -49,7 +41,7 @@ wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bas
 
 ### create a cluster on your machine
 
-The following configuration will create a single-node "cluster" on your machine, the kubelet parameters ensure that it works also if you have an almost full development PC. It will also bind the port `localhost:8085` of your machine with the ingress controller port `80`, just adapt accordingly to your needs. You also need a local image registry to push your local images into the cluster.
+The following configuration will create a single-node "cluster" on your machine, the kubelet parameters ensure that it works also if you have a development PC with a disk almost full. It will also bind the port `localhost:8085` of your machine with the ingress controller port `80`, just adapt accordingly to your needs. You also need a local image registry to push your local images into the cluster.
 
 ```bash
 # create a local registry
