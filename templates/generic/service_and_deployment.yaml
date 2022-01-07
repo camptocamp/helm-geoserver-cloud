@@ -4,7 +4,6 @@
 {{- $geoserverServiceAccountName := (include "geoserver.serviceAccountName" .) }}
 {{- $chart := .Chart -}}
 {{- $shaConfigmap := (include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum) -}}
-{{- $fullEnv := . -}}
 {{- $values := .Values -}}
 
 {{- range $serviceName, $serviceDefinition := $values.geoserver.services }}
@@ -87,7 +86,7 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"
-          {{ include "geoserver.common.env.variables" $fullEnv | nindent 12}}
+          {{ include "geoserver.common.env.variables" $ | nindent 12}}
           {{- if $values.geoserver.config.env }}
           {{ toYaml $values.geoserver.config.env | indent 12 }}
           {{- end }}
