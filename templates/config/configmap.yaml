@@ -64,12 +64,12 @@ data:
           web.enabled: true
           cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
           datasource:
-            url: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
+            url: "${jdbcconfig.url:jdbc:postgresql://${jdbcconfig.host}:${jdbcconfig.port:5432}/${jdbcconfig.database}?currentSchema=${jdbcconfig.schema:public}}"
             username: ${jdbcconfig.username:geoserver}
             password: ${jdbcconfig.password:geo5erver}
+
             driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
             # optional:
-            schema: ${jdbcconfig.schema:public}
             minimumIdle: ${jdbcconfig.minConnections:2}
             maximumPoolSize: ${jdbcconfig.maxConnections:8}
 
