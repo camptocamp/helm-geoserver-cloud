@@ -158,12 +158,12 @@ data:
           web.enabled: true
           cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
           datasource:
-            url: "jdbc:postgresql://${jdbcconfig.host}:5432/${jdbcconfig.database}"
+            url: "${jdbcconfig.url:jdbc:postgresql://${jdbcconfig.host}:${jdbcconfig.port:5432}/${jdbcconfig.database}?currentSchema=${jdbcconfig.schema:public}}"
             username: ${jdbcconfig.username:geoserver}
             password: ${jdbcconfig.password:geo5erver}
+
             driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
             # optional:
-            schema: ${jdbcconfig.schema:public}
             minimumIdle: ${jdbcconfig.minConnections:2}
             maximumPoolSize: ${jdbcconfig.maxConnections:8}
 
@@ -243,14 +243,6 @@ data:
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
 
     ---
-    spring.config.activate.on-profile: local
-    # provide environment variables that otherwise would be given by docker-compose.yml
-    rabbitmq.host: localhost
-
-    jdbcconfig.url: jdbc:postgresql://localhost:5432/geoserver_config
-    jdbcconfig.username: geoserver
-    jdbcconfig.password: geo5erver
-    ---
     spring.config.activate.on-profile: datadir
     backend.jdbcconfig: false
     backend.catalog: false
@@ -304,11 +296,7 @@ data:
         root: WARN
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
 
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 8888
-    eureka.server.url: http://localhost:8761/eureka
-    config.native.path: ./config
+
 
   gateway-service.yml: |
     # Defines the root base path at which the gateway exposes all geoserver request paths
@@ -413,9 +401,7 @@ data:
         com.netflix.eureka: INFO
         org.springframework.cloud.gateway: info
         reactor.netty: INFO
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 9000
+
 
 
 
@@ -450,37 +436,22 @@ data:
           enabled: true
           resource-browser: true
           catalog-bulk-load: true
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 9106
 
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 9105
 
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 9101
 
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 9102
 
   wcs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
-    ---
-    spring.config.activate.on-profile: local
-    server.port: 9103
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/role.yaml
 kind: Role
@@ -836,7 +807,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -971,7 +942,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1049,7 +1020,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1131,7 +1102,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1270,7 +1241,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1409,7 +1380,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1548,7 +1519,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1687,7 +1658,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e6c76bbfab059f30a030025f82022b353fdb9a8e48440b76a99830adeed53d08
+        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
       labels:
 
         app.kubernetes.io/name: geoservercloud
