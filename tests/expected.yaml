@@ -19,7 +19,7 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -90,7 +90,7 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -561,7 +561,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -588,7 +588,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -615,7 +615,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -643,7 +643,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -672,7 +672,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -701,7 +701,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -730,7 +730,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -759,7 +759,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -787,7 +787,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -807,7 +807,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -922,7 +922,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -942,7 +942,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1000,7 +1000,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1020,7 +1020,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1081,7 +1081,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1102,7 +1102,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1220,7 +1220,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1241,7 +1241,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1359,7 +1359,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1380,7 +1380,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1498,7 +1498,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1519,7 +1519,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1637,7 +1637,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.17
+    helm.sh/chart: geoservercloud-0.0.18
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1658,7 +1658,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: f0ec50ded92fb68462dd16aee65b23a82cccb4a8f3d3309418ea31f3f68b4ecc
+        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
       labels:
 
         app.kubernetes.io/name: geoservercloud
