@@ -79,7 +79,7 @@ geoserver-wcs-748c9fb64b-flxts         1/1     Running   0          6m17s
 geoserver-wfs-65947f5d4d-88g26         1/1     Running   0          6m17s
 ```
 
-and you should be able to access the webui on http://localhost:8081/web/
+and you should be able to access the webui on http://localhost:8085/geoserver-cloud/web/
 
 ### use a local docker image and import it into the cluster
 
