@@ -73,6 +73,19 @@ geoserver:
       value: ''
       secretKey: ''
       secretName: ''
+    # Define outgoing proxy (note: not tested)
+    # httpProxyHost:
+    #   name: "HTTP_PROXYHOST"
+    #   value: "192.168.0.13"
+    # httpProxyPort:
+    #   name: "HTTP_PROXYPORT"
+    #   value: "3128"
+    # httpsProxyHost:
+    #   name: "HTTPS_PROXYHOST"
+    #   value: "192.168.0.13"
+    # httpsProxyPort:
+    #   name: "HTTPS_PROXYPORT"
+    #   value: "3128"
   # example of usage with external secret for the DB connection
   # jdbc:
   #   external: true

@@ -25,7 +25,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -96,7 +96,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
@@ -166,6 +166,30 @@ data:
             # optional:
             minimumIdle: ${jdbcconfig.minConnections:2}
             maximumPoolSize: ${jdbcconfig.maxConnections:8}
+
+    # GeoTools HTTP Client proxy configuration, allows configuring cascaded WMS/WMTS/WFS stores
+    # that need to go through an HTTP proxy without affecting all the http clients at the JVM level
+    # These are default settings. The enabled property can be set to false to disable the custom
+    # HTTPClientFactory altogether.
+    # The following OS environment variables can be set for easier configuration:
+    # HTTP(S)_PROXYHOST, HTTP(S)_PROXYPORT, HTTP(S)_PROXYUSER, HTTP(S)_PROXYPASSWORD, HTTP(S)_NONPROXYHOSTS
+    geotools:
+      httpclient:
+        proxy:
+          enabled: true
+          http:
+            host: ${http.proxyHost:}
+            port: ${http.proxyPort:}
+            user: ${http.proxyUser:}
+            password: ${http.proxyPassword:}
+            nonProxyHosts: ${http.nonProxyHosts:localhost.*}
+            # comma separated list of Java regular expressions, e.g.: nonProxyHosts: localhost, example.*
+          https:
+            host: ${https.proxyHost:${geotools.httpclient.proxy.http.host}}
+            port: ${https.proxyPort:${geotools.httpclient.proxy.http.port}}
+            user: ${https.proxyUser:${geotools.httpclient.proxy.http.user}}
+            password: ${https.proxyPassword:${geotools.httpclient.proxy.http.password}}
+            nonProxyHosts: ${https.nonProxyHosts:${geotools.httpclient.proxy.http.nonProxyHosts}}
 
     management:
       endpoints:
@@ -567,7 +591,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: config
 spec:
@@ -594,7 +618,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
 spec:
@@ -621,7 +645,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -649,7 +673,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -678,7 +702,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -707,7 +731,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
 spec:
@@ -736,7 +760,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -765,7 +789,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -793,7 +817,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 spec:
@@ -807,7 +831,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -820,7 +844,7 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-config:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -928,7 +952,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
 spec:
@@ -942,7 +966,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -955,7 +979,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC8"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1006,7 +1030,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
 spec:
@@ -1020,7 +1044,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1033,7 +1057,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1087,7 +1111,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -1102,7 +1126,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1121,7 +1145,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-rest:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1226,7 +1250,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -1241,7 +1265,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1260,7 +1284,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1365,7 +1389,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
 spec:
@@ -1380,7 +1404,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1399,7 +1423,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-webui:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1504,7 +1528,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1519,7 +1543,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1538,7 +1562,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1643,7 +1667,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: test
-    app.kubernetes.io/version: "1.0-RC7"
+    app.kubernetes.io/version: "1.0-RC8"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1658,7 +1682,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1e32de13b91a0e7417de445fd8d1e4e6f8ac0aa682caec838eb6b758788ca9b6
+        checksum/config: efa0501491a1617aec49c7ef9909afcd5415d5edce30c94212ded2d8173007bc
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1677,7 +1701,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-RC7"
+          image: "geoservercloud/geoserver-cloud-wms:1.0-RC8"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
