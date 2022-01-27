@@ -73,6 +73,30 @@ data:
             minimumIdle: ${jdbcconfig.minConnections:2}
             maximumPoolSize: ${jdbcconfig.maxConnections:8}
 
+    # GeoTools HTTP Client proxy configuration, allows configuring cascaded WMS/WMTS/WFS stores
+    # that need to go through an HTTP proxy without affecting all the http clients at the JVM level
+    # These are default settings. The enabled property can be set to false to disable the custom
+    # HTTPClientFactory altogether.
+    # The following OS environment variables can be set for easier configuration:
+    # HTTP(S)_PROXYHOST, HTTP(S)_PROXYPORT, HTTP(S)_PROXYUSER, HTTP(S)_PROXYPASSWORD, HTTP(S)_NONPROXYHOSTS
+    geotools:
+      httpclient:
+        proxy:
+          enabled: true
+          http:
+            host: ${http.proxyHost:}
+            port: ${http.proxyPort:}
+            user: ${http.proxyUser:}
+            password: ${http.proxyPassword:}
+            nonProxyHosts: ${http.nonProxyHosts:localhost.*}
+            # comma separated list of Java regular expressions, e.g.: nonProxyHosts: localhost, example.*
+          https:
+            host: ${https.proxyHost:${geotools.httpclient.proxy.http.host}}
+            port: ${https.proxyPort:${geotools.httpclient.proxy.http.port}}
+            user: ${https.proxyUser:${geotools.httpclient.proxy.http.user}}
+            password: ${https.proxyPassword:${geotools.httpclient.proxy.http.password}}
+            nonProxyHosts: ${https.nonProxyHosts:${geotools.httpclient.proxy.http.nonProxyHosts}}
+
     management:
       endpoints:
         enabled-by-default: true
