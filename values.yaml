@@ -51,6 +51,9 @@ geoserver:
   #     pvcName: 'nfs-rasters-pv-claim'
   volumeMounts: []
 
+  # environment variables, same format as jdbc.configVariables
+  envVariables: {}
+
   jdbc:
     external: false
     postgresqlDatabase:
@@ -89,9 +92,6 @@ geoserver:
   # example of usage with external secret for the DB connection
   # jdbc:
   #   external: true
-  #   fromSecret:
-  #     enabled: true
-  #     secretName: "external-database-secret"
   #   postgresqlDatabase:
   #     value: "configdb"
   #   postgresqlUsername:

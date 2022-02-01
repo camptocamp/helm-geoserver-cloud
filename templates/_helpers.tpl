@@ -84,6 +84,19 @@ password: ${RABBITMQ_PASSWORD}
   value: "false"
 - name: BACKEND_JDBCCONFIG
   value: "true"
+{{- if .Values.geoserver.envVariables }}
+{{- range $key, $definition := .Values.geoserver.envVariables }}
+- name: {{ $definition.name }}
+  {{- if $definition.value }}
+  value: {{ $definition.value | quote }}
+  {{- else }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $definition.secretName }}
+      key: {{ $definition.secretKey }}
+  {{- end }}
+{{- end }}
+{{- end }}
 {{- if not .Values.geoserver.jdbc.external }}
 - name: JDBCCONFIG_DATABASE
   valueFrom:
@@ -115,7 +128,7 @@ password: ${RABBITMQ_PASSWORD}
 {{- range $key, $definition := .Values.geoserver.jdbc.configVariables }}
 - name: {{ $definition.name }}
   {{- if $definition.value }}
-  value: {{ $definition.value }}
+  value: {{ $definition.value | quote }}
   {{- else }}
   valueFrom:
     secretKeyRef:
