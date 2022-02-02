@@ -249,6 +249,7 @@ data:
         org.geoserver.wfs: WARN
         org.geoserver.jackson: INFO
         org.geotools.jackson: INFO
+        org.geotools.autoconfigure: INFO
         org.geoserver.platform: INFO
         org.geoserver.platform.resource: INFO
         org.geoserver.jdbcconfig: INFO
@@ -842,7 +843,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -978,7 +979,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1056,7 +1057,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1139,7 +1140,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1279,7 +1280,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1419,7 +1420,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1559,7 +1560,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1699,7 +1700,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
