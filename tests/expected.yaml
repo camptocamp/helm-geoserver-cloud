@@ -353,6 +353,17 @@ data:
     spring:
       cloud:
         gateway:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - OPTIONS
+                - HEAD
           default-filters:
           - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
           actuator:
@@ -831,7 +842,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -844,7 +855,7 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-config:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-config:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -966,7 +977,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -979,7 +990,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-discovery:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-discovery:1.0-RC9"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1044,7 +1055,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1057,7 +1068,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-gateway:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1126,7 +1137,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1145,7 +1156,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-rest:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1265,7 +1276,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1284,7 +1295,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-wcs:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1404,7 +1415,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1423,7 +1434,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-webui:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1543,7 +1554,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1562,7 +1573,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-wfs:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1682,7 +1693,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1701,7 +1712,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0-RC9"
+          image: "docker.io/geoservercloud/geoserver-cloud-wms:1.0-RC9"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

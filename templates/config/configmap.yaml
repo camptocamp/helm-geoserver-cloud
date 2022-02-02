@@ -255,6 +255,19 @@ data:
     spring:
       cloud:
         gateway:
+          {{- if eq .Values.global.cors.enabled true }}
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - OPTIONS
+                - HEAD
+          {{- end }}
           default-filters:
           - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
           actuator:

@@ -77,7 +77,7 @@ spec:
         - name: {{ $serviceName }}
           securityContext:
             {{- toYaml $serviceDefinition.securityContext | nindent 12 }}
-          image: "{{ $serviceDefinition.image.repository }}:{{ $serviceDefinition.image.tag | default $chart.AppVersion }}"
+          image: "{{ $values.global.image.registry | default "docker.io" }}/{{ $serviceDefinition.image.repository }}:{{ $serviceDefinition.image.tag | default $chart.AppVersion }}"
           imagePullPolicy: {{ $values.global.image.pullPolicy }}
           command:
             - /bin/sh
