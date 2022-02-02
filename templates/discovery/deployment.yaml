@@ -37,7 +37,7 @@ spec:
         - name: {{ .Chart.Name }}-discovery
           securityContext:
             {{- toYaml .Values.geoserver.discovery.securityContext | nindent 12 }}
-          image: "{{ .Values.geoserver.discovery.image.repository }}:{{ .Values.geoserver.discovery.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.geoserver.discovery.image.repository }}:{{ .Values.geoserver.discovery.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           env:
             - name: EUREKA_INSTANCE_HOSTNAME

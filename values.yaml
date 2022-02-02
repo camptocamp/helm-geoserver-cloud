@@ -8,6 +8,7 @@ global:
   app_environment_name: 'master'
   cluster_environment: dev
   image:
+    registry: docker.io
     pullPolicy: IfNotPresent
   annotations: {}
 
