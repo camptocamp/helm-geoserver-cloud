@@ -353,6 +353,15 @@ data:
     spring:
       cloud:
         gateway:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
           default-filters:
           - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
           actuator:
@@ -831,7 +840,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -966,7 +975,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1044,7 +1053,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1126,7 +1135,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1265,7 +1274,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1404,7 +1413,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1543,7 +1552,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1682,7 +1691,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 7483d9a4a944ed6fd776f98651db438d874fad8e8f5403680563354d6d0cc90e
+        checksum/config: 4ebf453a5457a5d02aa201b4590567ed09b1bab06d11c66c74fe8090a1083732
       labels:
 
         app.kubernetes.io/name: geoservercloud

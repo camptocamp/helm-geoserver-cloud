@@ -1,5 +1,7 @@
 global:
   deployed_by: helm
+  cors:
+    enabled: true
   revision: HEAD
   custom_pod_labels: {}
   base_environment_name: 'dev'
