@@ -265,6 +265,8 @@ data:
                 - PUT
                 - POST
                 - DELETE
+                - OPTIONS
+                - HEAD
           {{- end }}
           default-filters:
           - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
