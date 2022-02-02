@@ -153,11 +153,11 @@ geoserver:
 
     resources:
       requests:
-        memory: '300Mi'
-        cpu: '100m'
+        memory: 128Mi
+        cpu: 0.1
       limits:
-        memory: '600Mi'
-    #        cpu: "300m"
+        memory: 512Mi
+        cpu: 2.0
 
     nodeSelector: {}
 
@@ -186,11 +186,11 @@ geoserver:
 
     resources:
       requests:
-        memory: '400Mi'
-        cpu: '100m'
+        memory: 128Mi
+        cpu: 0.1
       limits:
-        memory: '800Mi'
-    #        cpu: "300m"
+        memory: 512Mi
+        cpu: 2.0
 
     nodeSelector: {}
 
@@ -219,11 +219,11 @@ geoserver:
 
     resources:
       requests:
-        memory: '300Mi'
-        cpu: '100m'
+        memory: 128Mi
+        cpu: 0.1
       limits:
-        memory: '600Mi'
-        cpu: '300m'
+        memory: 512Mi
+        cpu: 2.0
 
     nodeSelector: {}
 
@@ -253,11 +253,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '512Mi'
-          cpu: '300m'
+          memory: 128Mi
+          cpu: 0.1
         limits:
-          memory: '1Gi'
-      #        cpu: "600m"
+          memory: 512Mi
+          cpu: 2.0
 
       nodeSelector: {}
 
@@ -286,11 +286,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '512Mi'
-          cpu: '200m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '1Gi'
-      #        cpu: "400m"
+          memory: 2Gi
+          cpu: 2.0
 
       nodeSelector: {}
 
@@ -319,11 +319,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '400Mi'
-          cpu: '200m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '800Mi'
-      #        cpu: "400m"
+          memory: 4Gi
+          cpu: 4.0
 
       nodeSelector: {}
 
@@ -352,11 +352,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '400Mi'
-          cpu: '100m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '800Mi'
-      #        cpu: "300m"
+          memory: 4Gi
+          cpu: 4.0
 
       nodeSelector: {}
 
@@ -385,11 +385,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '400Mi'
-          cpu: '100m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '800Mi'
-      #        cpu: "300m"
+          memory: 4Gi
+          cpu: 4.0
 
       nodeSelector: {}
 
