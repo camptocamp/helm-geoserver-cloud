@@ -249,6 +249,7 @@ data:
         org.geoserver.wfs: WARN
         org.geoserver.jackson: INFO
         org.geotools.jackson: INFO
+        org.geotools.autoconfigure: INFO
         org.geoserver.platform: INFO
         org.geoserver.platform.resource: INFO
         org.geoserver.jdbcconfig: INFO
@@ -842,7 +843,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -942,10 +943,11 @@ spec:
 
           resources:
             limits:
-              memory: 600Mi
+              cpu: 2
+              memory: 512Mi
             requests:
-              cpu: 100m
-              memory: 300Mi
+              cpu: 0.1
+              memory: 128Mi
       volumes:
         - name: configs
           configMap:
@@ -977,7 +979,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1023,11 +1025,11 @@ spec:
 
           resources:
             limits:
-              cpu: 300m
-              memory: 600Mi
+              cpu: 2
+              memory: 512Mi
             requests:
-              cpu: 100m
-              memory: 300Mi
+              cpu: 0.1
+              memory: 128Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/gateway/deployment.yaml
 apiVersion: apps/v1
@@ -1055,7 +1057,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1104,10 +1106,11 @@ spec:
 
           resources:
             limits:
-              memory: 800Mi
+              cpu: 2
+              memory: 512Mi
             requests:
-              cpu: 100m
-              memory: 400Mi
+              cpu: 0.1
+              memory: 128Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # deployment rest
@@ -1137,7 +1140,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1243,9 +1246,10 @@ spec:
 
           resources:
             limits:
-              memory: 1Gi
+              cpu: 2
+              memory: 2Gi
             requests:
-              cpu: 200m
+              cpu: 0.1
               memory: 512Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -1276,7 +1280,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1382,10 +1386,11 @@ spec:
 
           resources:
             limits:
-              memory: 800Mi
+              cpu: 4
+              memory: 4Gi
             requests:
-              cpu: 100m
-              memory: 400Mi
+              cpu: 0.1
+              memory: 512Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # deployment webui
@@ -1415,7 +1420,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1521,10 +1526,11 @@ spec:
 
           resources:
             limits:
-              memory: 1Gi
-            requests:
-              cpu: 300m
+              cpu: 2
               memory: 512Mi
+            requests:
+              cpu: 0.1
+              memory: 128Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # deployment wfs
@@ -1554,7 +1560,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1660,10 +1666,11 @@ spec:
 
           resources:
             limits:
-              memory: 800Mi
+              cpu: 4
+              memory: 4Gi
             requests:
-              cpu: 200m
-              memory: 400Mi
+              cpu: 0.1
+              memory: 512Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # deployment wms
@@ -1693,7 +1700,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: a3c9b8b48e2682a734f409e4df074d6e007764dd8da0b1c8800b2e2249791141
+        checksum/config: e88c19a423ce172a92f4f738e635dce8ea84983b09b5158ddac13d48d21f0a14
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1799,10 +1806,11 @@ spec:
 
           resources:
             limits:
-              memory: 800Mi
+              cpu: 4
+              memory: 4Gi
             requests:
-              cpu: 100m
-              memory: 400Mi
+              cpu: 0.1
+              memory: 512Mi
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/statefulset.yaml
 apiVersion: apps/v1
@@ -1925,8 +1933,12 @@ spec:
             successThreshold: 1
             failureThreshold: 3
           resources:
-            limits: {}
-            requests: {}
+            limits:
+              cpu: 2
+              memory: 2Gi
+            requests:
+              cpu: 0.1
+              memory: 512Mi
           lifecycle:
             preStop:
               exec:

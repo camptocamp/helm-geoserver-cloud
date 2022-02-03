@@ -13,6 +13,14 @@ global:
   annotations: {}
 
 rabbitmq:
+  resources:
+    limits:
+      cpu: 2
+      memory: 2Gi
+    requests:
+      cpu: 0.1
+      memory: 512Mi
+
   image:
     registry: docker.io
     repository: bitnami/rabbitmq
@@ -56,6 +64,19 @@ geoserver:
 
   # environment variables, same format as jdbc.configVariables
   envVariables: {}
+  # Define outgoing proxy (note: not tested)
+  # httpProxyHost:
+  #   name: "HTTP_PROXYHOST"
+  #   value: "192.168.0.13"
+  # httpProxyPort:
+  #   name: "HTTP_PROXYPORT"
+  #   value: "3128"
+  # httpsProxyHost:
+  #   name: "HTTPS_PROXYHOST"
+  #   value: "192.168.0.13"
+  # httpsProxyPort:
+  #   name: "HTTPS_PROXYPORT"
+  #   value: "3128"
 
   jdbc:
     external: false
@@ -79,19 +100,6 @@ geoserver:
       value: ''
       secretKey: ''
       secretName: ''
-    # Define outgoing proxy (note: not tested)
-    # httpProxyHost:
-    #   name: "HTTP_PROXYHOST"
-    #   value: "192.168.0.13"
-    # httpProxyPort:
-    #   name: "HTTP_PROXYPORT"
-    #   value: "3128"
-    # httpsProxyHost:
-    #   name: "HTTPS_PROXYHOST"
-    #   value: "192.168.0.13"
-    # httpsProxyPort:
-    #   name: "HTTPS_PROXYPORT"
-    #   value: "3128"
   # example of usage with external secret for the DB connection
   # jdbc:
   #   external: true
@@ -145,11 +153,11 @@ geoserver:
 
     resources:
       requests:
-        memory: '300Mi'
-        cpu: '100m'
+        memory: 128Mi
+        cpu: 0.1
       limits:
-        memory: '600Mi'
-    #        cpu: "300m"
+        memory: 512Mi
+        cpu: 2.0
 
     nodeSelector: {}
 
@@ -178,11 +186,11 @@ geoserver:
 
     resources:
       requests:
-        memory: '400Mi'
-        cpu: '100m'
+        memory: 128Mi
+        cpu: 0.1
       limits:
-        memory: '800Mi'
-    #        cpu: "300m"
+        memory: 512Mi
+        cpu: 2.0
 
     nodeSelector: {}
 
@@ -211,11 +219,11 @@ geoserver:
 
     resources:
       requests:
-        memory: '300Mi'
-        cpu: '100m'
+        memory: 128Mi
+        cpu: 0.1
       limits:
-        memory: '600Mi'
-        cpu: '300m'
+        memory: 512Mi
+        cpu: 2.0
 
     nodeSelector: {}
 
@@ -245,11 +253,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '512Mi'
-          cpu: '300m'
+          memory: 128Mi
+          cpu: 0.1
         limits:
-          memory: '1Gi'
-      #        cpu: "600m"
+          memory: 512Mi
+          cpu: 2.0
 
       nodeSelector: {}
 
@@ -278,11 +286,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '512Mi'
-          cpu: '200m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '1Gi'
-      #        cpu: "400m"
+          memory: 2Gi
+          cpu: 2.0
 
       nodeSelector: {}
 
@@ -311,11 +319,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '400Mi'
-          cpu: '200m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '800Mi'
-      #        cpu: "400m"
+          memory: 4Gi
+          cpu: 4.0
 
       nodeSelector: {}
 
@@ -344,11 +352,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '400Mi'
-          cpu: '100m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '800Mi'
-      #        cpu: "300m"
+          memory: 4Gi
+          cpu: 4.0
 
       nodeSelector: {}
 
@@ -377,11 +385,11 @@ geoserver:
 
       resources:
         requests:
-          memory: '400Mi'
-          cpu: '100m'
+          memory: 512Mi
+          cpu: 0.1
         limits:
-          memory: '800Mi'
-      #        cpu: "300m"
+          memory: 4Gi
+          cpu: 4.0
 
       nodeSelector: {}
 

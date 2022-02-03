@@ -151,6 +151,7 @@ data:
         org.geoserver.wfs: WARN
         org.geoserver.jackson: INFO
         org.geotools.jackson: INFO
+        org.geotools.autoconfigure: INFO
         org.geoserver.platform: INFO
         org.geoserver.platform.resource: INFO
         org.geoserver.jdbcconfig: INFO
