@@ -7,9 +7,10 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: true
 secrets:
   - name: test-rabbitmq
 ---
@@ -19,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -62,15 +63,17 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
 data:
   rabbitmq.conf: |-
     ## Username and password
+    ##
     default_user = geoserver
     default_pass = CHANGEME
     ## Clustering
+    ##
     cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
     cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
     cluster_formation.node_cleanup.interval = 10
@@ -90,7 +93,7 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -497,7 +500,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
 rules:
@@ -516,7 +519,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
 subjects:
@@ -535,7 +538,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -556,6 +559,7 @@ spec:
   selector:
     app.kubernetes.io/name: rabbitmq
     app.kubernetes.io/instance: test
+  publishNotReadyAddresses: true
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/svc.yaml
 apiVersion: v1
@@ -565,7 +569,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -597,7 +601,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -624,7 +628,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -651,7 +655,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -679,7 +683,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -708,7 +712,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -737,7 +741,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -766,7 +770,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -795,7 +799,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -823,7 +827,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -843,7 +847,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -959,7 +963,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -979,7 +983,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1037,7 +1041,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1057,7 +1061,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1119,7 +1123,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1140,7 +1144,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1259,7 +1263,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1280,7 +1284,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1399,7 +1403,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1420,7 +1424,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1539,7 +1543,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1560,7 +1564,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1679,7 +1683,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.21
+    helm.sh/chart: geoservercloud-0.0.22
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1700,7 +1704,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 0a2508f0f4dc6438395e56a38dafa8b6a541c9b3805812ad1ad90cd663133fbb
+        checksum/config: 4942630a0f0d13b7e34d8cad682214b01bbcbd2e6f438f44035a7f1ef3d27035
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1820,7 +1824,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.0.1
+    helm.sh/chart: rabbitmq-8.28.1
     app.kubernetes.io/instance: test
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -1837,20 +1841,37 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: rabbitmq
-        helm.sh/chart: rabbitmq-8.0.1
+        helm.sh/chart: rabbitmq-8.28.1
         app.kubernetes.io/instance: test
         app.kubernetes.io/managed-by: Helm
       annotations:
+        checksum/config: dc8292444f69b4b1f01026d65e4bcf9390effe287ea65e8000e90a0aac194a1f
     spec:
 
       serviceAccountName: test-rabbitmq
+      affinity:
+        podAffinity:
+
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: rabbitmq
+                    app.kubernetes.io/instance: test
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: 120
       containers:
         - name: rabbitmq
-          image: docker.io/bitnami/rabbitmq:3.8.9-debian-10-r37
+          image: docker.io/bitnami/rabbitmq:3.9.13-debian-10-r14
           imagePullPolicy: "IfNotPresent"
           env:
             - name: BITNAMI_DEBUG
@@ -1892,6 +1913,10 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-erlang-cookie
+            - name: RABBITMQ_LOAD_DEFINITIONS
+              value: "no"
+            - name: RABBITMQ_SECURE_PASSWORD
+              value: "yes"
             - name: RABBITMQ_USERNAME
               value: "geoserver"
             - name: RABBITMQ_PASSWORD
@@ -1915,7 +1940,7 @@ spec:
               command:
                 - /bin/bash
                 - -ec
-                - rabbitmq-diagnostics -q check_running
+                - rabbitmq-diagnostics -q ping
             initialDelaySeconds: 120
             periodSeconds: 30
             timeoutSeconds: 20
@@ -1926,12 +1951,24 @@ spec:
               command:
                 - /bin/bash
                 - -ec
-                - rabbitmq-diagnostics -q check_running
+                - rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms
             initialDelaySeconds: 10
             periodSeconds: 30
             timeoutSeconds: 20
             successThreshold: 1
             failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - -ec
+                  - |
+                    if [[ -f /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh ]]; then
+                        /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh -t "120" -d  "false"
+                    else
+                        rabbitmqctl stop_app
+                    fi
           resources:
             limits:
               cpu: 2
@@ -1939,13 +1976,6 @@ spec:
             requests:
               cpu: 0.1
               memory: 512Mi
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - bash
-                  - -ec
-                  - rabbitmqctl stop_app
           volumeMounts:
             - name: configuration
               mountPath: /bitnami/rabbitmq/conf

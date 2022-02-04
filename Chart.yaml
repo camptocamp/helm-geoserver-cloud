@@ -3,10 +3,10 @@ appVersion: '1.0-RC9'
 #appVersion: '1.0-SNAPSHOT'
 description: A Helm chart for Geoserver-cloud
 name: geoservercloud
-version: 0.0.21
+version: 0.0.22
 dependencies:
   - name: 'rabbitmq'
-    version: 8.0.1
+    version: 8.28.1
     repository: 'https://charts.bitnami.com/bitnami'
   - name: 'postgresql'
     version: 10.13.8
