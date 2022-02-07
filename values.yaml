@@ -1,4 +1,5 @@
 global:
+  profile: jdbcconfig
   deployed_by: helm
   cors:
     enabled: true
