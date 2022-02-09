@@ -284,7 +284,6 @@ data:
         org.geoserver.wfs: WARN
         org.geoserver.jackson: INFO
         org.geotools.jackson: INFO
-        org.geotools.autoconfigure: INFO
         org.geoserver.platform: INFO
         org.geoserver.platform.resource: INFO
         org.geoserver.jdbcconfig: INFO
@@ -755,6 +754,35 @@ spec:
     app.kubernetes.io/component: gateway
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# service gwc
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-geoservercloud-gwc
+  labels:
+    helm.sh/chart: geoservercloud-0.0.24
+    deployed_by: helm
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoservercloud
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: gwc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+
+    app.kubernetes.io/name: geoservercloud
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/component: gwc
+---
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # service rest
 apiVersion: v1
 kind: Service
@@ -925,7 +953,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1061,7 +1089,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1139,7 +1167,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1195,6 +1223,146 @@ spec:
               memory: 128Mi
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
+# deployment gwc
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-geoservercloud-gwc
+  labels:
+    helm.sh/chart: geoservercloud-0.0.24
+    deployed_by: helm
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoservercloud
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: gwc
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  selector:
+    matchLabels:
+
+      app.kubernetes.io/name: geoservercloud
+      app.kubernetes.io/instance: test
+      app.kubernetes.io/component: gwc
+  template:
+    metadata:
+      annotations:
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+      labels:
+
+        app.kubernetes.io/name: geoservercloud
+        app.kubernetes.io/instance: test
+        app.kubernetes.io/component: gwc
+    spec:
+      volumes:
+        - name: nfs-pv-storage-rasters
+          persistentVolumeClaim:
+           claimName: nfs-rasters-pv-claim
+
+      serviceAccountName: test-geoservercloud
+      securityContext:
+        runAsUser: 630
+      containers:
+        - name: gwc
+          securityContext:
+            {}
+          image: "docker.io/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - java org.springframework.boot.loader.JarLauncher
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "jdbcconfig"
+
+            - name: EUREKA_SERVER_URL
+              value: http://test-geoservercloud-discovery:8761/eureka
+            - name: BACKEND_CATALOG
+              value: "false"
+            - name: BACKEND_DATA_DIRECTORY
+              value: "false"
+            - name: BACKEND_JDBCCONFIG
+              value: "true"
+            - name: JDBCCONFIG_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: DATABASE_NAME
+            - name: JDBCCONFIG_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: HOST
+            - name: JDBCCONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: ROLE
+            - name: JDBCCONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PASSWORD
+            - name: JDBCCONFIG_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: jdbcconfig-test-geoservercloud
+                  key: PORT
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: geoserver-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: test-geoservercloud-rabbitmq
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
+          volumeMounts:
+            - mountPath: "/var/geoserver/nfsrasters"
+              name: nfs-pv-storage-rasters
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            periodSeconds: 10
+            failureThreshold: 10
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
+
+          resources:
+            limits:
+              cpu: 4
+              memory: 4Gi
+            requests:
+              cpu: 0.1
+              memory: 512Mi
+---
+# Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # deployment rest
 apiVersion: apps/v1
 kind: Deployment
@@ -1222,7 +1390,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1362,7 +1530,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1502,7 +1670,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1642,7 +1810,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1782,7 +1950,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 69dd76ba8e88509510f53455c45d477e452620380c59d24b4210adb0209fce32
+        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
       labels:
 
         app.kubernetes.io/name: geoservercloud
