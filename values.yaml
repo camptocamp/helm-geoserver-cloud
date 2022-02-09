@@ -401,3 +401,36 @@ geoserver:
       service:
         type: ClusterIP
         port: 8080
+
+    gwc:
+      replicaCount: 1
+      image:
+        repository: geoservercloud/geoserver-cloud-gwc
+        tag: ''
+
+      env: []
+
+      podAnnotations: {}
+
+      podSecurityContext:
+        runAsUser: 630
+
+      securityContext: {}
+
+      resources:
+        requests:
+          memory: 512Mi
+          cpu: 0.1
+        limits:
+          memory: 4Gi
+          cpu: 4.0
+
+      nodeSelector: {}
+
+      tolerations: {}
+
+      affinity: {}
+
+      service:
+        type: ClusterIP
+        port: 8080

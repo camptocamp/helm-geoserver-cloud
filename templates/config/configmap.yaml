@@ -26,6 +26,48 @@ data:
 
     # Common configuration for all services. Override or add service specific config
     # properties on each <service-name>-service.yml file
+
+    # GeoTools HTTP Client proxy configuration, allows configuring cascaded WMS/WMTS/WFS stores
+    # that need to go through an HTTP proxy without affecting all the http clients at the JVM level
+    # These are default settings. The enabled property can be set to false to disable the custom
+    # HTTPClientFactory altogether.
+    # The following OS environment variables can be set for easier configuration:
+    # HTTP(S)_PROXYHOST, HTTP(S)_PROXYPORT, HTTP(S)_PROXYUSER, HTTP(S)_PROXYPASSWORD, HTTP(S)_NONPROXYHOSTS
+    geotools:
+      httpclient:
+        proxy:
+          enabled: true
+          http:
+            host: ${http.proxyHost:}
+            port: ${http.proxyPort:}
+            user: ${http.proxyUser:}
+            password: ${http.proxyPassword:}
+            nonProxyHosts: ${http.nonProxyHosts:localhost.*}
+            # comma separated list of Java regular expressions, e.g.: nonProxyHosts: localhost, example.*
+          https:
+            host: ${https.proxyHost:${geotools.httpclient.proxy.http.host}}
+            port: ${https.proxyPort:${geotools.httpclient.proxy.http.port}}
+            user: ${https.proxyUser:${geotools.httpclient.proxy.http.user}}
+            password: ${https.proxyPassword:${geotools.httpclient.proxy.http.password}}
+            nonProxyHosts: ${https.nonProxyHosts:${geotools.httpclient.proxy.http.nonProxyHosts}}
+
+    gwc:
+      enabled: true
+      cache-directory: ${GEOWEBCACHE_CACHE_DIR:${geoserver.backend.data-directory.location}/gwc}
+      rest-config: true
+      web-ui: true
+      services:
+        wmts: true
+        tms: true
+        wms: true
+        kml: true
+        gmaps: true
+        mgmaps: true
+      blobstores:
+        azure: true
+        s3: true
+
+    # GeoServer-Cloud common config properties
     geoserver:
       security.enabled: true
       servlet.filter.session-debug.enabled: false # until the NPE is fixed
@@ -67,35 +109,18 @@ data:
             url: "${jdbcconfig.url:jdbc:postgresql://${jdbcconfig.host}:${jdbcconfig.port:5432}/${jdbcconfig.database}?currentSchema=${jdbcconfig.schema:public}}"
             username: ${jdbcconfig.username:geoserver}
             password: ${jdbcconfig.password:geo5erver}
-
             driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
             # optional:
             minimumIdle: ${jdbcconfig.minConnections:2}
             maximumPoolSize: ${jdbcconfig.maxConnections:8}
-
-    # GeoTools HTTP Client proxy configuration, allows configuring cascaded WMS/WMTS/WFS stores
-    # that need to go through an HTTP proxy without affecting all the http clients at the JVM level
-    # These are default settings. The enabled property can be set to false to disable the custom
-    # HTTPClientFactory altogether.
-    # The following OS environment variables can be set for easier configuration:
-    # HTTP(S)_PROXYHOST, HTTP(S)_PROXYPORT, HTTP(S)_PROXYUSER, HTTP(S)_PROXYPASSWORD, HTTP(S)_NONPROXYHOSTS
-    geotools:
-      httpclient:
-        proxy:
-          enabled: true
-          http:
-            host: ${http.proxyHost:}
-            port: ${http.proxyPort:}
-            user: ${http.proxyUser:}
-            password: ${http.proxyPassword:}
-            nonProxyHosts: ${http.nonProxyHosts:localhost.*}
-            # comma separated list of Java regular expressions, e.g.: nonProxyHosts: localhost, example.*
-          https:
-            host: ${https.proxyHost:${geotools.httpclient.proxy.http.host}}
-            port: ${https.proxyPort:${geotools.httpclient.proxy.http.port}}
-            user: ${https.proxyUser:${geotools.httpclient.proxy.http.user}}
-            password: ${https.proxyPassword:${geotools.httpclient.proxy.http.password}}
-            nonProxyHosts: ${https.nonProxyHosts:${geotools.httpclient.proxy.http.nonProxyHosts}}
+      styling:
+        css.enabled: true
+      wms:
+        output-formats:
+          vector-tiles:
+            mapbox.enabled: true
+            geojson.enabled: true
+            topojson.enabled: true
 
     management:
       endpoints:
@@ -138,12 +163,19 @@ data:
     reactive.feign.cloud.enabled: true
     reactive.feign.hystrix.enabled: false
 
+    # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
+    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
+    eureka.client.healthcheck.enabled: true
+
     logging:
       level:
         root: WARN
         org.springframework: ERROR
         org.springframework.cloud.bus: INFO
         org.springframework.retry: info
+        org.springframework.jdbc.support: info
+        com.zaxxer.hikari.pool: OFF
+        org.geotools.autoconfigure: info
         # geoserver roots
         org.geoserver: INFO
         org.geoserver.catalog.plugin: INFO
@@ -151,7 +183,6 @@ data:
         org.geoserver.wfs: WARN
         org.geoserver.jackson: INFO
         org.geotools.jackson: INFO
-        org.geotools.autoconfigure: INFO
         org.geoserver.platform: INFO
         org.geoserver.platform.resource: INFO
         org.geoserver.jdbcconfig: INFO
@@ -168,6 +199,8 @@ data:
         # reactivefeign:
         reactivefeign.client.log: INFO
         org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
+        com.netflix.eureka.registry.AbstractInstanceRegistry: ERROR # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: ERROR # log flooding with "WARN No remote registry available for the remote region us-east-1"
 
     ---
     spring.config.activate.on-profile: datadir
@@ -199,6 +232,9 @@ data:
         org.geoserver.jackson: DEBUG
         org.geotools.jackson: DEBUG
         org.geoserver.platform: ERROR
+        org.geoserver.platform.resource.MemoryLockProvider: INFO
+        org.geoserver.platform.resource.NioFileLockProvider: DEBUG
+        org.geoserver.platform.resource.FileLockProvider: DEBUG
         org.geoserver.jdbcconfig: INFO
         # gs-cloud roots
         org.geoserver.cloud: DEBUG
@@ -210,13 +246,40 @@ data:
         org.springframework.cloud.bus.BusAutoConfiguration: DEBUG
         org.springframework.cloud.bus.DefaultBusPathMatcher: INFO
         # reactivefeign:
-        reactivefeign.client.log: DEBUG
+        reactivefeign.client.log: info
+  catalog-service.yml: |
+    geoserver:
+      security.enabled: false
+      # Disable advertised catalog, it checks the org.geoserver.ows.Dispatcher.REQUEST to check if an OWS is in progress,
+      # which can never be the case, and causes a java.lang.NoClassDefFoundError on org.springframework.web.servlet.mvc.AbstractController
+      catalog:
+        advertised: false
+        # Disable LocalWorkspaceCatalog decorator, this service exposes a "raw catalog" backend, there's no concept of local workspaces
+        localWorkspace: false
+        secure: false
+        # enable caching while using the jdbcconfig backend, we've disabled its own internal caching due to concurrency related bugs
+        caching.enabled: ${geoserver.backend.jdbcconfig.enabled}
+      catalog-service:
+        io-threads:
+          # Number of back-end threads to hit the actual catalog with. Defaults 4 * number of cores if unset.
+          # If using jdbcconfig, let io-threads be about half the size of geoserver.backend.jdbcconfig.datasource.maximumPoolSize,
+          # it has the tendency to use more than one jdbc connection for some requests.
+          max-size: ${catalog.io.threads:8}
+          # maximum number of queued requests per worker thread before rejecting new requests
+          max-queued: ${catalog.io.maxQueued:10000}
+      bus:
+        # receive events but don't publish, it's the front catalogs that publish events to better track where the changes come from
+        send-events: false
+      backend:
+        # decide which catalog backend to use on this service, default to using jdbcconfig
+        jdbcconfig.enabled: ${backend.jdbcconfig:true}
 
   config-service.yml: |
     spring:
       profiles:
         active: native #use native filesystem config by default instead of git. REVISIT.
       config.server.native.searchLocations: ${config.path:file:./config}
+    eureka.client.healthcheck.enabled: false
 
     logging:
       level:
@@ -270,69 +333,74 @@ data:
                 - HEAD
           {{- end }}
           default-filters:
-          - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
+            - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
           actuator:
             verbose:
               enabled: true
           routes:
-          - id: catalog
-            uri: lb://catalog-service
-            predicates:
-            - Path=${geoserver.base-path}/api/v1/**
-            filters: # Expose the catalog and configuration API only if the dev profile is active
-            - RouteProfile=dev,403
-    # WFS routes
-          - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
-            uri: lb://wfs-service #load balanced to the wfs-service instances
-            predicates:
-            - Path=${geoserver.base-path}/wfs,${geoserver.base-path}/{workspace}/wfs,${geoserver.base-path}/{workspace}/{layer}/wfs,${geoserver.base-path}/schemas/wfs/**
-    # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
-          - id: wfs_ows
-            uri: lb://wfs-service
-            predicates:
-            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
-            - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
-    # WMS routes
-          - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
-            uri: lb://wms-service #load balanced to the wms-service instances
-            predicates:
-            - Path=${geoserver.base-path}/wms,${geoserver.base-path}/{workspace}/wms,${geoserver.base-path}/{workspace}/{layer}/wms,${geoserver.base-path}/schemas/wms/**,${geoserver.base-path}/openlayers/**,${geoserver.base-path}/openlayers3/**
-          - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
-            uri: lb://wms-service
-            predicates:
-            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
-            - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
-    # WCS routes
-          - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
-            uri: lb://wcs-service #load balanced to the wps-service instances
-            predicates:
-            - Path=${geoserver.base-path}/wcs,${geoserver.base-path}/{workspace}/wcs,${geoserver.base-path}/{workspace}/{layer}/wcs,${geoserver.base-path}/schemas/wcs/**
-          - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
-            uri: lb://wcs-service
-            predicates:
-            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
-            - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
-    # WPS routes
-          - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
-            uri: lb://wps-service #load balanced to the wps-service instances
-            predicates:
-            - Path=${geoserver.base-path}/wps,${geoserver.base-path}/{segment}/wps,${geoserver.base-path}/schemas/wps/**
-          - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
-            uri: lb://wps-service
-            predicates:
-            - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{segment}/ows
-            - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
-    # REST configuration routes
-          - id: restconfig
-            uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
-            predicates:
-            - Path=${geoserver.base-path}/rest/**
-    # Web UI configuration routes
-          - id: webui
-            uri: lb://web-ui
-            predicates:
-            - Path=${geoserver.base-path}/**
-            #- Path=${geoserver.base-path},${geoserver.base-path}/,${geoserver.base-path}/index.html,${geoserver.base-path}/web,${geoserver.base-path}/web/**,${geoserver.base-path}/j_spring_security_check,${geoserver.base-path}/j_spring_security_logout
+            - id: catalog
+              uri: lb://catalog-service
+              predicates:
+                - Path=${geoserver.base-path}/api/v1/**
+              filters: # Expose the catalog and configuration API only if the dev profile is active
+                - RouteProfile=dev,403
+            # WFS routes
+            - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
+              uri: lb://wfs-service #load balanced to the wfs-service instances
+              predicates:
+                - Path=${geoserver.base-path}/wfs,${geoserver.base-path}/{workspace}/wfs,${geoserver.base-path}/{workspace}/{layer}/wfs,${geoserver.base-path}/schemas/wfs/**
+            # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
+            - id: wfs_ows
+              uri: lb://wfs-service
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+                - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
+            # WMS routes
+            - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
+              uri: lb://wms-service #load balanced to the wms-service instances
+              predicates:
+                - Path=${geoserver.base-path}/wms,${geoserver.base-path}/{workspace}/wms,${geoserver.base-path}/{workspace}/{layer}/wms,${geoserver.base-path}/schemas/wms/**,${geoserver.base-path}/openlayers/**,${geoserver.base-path}/openlayers3/**
+            - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
+              uri: lb://wms-service
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+                - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
+            # WCS routes
+            - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
+              uri: lb://wcs-service #load balanced to the wps-service instances
+              predicates:
+                - Path=${geoserver.base-path}/wcs,${geoserver.base-path}/{workspace}/wcs,${geoserver.base-path}/{workspace}/{layer}/wcs,${geoserver.base-path}/schemas/wcs/**
+            - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
+              uri: lb://wcs-service
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+                - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
+            # WPS routes
+            - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
+              uri: lb://wps-service #load balanced to the wps-service instances
+              predicates:
+                - Path=${geoserver.base-path}/wps,${geoserver.base-path}/{segment}/wps,${geoserver.base-path}/schemas/wps/**
+            - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
+              uri: lb://wps-service
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{segment}/ows
+                - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
+            # REST configuration routes
+            - id: restconfig
+              uri: lb://restconfig-v1 #load balanced to the restconfig-v1 instances
+              predicates:
+                - Path=${geoserver.base-path}/rest/**
+            # GeoWebcache configuration routes
+            - id: gwc
+              uri: lb://gwc-service
+              predicates:
+                - Path=${geoserver.base-path}/gwc/**
+            # Web UI configuration routes
+            - id: webui
+              uri: lb://web-ui
+              predicates:
+                - Path=${geoserver.base-path}/**
+              #- Path=${geoserver.base-path},${geoserver.base-path}/,${geoserver.base-path}/index.html,${geoserver.base-path}/web,${geoserver.base-path}/web/**,${geoserver.base-path}/j_spring_security_check,${geoserver.base-path}/j_spring_security_logout
 
     logging:
       level:
@@ -340,11 +408,17 @@ data:
         com.netflix.discovery: INFO
         com.netflix.eureka: INFO
         org.springframework.cloud.gateway: info
+        org.springframework.cloud.gateway.handler: info
         reactor.netty: INFO
-
-
-
-
+  gwc-service.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+  restconfig-v1.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
+  wcs-service.yml: |
+    geoserver:
+      backend.catalog-service.enabled: ${backend.catalog:true}
   web-ui.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
@@ -356,9 +430,15 @@ data:
         wms.enabled: true
         wcs.enabled: true
         wps.enabled: false # not working yet
-        gwc.enabled: false # not ready yet
+        gwc:
+          enabled: ${gwc.enabled:false}
+          capabilities:
+            tms: ${gwc.services.tms:false}
+            wmts: ${gwc.services.wmts:false}
+            wmsc: ${gwc.services.wms:false}
         extensions:
           importer.enabled: true
+          geostyler.enabled: true
         demos:
           enabled: true
           wps-request-builder: true
@@ -376,7 +456,6 @@ data:
           enabled: true
           resource-browser: true
           catalog-bulk-load: true
-
   restconfig-v1.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
@@ -384,11 +463,9 @@ data:
   wfs-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
-
   wms-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
-
-  wcs-service.yml: |
+  wps-service.yml: |
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
