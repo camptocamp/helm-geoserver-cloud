@@ -87,8 +87,8 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $values.global.profile | quote}}
           {{ include "geoserver.common.env.variables" $ | nindent 12}}
-          {{- if $values.geoserver.config.env }}
-          {{ toYaml $values.geoserver.config.env | indent 12 }}
+          {{- if $serviceDefinition.env }}
+          {{ toYaml $serviceDefinition.env | nindent 12 }}
           {{- end }}
 
           ports:
