@@ -6,4 +6,4 @@ version: 0.1.0
 dependencies:
   - name: geoservercloud
     repository: file://../..
-    version: 0.0.24
+    version: 0.0.25

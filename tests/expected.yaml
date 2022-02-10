@@ -20,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -93,7 +93,7 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -678,7 +678,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -705,7 +705,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -732,7 +732,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -760,7 +760,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -789,7 +789,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -818,7 +818,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -847,7 +847,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -876,7 +876,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -905,7 +905,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -933,7 +933,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -953,7 +953,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1069,7 +1069,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1089,7 +1089,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1147,7 +1147,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1167,7 +1167,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1229,7 +1229,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1250,7 +1250,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1274,7 +1274,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java -DALLOW_ENV_PARAMETRIZATION=true org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"
@@ -1369,7 +1369,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1390,7 +1390,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1414,7 +1414,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java -DALLOW_ENV_PARAMETRIZATION=true org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"
@@ -1509,7 +1509,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1530,7 +1530,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1554,7 +1554,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java -DALLOW_ENV_PARAMETRIZATION=true org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"
@@ -1649,7 +1649,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1670,7 +1670,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1694,7 +1694,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java -DALLOW_ENV_PARAMETRIZATION=true org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"
@@ -1789,7 +1789,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1810,7 +1810,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1834,7 +1834,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java -DALLOW_ENV_PARAMETRIZATION=true org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"
@@ -1929,7 +1929,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.24
+    helm.sh/chart: geoservercloud-0.0.25
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1950,7 +1950,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa3c3b745eef820819c69e3e63c7ee7fe1525bca2b49d2ccabd804906d20abe5
+        checksum/config: fc2d0a25f8ec0d145f0f96fb6ddd9c6cef98917ad9dd2a11b768abe39ea7b8ee
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1974,7 +1974,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java -DALLOW_ENV_PARAMETRIZATION=true org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "jdbcconfig"

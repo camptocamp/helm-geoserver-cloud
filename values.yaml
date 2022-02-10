@@ -1,6 +1,7 @@
 global:
   profile: jdbcconfig
   deployed_by: helm
+  allowEnvParametrization: true
   cors:
     enabled: true
   revision: HEAD

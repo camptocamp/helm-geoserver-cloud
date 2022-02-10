@@ -82,7 +82,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - java org.springframework.boot.loader.JarLauncher
+            - java {{ if eq $values.global.allowEnvParametrization true -}} -DALLOW_ENV_PARAMETRIZATION=true {{- end }} org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $values.global.profile | quote}}
