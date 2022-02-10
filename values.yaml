@@ -66,9 +66,6 @@ geoserver:
 
   # environment variables, same format as jdbc.configVariables
   envVariables: {}
-  # allowEnvParameterization:
-  #   name: ALLOW_ENV_PARAMETRIZATION
-  #   value: 'true'
   # Define outgoing proxy (note: not tested)
   # httpProxyHost:
   #   name: "HTTP_PROXYHOST"
