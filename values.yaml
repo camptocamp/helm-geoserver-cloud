@@ -54,6 +54,15 @@ postgresql:
 geoserver:
   name: geoserver
 
+  # Additional security modules
+  security:
+    authkey: true
+
+  # Additional styling modules
+  styling:
+    css: true
+    mapbox: true
+
   # volumeMounts only work for the moment only if
   # NFS PV is used, and that the PV is already defined
   # within the cluster
