@@ -69,7 +69,9 @@ data:
 
     # GeoServer-Cloud common config properties
     geoserver:
-      security.enabled: true
+      security:
+        enabled: true
+        authkey: {{ .Values.geoserver.security.authkey }}
       servlet.filter.session-debug.enabled: false # until the NPE is fixed
       catalog:
         advertised: true
@@ -114,7 +116,8 @@ data:
             minimumIdle: ${jdbcconfig.minConnections:2}
             maximumPoolSize: ${jdbcconfig.maxConnections:8}
       styling:
-        css.enabled: true
+        css.enabled: {{ .Values.geoserver.styling.css }}
+        mapbox.enabled: {{ .Values.geoserver.styling.mapbox }}
       wms:
         output-formats:
           vector-tiles:
