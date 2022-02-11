@@ -69,7 +69,9 @@ data:
 
     # GeoServer-Cloud common config properties
     geoserver:
-      security.enabled: true
+      security:
+        enabled: true
+        authkey: true
       servlet.filter.session-debug.enabled: false # until the NPE is fixed
       catalog:
         advertised: true
