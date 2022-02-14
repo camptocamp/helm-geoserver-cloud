@@ -956,7 +956,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -969,7 +969,7 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-config:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-config:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1092,7 +1092,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1105,7 +1105,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-discovery:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-discovery:1.0-RC10"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1170,7 +1170,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: test
@@ -1183,7 +1183,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1253,7 +1253,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1272,7 +1272,7 @@ spec:
         - name: gwc
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1393,7 +1393,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1412,7 +1412,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-rest:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1533,7 +1533,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1552,7 +1552,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1673,7 +1673,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1692,7 +1692,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-webui:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1813,7 +1813,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1832,7 +1832,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1953,7 +1953,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: f5e3f5ea6fc5e56e67b1241697880812607c53b0c1dc6d627b3ac4dffb1aca25
       labels:
 
         app.kubernetes.io/name: geoservercloud
@@ -1972,7 +1972,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "sanitizee.me/geoservercloud/geoserver-cloud-wms:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh

@@ -4,7 +4,7 @@
 
 global:
   image:
-    registry: "sanitize.me/"
+    registry: 'sanitize.me/'
 
 geoservercloud:
   postgresql:
