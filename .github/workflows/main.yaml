@@ -38,7 +38,7 @@ jobs:
       - run: helm dependency update .
       - run: helm dependency update tests/chart
       - run: helm lint tests/chart
-      - run: helm template --namespace=default test tests/chart > tests/actual.yaml
+      - run: helm template --namespace=default testwithveryveryverylongreleasename tests/chart > tests/actual.yaml
       - run: diff -Naur --ignore-trailing-space tests/expected.yaml tests/actual.yaml
 
       - name: Publish
