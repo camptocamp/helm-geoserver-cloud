@@ -37,7 +37,7 @@ spec:
         - name: {{ .Chart.Name }}-gateway
           securityContext:
             {{- toYaml .Values.geoserver.gateway.securityContext | nindent 12 }}
-          image: "{{ .Values.global.image.registry | default "docker.io" }}/{{ .Values.geoserver.gateway.image.repository }}:{{ .Values.geoserver.gateway.image.tag | default .Chart.AppVersion }}"
+          image: "{{ trimSuffix "/" .Values.global.image.registry | default "docker.io" }}/{{ .Values.geoserver.gateway.image.repository }}:{{ .Values.geoserver.gateway.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           command:
 

@@ -20,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: test-geoservercloud
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -93,7 +93,7 @@ kind: ConfigMap
 metadata:
   name: test-geoservercloud-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -681,7 +681,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -708,7 +708,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -735,7 +735,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -763,7 +763,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -792,7 +792,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -821,7 +821,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -850,7 +850,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -879,7 +879,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -908,7 +908,7 @@ kind: Service
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -936,7 +936,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -969,7 +969,7 @@ spec:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-config:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-config:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1072,7 +1072,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1105,7 +1105,7 @@ spec:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-discovery:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-discovery:1.0-RC10"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
@@ -1150,7 +1150,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1183,7 +1183,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1232,7 +1232,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1272,7 +1272,7 @@ spec:
         - name: gwc
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1372,7 +1372,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1412,7 +1412,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-rest:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-rest:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1512,7 +1512,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1552,7 +1552,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1652,7 +1652,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1692,7 +1692,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-webui:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-webui:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1792,7 +1792,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1832,7 +1832,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1932,7 +1932,7 @@ kind: Deployment
 metadata:
   name: test-geoservercloud-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1972,7 +1972,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-wms:1.0-RC10"
+          image: "sanitizee.me/geoservercloud/geoserver-cloud-wms:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
