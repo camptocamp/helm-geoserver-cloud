@@ -3,29 +3,29 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: test-rabbitmq
+  name: testwithveryveryverylongreleasename-rabbitmq
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
 secrets:
-  - name: test-rabbitmq
+  - name: testwithveryveryverylongreleasename-rabbitmq
 ---
 # Source: ogscloud/charts/geoservercloud/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: test-geoservercloud
+  name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
 ---
@@ -33,7 +33,7 @@ metadata:
 apiVersion: v1
 data:
   DATABASE_NAME: Y29uZmln
-  HOST: dGVzdC1wb3N0Z3Jlc3Fs
+  HOST: dGVzdHdpdGh2ZXJ5dmVyeXZlcnlsb25ncmVsZWFzZW5hbWUtcG9zdGdyZXNxbA==
   ROLE: dXNlcm5hbWU=
   PASSWORD: cGFzc3dvcmQ=
   PORT: NTQzMg==
@@ -41,7 +41,7 @@ data:
 
 kind: Secret
 metadata:
-  name: jdbcconfig-test-geoservercloud
+  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
 type: Opaque
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_rabbitmq.yaml
@@ -59,12 +59,12 @@ type: Opaque
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: test-rabbitmq-config
+  name: testwithveryveryverylongreleasename-rabbitmq-config
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 data:
   rabbitmq.conf: |-
@@ -91,14 +91,14 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: test-geoservercloud-config-configs
+  name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
@@ -245,7 +245,7 @@ data:
 
     spring:
       rabbitmq:
-        host: test-rabbitmq
+        host: testwithveryveryverylongreleasename-rabbitmq
         port: 5672
         username: geoserver
         password: ${RABBITMQ_PASSWORD}
@@ -576,12 +576,12 @@ data:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: test-rabbitmq-endpoint-reader
+  name: testwithveryveryverylongreleasename-rabbitmq-endpoint-reader
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups: [""]
@@ -595,31 +595,31 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: test-rabbitmq-endpoint-reader
+  name: testwithveryveryverylongreleasename-rabbitmq-endpoint-reader
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 subjects:
   - kind: ServiceAccount
-    name: test-rabbitmq
+    name: testwithveryveryverylongreleasename-rabbitmq
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: test-rabbitmq-endpoint-reader
+  name: testwithveryveryverylongreleasename-rabbitmq-endpoint-reader
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/svc-headless.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-rabbitmq-headless
+  name: testwithveryveryverylongreleasename-rabbitmq-headless
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 spec:
   clusterIP: None
@@ -638,19 +638,19 @@ spec:
       targetPort: stats
   selector:
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
   publishNotReadyAddresses: true
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/svc.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-rabbitmq
+  name: testwithveryveryverylongreleasename-rabbitmq
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -673,20 +673,20 @@ spec:
       nodePort: null
   selector:
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
 ---
 # Source: ogscloud/charts/geoservercloud/templates/config/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-config
+  name: testwithveryveryverylongreleasename-geoser-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: config
@@ -699,21 +699,21 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: config
 ---
 # Source: ogscloud/charts/geoservercloud/templates/discovery/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-discovery
+  name: testwithveryveryverylongreleasename-geoser-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
@@ -726,21 +726,21 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: discovery
 ---
 # Source: ogscloud/charts/geoservercloud/templates/gateway/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-gateway
+  name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
@@ -753,7 +753,7 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: gateway
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -761,14 +761,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-gwc
+  name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
@@ -782,7 +782,7 @@ spec:
   selector:
 
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: gwc
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -790,14 +790,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-rest
+  name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
@@ -811,7 +811,7 @@ spec:
   selector:
 
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: rest
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -819,14 +819,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-wcs
+  name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
@@ -840,7 +840,7 @@ spec:
   selector:
 
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: wcs
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -848,14 +848,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-webui
+  name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
@@ -869,7 +869,7 @@ spec:
   selector:
 
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: webui
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -877,14 +877,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-wfs
+  name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
@@ -898,7 +898,7 @@ spec:
   selector:
 
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: wfs
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
@@ -906,14 +906,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-geoservercloud-wms
+  name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
@@ -927,21 +927,21 @@ spec:
   selector:
 
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/component: wms
 ---
 # Source: ogscloud/charts/geoservercloud/templates/config/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-config
+  name: testwithveryveryverylongreleasename-geoser-config
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
@@ -951,25 +951,25 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: "config"
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: "config"
     spec:
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: geoservercloud-config
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-config:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-config:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -982,7 +982,7 @@ spec:
               value: /opt/app/config
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -992,27 +992,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -1025,7 +1025,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           volumeMounts:
             - name: configs
@@ -1064,20 +1064,20 @@ spec:
       volumes:
         - name: configs
           configMap:
-            name: test-geoservercloud-config-configs
+            name: testwithveryveryverylongreleasename-geoser-config-configs
 ---
 # Source: ogscloud/charts/geoservercloud/templates/discovery/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-discovery
+  name: testwithveryveryverylongreleasename-geoser-discovery
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
@@ -1087,29 +1087,29 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: discovery
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: discovery
     spec:
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: geoservercloud-discovery
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-discovery:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-discovery:1.0-RC10"
           imagePullPolicy: IfNotPresent
           env:
             - name: EUREKA_INSTANCE_HOSTNAME
-              value: test-geoservercloud-discovery
+              value: testwithveryveryverylongreleasename-geoser-discovery
             - name: SERVER_PORT
               value: "8761"
 
@@ -1148,14 +1148,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-gateway
+  name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
@@ -1165,25 +1165,25 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: gateway
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: gateway
     spec:
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1192,7 +1192,7 @@ spec:
             - java org.springframework.boot.loader.JarLauncher
           env:
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
 
           ports:
             - name: http
@@ -1230,14 +1230,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-gwc
+  name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
@@ -1248,16 +1248,16 @@ spec:
     matchLabels:
 
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: gwc
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
 
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: gwc
     spec:
       volumes:
@@ -1265,14 +1265,14 @@ spec:
           persistentVolumeClaim:
            claimName: nfs-rasters-pv-claim
 
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: gwc
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1283,7 +1283,7 @@ spec:
               value: "jdbcconfig"
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1293,27 +1293,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -1326,7 +1326,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           ports:
             - name: http
@@ -1370,14 +1370,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-rest
+  name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
@@ -1388,16 +1388,16 @@ spec:
     matchLabels:
 
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: rest
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
 
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: rest
     spec:
       volumes:
@@ -1405,14 +1405,14 @@ spec:
           persistentVolumeClaim:
            claimName: nfs-rasters-pv-claim
 
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: rest
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-rest:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1423,7 +1423,7 @@ spec:
               value: "jdbcconfig"
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1433,27 +1433,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -1466,7 +1466,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           ports:
             - name: http
@@ -1510,14 +1510,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-wcs
+  name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
@@ -1528,16 +1528,16 @@ spec:
     matchLabels:
 
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: wcs
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
 
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: wcs
     spec:
       volumes:
@@ -1545,14 +1545,14 @@ spec:
           persistentVolumeClaim:
            claimName: nfs-rasters-pv-claim
 
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: wcs
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1563,7 +1563,7 @@ spec:
               value: "jdbcconfig"
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1573,27 +1573,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -1606,7 +1606,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           ports:
             - name: http
@@ -1650,14 +1650,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-webui
+  name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
@@ -1668,16 +1668,16 @@ spec:
     matchLabels:
 
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: webui
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
 
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: webui
     spec:
       volumes:
@@ -1685,14 +1685,14 @@ spec:
           persistentVolumeClaim:
            claimName: nfs-rasters-pv-claim
 
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: webui
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-webui:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1703,7 +1703,7 @@ spec:
               value: "jdbcconfig"
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1713,27 +1713,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -1746,7 +1746,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           ports:
             - name: http
@@ -1790,14 +1790,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-wfs
+  name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
@@ -1808,16 +1808,16 @@ spec:
     matchLabels:
 
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: wfs
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
 
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: wfs
     spec:
       volumes:
@@ -1825,14 +1825,14 @@ spec:
           persistentVolumeClaim:
            claimName: nfs-rasters-pv-claim
 
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: wfs
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1843,7 +1843,7 @@ spec:
               value: "jdbcconfig"
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1853,27 +1853,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -1886,7 +1886,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           ports:
             - name: http
@@ -1930,14 +1930,14 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-geoservercloud-wms
+  name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.26
+    helm.sh/chart: geoservercloud-0.0.27
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
@@ -1948,16 +1948,16 @@ spec:
     matchLabels:
 
       app.kubernetes.io/name: geoservercloud
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
       app.kubernetes.io/component: wms
   template:
     metadata:
       annotations:
-        checksum/config: 03ed526302d560caea9223d62efcaf06bd0d9e5868152552be7657d69ec611d4
+        checksum/config: 7b22fba2132a2b985cd123cf1bf987aa72255705ac62eefce3e0c34d1559ddb4
       labels:
 
         app.kubernetes.io/name: geoservercloud
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: wms
     spec:
       volumes:
@@ -1965,14 +1965,14 @@ spec:
           persistentVolumeClaim:
            claimName: nfs-rasters-pv-claim
 
-      serviceAccountName: test-geoservercloud
+      serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
       containers:
         - name: wms
           securityContext:
             {}
-          image: "docker.io/geoservercloud/geoserver-cloud-wms:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC10"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1983,7 +1983,7 @@ spec:
               value: "jdbcconfig"
 
             - name: EUREKA_SERVER_URL
-              value: http://test-geoservercloud-discovery:8761/eureka
+              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1993,27 +1993,27 @@ spec:
             - name: JDBCCONFIG_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: DATABASE_NAME
             - name: JDBCCONFIG_HOST
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: HOST
             - name: JDBCCONFIG_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: ROLE
             - name: JDBCCONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PASSWORD
             - name: JDBCCONFIG_PORT
               valueFrom:
                 secretKeyRef:
-                  name: jdbcconfig-test-geoservercloud
+                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
                   key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
@@ -2026,7 +2026,7 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: test-geoservercloud-rabbitmq
+              value: testwithveryveryverylongreleasename-geoser-rabbitmq
 
           ports:
             - name: http
@@ -2069,15 +2069,15 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: test-rabbitmq
+  name: testwithveryveryverylongreleasename-rabbitmq
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
     helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 spec:
-  serviceName: test-rabbitmq-headless
+  serviceName: testwithveryveryverylongreleasename-rabbitmq-headless
   podManagementPolicy: OrderedReady
   replicas: 1
   updateStrategy:
@@ -2085,19 +2085,19 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: rabbitmq
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/instance: testwithveryveryverylongreleasename
   template:
     metadata:
       labels:
         app.kubernetes.io/name: rabbitmq
         helm.sh/chart: rabbitmq-8.28.1
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/managed-by: Helm
       annotations:
-        checksum/config: dc8292444f69b4b1f01026d65e4bcf9390effe287ea65e8000e90a0aac194a1f
+        checksum/config: e8cef8d9688ab6adadece4c365c3145ec7ec99f7dbf2ae8f2c13bf36d32ba094
     spec:
 
-      serviceAccountName: test-rabbitmq
+      serviceAccountName: testwithveryveryverylongreleasename-rabbitmq
       affinity:
         podAffinity:
 
@@ -2107,7 +2107,7 @@ spec:
                 labelSelector:
                   matchLabels:
                     app.kubernetes.io/name: rabbitmq
-                    app.kubernetes.io/instance: test
+                    app.kubernetes.io/instance: testwithveryveryverylongreleasename
                 namespaces:
                   - "default"
                 topologyKey: kubernetes.io/hostname
@@ -2138,7 +2138,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: K8S_SERVICE_NAME
-              value: "test-rabbitmq-headless"
+              value: "testwithveryveryverylongreleasename-rabbitmq-headless"
             - name: K8S_ADDRESS_TYPE
               value: hostname
             - name: RABBITMQ_FORCE_BOOT
@@ -2233,7 +2233,7 @@ spec:
       volumes:
         - name: configuration
           configMap:
-            name: test-rabbitmq-config
+            name: testwithveryveryverylongreleasename-rabbitmq-config
             items:
               - key: rabbitmq.conf
                 path: rabbitmq.conf
