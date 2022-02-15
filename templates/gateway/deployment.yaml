@@ -5,9 +5,14 @@ metadata:
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
     app.kubernetes.io/component: gateway
-  {{- if .Values.global.annotations }}
+  {{- if or .Values.global.annotations .Values.geoserver.gateway.annotations }}
   annotations:
+    {{- if .Values.global.annotations }}
     {{- toYaml .Values.global.annotations | nindent 4 }}
+    {{- end -}}
+    {{- if .Values.geoserver.gateway.annotations }}
+    {{- toYaml .Values.geoserver.gateway.annotations | nindent 4 }}
+    {{- end -}}
   {{- end }}
 spec:
   revisionHistoryLimit: 3

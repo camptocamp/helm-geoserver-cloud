@@ -5,6 +5,15 @@ metadata:
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
     app.kubernetes.io/component: discovery
+  {{- if or .Values.global.annotations .Values.geoserver.discovery.annotations }}
+  annotations:
+    {{- if .Values.global.annotations }}
+    {{- toYaml .Values.global.annotations | nindent 4 }}
+    {{- end -}}
+    {{- if .Values.geoserver.discovery.annotations }}
+    {{- toYaml .Values.geoserver.discovery.annotations | nindent 4 }}
+    {{- end -}}
+  {{- end }}
 spec:
   type: {{ .Values.geoserver.discovery.service.type }}
   ports:

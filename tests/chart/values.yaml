@@ -17,3 +17,16 @@ geoservercloud:
     ingress:
       deploy: false
       #baseUrl: '/geoserver-cloud/'
+    config:
+      annotations:
+        test: config
+    gateway:
+      annotations:
+        test: gateway
+    discovery:
+      annotations:
+        test: discovery
+    services:
+      webui:
+        annotations:
+          foo: bar

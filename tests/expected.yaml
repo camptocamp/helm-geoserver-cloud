@@ -690,6 +690,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: config
+  annotations:
+    test: config
 spec:
   type: ClusterIP
   ports:
@@ -717,6 +719,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
+  annotations:
+    test: discovery
 spec:
   type: ClusterIP
   ports:
@@ -744,6 +748,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
+  annotations:
+    test: gateway
 spec:
   type: ClusterIP
   ports:
@@ -859,6 +865,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
+  annotations:
+    foo: bar
 spec:
   type: ClusterIP
   ports:
@@ -945,6 +953,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
+  annotations:
+    test: config
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1081,6 +1091,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: discovery
+  annotations:
+    test: discovery
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1159,6 +1171,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
+  annotations:
+    test: gateway
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -1661,6 +1675,8 @@ metadata:
     app.kubernetes.io/version: "1.0-RC10"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
+  annotations:
+    foo: bar
 spec:
   revisionHistoryLimit: 3
   replicas: 1
