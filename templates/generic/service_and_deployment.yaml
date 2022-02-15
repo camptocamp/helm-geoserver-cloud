@@ -16,6 +16,15 @@ metadata:
   labels:
     {{- $geoserverLabels | nindent 4 }}
     app.kubernetes.io/component: {{ $serviceName }}
+  {{- if or $values.global.annotations $serviceDefinition.annotations }}
+  annotations:
+    {{- if $values.global.annotations -}}
+    {{- toYaml $values.global.annotations | nindent 4 }}
+    {{- end -}}
+    {{- if $serviceDefinition.annotations -}}
+    {{- toYaml $serviceDefinition.annotations | nindent 4 }}
+    {{- end -}}
+  {{- end }}
 spec:
   type: {{ $serviceDefinition.service.type }}
   ports:
@@ -36,9 +45,14 @@ metadata:
   labels:
     {{- $geoserverLabels  | nindent 4 }}
     app.kubernetes.io/component: {{ $serviceName }}
-  {{- if $values.global.annotations }}
+  {{- if or $values.global.annotations $serviceDefinition.annotations }}
   annotations:
+    {{- if $values.global.annotations -}}
     {{- toYaml $values.global.annotations | nindent 4 }}
+    {{- end -}}
+    {{- if $serviceDefinition.annotations -}}
+    {{- toYaml $serviceDefinition.annotations | nindent 4 }}
+    {{- end -}}
   {{- end }}
 spec:
   revisionHistoryLimit: 3
