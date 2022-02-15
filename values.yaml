@@ -11,7 +11,7 @@ global:
   cluster_environment: dev
   image:
     registry: docker.io
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   annotations: {}
 
 rabbitmq:
