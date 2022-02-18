@@ -68,7 +68,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ $shaConfigmap }}
-        specificValues/sha256: {{ toYaml .$serviceDefinition | sha256sum }}
+        specificValues/sha256: {{ toYaml $serviceDefinition | sha256sum }}
         globalValues/sha256: {{ toYaml $values.global | sha256sum }}
       labels:
         {{ $geoserverSelectorLabels | nindent 8 }}
@@ -79,8 +79,8 @@ spec:
     spec:
       volumes:
         - name: configs
-            configMap:
-              name: {{ include "geoserver.fullname" . }}-config-configs
+          configMap:
+            name: {{ $geoserverName }}-config-configs
       {{- range $mountPointName := $values.geoserver.volumeMounts }}
         - name: {{ $mountPointName.mountName }}
           persistentVolumeClaim:
