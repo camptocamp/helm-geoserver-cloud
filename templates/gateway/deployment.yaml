@@ -28,7 +28,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum }}
-        values/sha256: {{ toYaml .Values | sha256sum }}
+        specificValues/sha256: {{ toYaml .Values.geoserver.gateway | sha256sum }}
+        globalValues/sha256: {{ toYaml .Values.global | sha256sum }}
       labels:
         {{- include "geoserver.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: gateway
@@ -51,11 +52,19 @@ spec:
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
-            - name: EUREKA_SERVER_URL
-              value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
-{{- if .Values.geoserver.config.env }}
-{{ toYaml .Values.geoserver.config.env | indent 12 }}
-{{- end }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ $values.global.profile | quote}}
+            - name: CONFIG_NATIVE_PATH
+              value: /opt/app/config
+            {{ include "geoserver.common.env.variables" . | nindent 12}}
+
+            {{- if .Values.geoserver.config.env }}
+            {{ toYaml .Values.geoserver.config.env | nindent 12 }}
+            {{- end }}
+
+          volumeMounts:
+            - name: configs
+              mountPath: /opt/app/config
 
           ports:
             - name: http
@@ -82,6 +91,10 @@ spec:
 
           resources:
             {{- toYaml .Values.geoserver.gateway.resources | nindent 12 }}
+      volumes:
+        - name: configs
+          configMap:
+            name: {{ include "geoserver.fullname" . }}-config-configs
       {{- with .Values.geoserver.gateway.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

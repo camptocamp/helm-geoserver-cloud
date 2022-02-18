@@ -68,7 +68,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ $shaConfigmap }}
-        values/sha256: {{ toYaml $values | sha256sum }}
+        specificValues/sha256: {{ toYaml .$serviceDefinition | sha256sum }}
+        globalValues/sha256: {{ toYaml $values.global | sha256sum }}
       labels:
         {{ $geoserverSelectorLabels | nindent 8 }}
         app.kubernetes.io/component: {{ $serviceName }}
@@ -76,13 +77,14 @@ spec:
           {{- toYaml $values.global.custom_pod_labels | nindent 8 }}
         {{- end }}
     spec:
-      {{- if $values.geoserver.volumeMounts }}
       volumes:
+        - name: configs
+            configMap:
+              name: {{ include "geoserver.fullname" . }}-config-configs
       {{- range $mountPointName := $values.geoserver.volumeMounts }}
         - name: {{ $mountPointName.mountName }}
           persistentVolumeClaim:
            claimName: {{ $mountPointName.pvcName }}
-      {{- end }}
       {{- end }}
 
       serviceAccountName: {{ $geoserverServiceAccountName }}
@@ -99,6 +101,8 @@ spec:
             - -c
             - java {{ if eq $values.global.allowEnvParametrization true -}} -DALLOW_ENV_PARAMETRIZATION=true {{- end }} org.springframework.boot.loader.JarLauncher
           env:
+            - name: CONFIG_NATIVE_PATH
+              value: /opt/app/config
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $values.global.profile | quote}}
           {{ include "geoserver.common.env.variables" $ | nindent 12}}
@@ -113,12 +117,12 @@ spec:
             - name: health
               containerPort: 8081
               protocol: TCP
-          {{- if $values.geoserver.volumeMounts }}
           volumeMounts:
+            - name: configs
+              mountPath: /opt/app/config
           {{- range $mountPointName := $values.geoserver.volumeMounts }}
             - mountPath: {{ $mountPointName.mountPath | quote }}
               name: {{ $mountPointName.mountName }}
-          {{- end }}
           {{- end }}
           startupProbe:
             httpGet:
