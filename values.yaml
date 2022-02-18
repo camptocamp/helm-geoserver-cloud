@@ -1,5 +1,6 @@
 global:
   profile: jdbcconfig
+  revisionHistoryLimit: 3
   deployed_by: helm
   allowEnvParametrization: true
   cors:
@@ -148,7 +149,6 @@ geoserver:
     port: 5672
 
   config:
-    revisionHistoryLimit: 3
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-config
@@ -182,7 +182,6 @@ geoserver:
       port: 8080
 
   gateway:
-    revisionHistoryLimit: 3
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-gateway
@@ -216,7 +215,6 @@ geoserver:
       port: 8080
 
   discovery:
-    revisionHistoryLimit: 3
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-discovery
@@ -251,7 +249,6 @@ geoserver:
 
   services:
     webui:
-      revisionHistoryLimit: 3
       replicaCount: 1
       image:
         repository: geoservercloud/geoserver-cloud-webui
@@ -285,7 +282,6 @@ geoserver:
         port: 8080
 
     rest:
-      revisionHistoryLimit: 3
       replicaCount: 1
       image:
         repository: geoservercloud/geoserver-cloud-rest
@@ -319,7 +315,6 @@ geoserver:
         port: 8080
 
     wfs:
-      revisionHistoryLimit: 3
       replicaCount: 1
       image:
         repository: geoservercloud/geoserver-cloud-wfs
@@ -353,7 +348,6 @@ geoserver:
         port: 8080
 
     wms:
-      revisionHistoryLimit: 3
       replicaCount: 1
       image:
         repository: geoservercloud/geoserver-cloud-wms
@@ -387,7 +381,6 @@ geoserver:
         port: 8080
 
     wcs:
-      revisionHistoryLimit: 3
       replicaCount: 1
       image:
         repository: geoservercloud/geoserver-cloud-wcs
@@ -421,7 +414,6 @@ geoserver:
         port: 8080
 
     gwc:
-      revisionHistoryLimit: 3
       replicaCount: 1
       image:
         repository: geoservercloud/geoserver-cloud-gwc

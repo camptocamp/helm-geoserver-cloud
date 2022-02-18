@@ -55,7 +55,7 @@ metadata:
     {{- end -}}
   {{- end }}
 spec:
-  revisionHistoryLimit: {{ $serviceDefinition.revisionHistoryLimit | default 3 }}
+  revisionHistoryLimit: {{ $values.global.revisionHistoryLimit | default 3 }}
   replicas: {{ $serviceDefinition.replicaCount }}
   selector:
     matchLabels:

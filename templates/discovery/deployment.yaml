@@ -15,7 +15,7 @@ metadata:
     {{- end -}}
   {{- end }}
 spec:
-  revisionHistoryLimit: {{ .Values.geoserver.discovery.revisionHistoryLimit | default 3 }}
+  revisionHistoryLimit: {{ .Values.global.revisionHistoryLimit | default 3 }}
   replicas: {{ .Values.geoserver.discovery.replicaCount }}
   selector:
     matchLabels:
