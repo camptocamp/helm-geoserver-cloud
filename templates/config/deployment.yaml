@@ -15,7 +15,7 @@ metadata:
     {{- end -}}
   {{- end }}
 spec:
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: {{ .Values.geoserver.config.revisionHistoryLimit | default 3 }}
   replicas: {{ .Values.geoserver.config.replicaCount }}
   selector:
     matchLabels:
