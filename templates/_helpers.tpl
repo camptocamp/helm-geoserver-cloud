@@ -76,14 +76,13 @@ password: ${RABBITMQ_PASSWORD}
 
 
 {{- define "geoserver.common.env.variables" -}}
-- name: EUREKA_SERVER_URL
-  value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
+{{ $profiles := splitList "," .Values.global.profile }}
 - name: BACKEND_CATALOG
-  value: "false"
+  value: {{ has "catalog" $profiles | quote}}
 - name: BACKEND_DATA_DIRECTORY
-  value: "false"
+  value: {{ has "datadir" $profiles | quote}}
 - name: BACKEND_JDBCCONFIG
-  value: "true"
+  value: {{ has "jdbcconfig" $profiles | quote}}
 {{- if .Values.geoserver.envVariables }}
 {{- range $key, $definition := .Values.geoserver.envVariables }}
 - name: {{ $definition.name }}

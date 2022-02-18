@@ -924,8 +924,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1071,8 +1070,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1218,8 +1216,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1365,8 +1362,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1514,8 +1510,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1661,8 +1656,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1808,8 +1802,7 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
-            - name: EUREKA_SERVER_URL
-              value: http://testwithveryveryverylongreleasename-geoser-discovery:8761/eureka
+
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
