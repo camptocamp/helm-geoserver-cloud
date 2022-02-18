@@ -54,8 +54,6 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.global.profile | quote}}
-            - name: CONFIG_NATIVE_PATH
-              value: /opt/app/config
             {{ include "geoserver.common.env.variables" . | nindent 12}}
 
             {{- if .Values.geoserver.gateway.env }}
@@ -64,7 +62,7 @@ spec:
 
           volumeMounts:
             - name: configs
-              mountPath: /opt/app/config
+              mountPath: /etc/gscloud
 
           ports:
             - name: http

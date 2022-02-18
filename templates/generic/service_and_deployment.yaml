@@ -101,8 +101,6 @@ spec:
             - -c
             - java {{ if eq $values.global.allowEnvParametrization true -}} -DALLOW_ENV_PARAMETRIZATION=true {{- end }} org.springframework.boot.loader.JarLauncher
           env:
-            - name: CONFIG_NATIVE_PATH
-              value: /opt/app/config
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $values.global.profile | quote}}
           {{ include "geoserver.common.env.variables" $ | nindent 12}}
@@ -119,7 +117,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: configs
-              mountPath: /opt/app/config
+              mountPath: /etc/gscloud
           {{- range $mountPointName := $values.geoserver.volumeMounts }}
             - mountPath: {{ $mountPointName.mountPath | quote }}
               name: {{ $mountPointName.mountName }}

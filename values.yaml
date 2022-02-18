@@ -1,5 +1,5 @@
 global:
-  profile: jdbcconfig
+  profile: standalone,jdbcconfig
   revisionHistoryLimit: 3
   deployed_by: helm
   allowEnvParametrization: true
