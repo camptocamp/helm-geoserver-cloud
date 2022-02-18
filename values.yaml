@@ -148,39 +148,6 @@ geoserver:
   rabbitmq:
     port: 5672
 
-  config:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-config
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 0.1
-      limits:
-        memory: 512Mi
-        cpu: 2.0
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
-
   gateway:
     replicaCount: 1
     image:
@@ -213,39 +180,6 @@ geoserver:
     service:
       type: ClusterIP
       port: 8080
-
-  discovery:
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-discovery
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 0.1
-      limits:
-        memory: 512Mi
-        cpu: 2.0
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8761
 
   services:
     webui:
