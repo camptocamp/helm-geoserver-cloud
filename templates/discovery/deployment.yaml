@@ -28,6 +28,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum }}
+        values/sha256: {{ toYaml .Values | sha256sum }}
       labels:
         {{- include "geoserver.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: discovery

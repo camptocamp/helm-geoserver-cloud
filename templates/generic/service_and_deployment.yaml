@@ -68,6 +68,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ $shaConfigmap }}
+        values/sha256: {{ toYaml $values | sha256sum }}
       labels:
         {{ $geoserverSelectorLabels | nindent 8 }}
         app.kubernetes.io/component: {{ $serviceName }}
