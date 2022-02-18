@@ -69,6 +69,8 @@ data:
 
     # GeoServer-Cloud common config properties
     geoserver:
+      debug:
+        instanceId: true
       security:
         enabled: true
         authkey: {{ .Values.geoserver.security.authkey }}

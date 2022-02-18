@@ -166,6 +166,8 @@ data:
 
     # GeoServer-Cloud common config properties
     geoserver:
+      debug:
+        instanceId: true
       security:
         enabled: true
         authkey: true
@@ -908,7 +910,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: 167503e453c7356a0a1dfeeee38737c0451358bcf18438cadf6876f0f675d307
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
@@ -1049,7 +1051,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
@@ -1198,7 +1200,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
@@ -1347,7 +1349,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
@@ -1498,7 +1500,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: af6f6d5604aff08a6864beb7efc74537dffc1053e0b611131ff2f4d487fef297
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
@@ -1647,7 +1649,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
@@ -1796,7 +1798,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: afd8430ea87e382c5e42c5c45df29d1e5690d61947e2ae84e35eb3adafd443a6
+        checksum/config: 3c70fdf1ca5c3e4e9544c9098cbccac46322b52ba992534b6a177f901d3fc8b4
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: 6183ef3b87ed745d0f56799a89ba6993b33c38b8bbdd497b3e4ab0aec6f3c668
       labels:
