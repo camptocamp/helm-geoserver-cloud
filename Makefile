@@ -11,6 +11,5 @@ gen-expected:
 .PHONY gen-configmap:
 gen-configmap: templates/config/configmap.yaml
 
-
 templates/config/configmap.yaml:
 	./scripts/createConfigMap.sh
