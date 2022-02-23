@@ -20,13 +20,13 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -608,13 +608,13 @@ metadata:
   creationTimestamp: null
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 ---
@@ -727,13 +727,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -757,13 +757,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -786,13 +786,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -815,13 +815,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -844,13 +844,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -875,13 +875,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -904,13 +904,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -932,13 +932,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -954,7 +954,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: 167503e453c7356a0a1dfeeee38737c0451358bcf18438cadf6876f0f675d307
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -969,7 +969,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
 
@@ -1033,15 +1033,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           volumeMounts:
             - name: configs
@@ -1092,13 +1089,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -1113,7 +1110,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1137,7 +1134,7 @@ spec:
         - name: gwc
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1188,15 +1185,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           ports:
             - name: http
@@ -1244,13 +1238,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -1265,7 +1259,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1289,7 +1283,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1340,15 +1334,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           ports:
             - name: http
@@ -1396,13 +1387,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -1417,7 +1408,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1441,7 +1432,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1492,15 +1483,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           ports:
             - name: http
@@ -1548,13 +1536,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -1571,7 +1559,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: af6f6d5604aff08a6864beb7efc74537dffc1053e0b611131ff2f4d487fef297
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1595,7 +1583,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1646,15 +1634,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           ports:
             - name: http
@@ -1702,13 +1687,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1723,7 +1708,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1747,7 +1732,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1798,15 +1783,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           ports:
             - name: http
@@ -1854,13 +1836,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.28
+    helm.sh/chart: geoservercloud-0.0.29
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/version: "1.0-RC11"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1875,7 +1857,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
+        checksum/config: d21dc34ae7df87868cb7ee2bd2810fa4aeb55b748200bcf1ecb82ff606bf79f4
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1899,7 +1881,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC10"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC11"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -1950,15 +1932,12 @@ spec:
                 secretKeyRef:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
-            - name: RABBITMQ_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: geoserver-rabbitmq
-                  key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
             - name: RABBITMQ_PORT
               value: "5672"
+            - name: RABBITMQ_USER
+              value: geoserver
 
           ports:
             - name: http
