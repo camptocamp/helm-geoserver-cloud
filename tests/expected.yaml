@@ -1039,7 +1039,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           volumeMounts:
             - name: configs
@@ -1192,7 +1194,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           ports:
             - name: http
@@ -1342,7 +1346,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           ports:
             - name: http
@@ -1492,7 +1498,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           ports:
             - name: http
@@ -1644,7 +1652,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           ports:
             - name: http
@@ -1794,7 +1804,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           ports:
             - name: http
@@ -1944,7 +1956,9 @@ spec:
                   name: geoserver-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
-              value: testwithveryveryverylongreleasename-geoser-rabbitmq
+              value: testwithveryveryverylongreleasename-rabbitmq
+            - name: RABBITMQ_PORT
+              value: "5672"
 
           ports:
             - name: http

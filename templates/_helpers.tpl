@@ -64,16 +64,6 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*
-Generate content of spring config for rabbitmq
-*/}}
-{{- define "geoserver.spring.rabbitmq" -}}
-host: {{ .Release.Name }}-rabbitmq
-port: 5672
-username: {{ .Values.rabbitmq.auth.username }}
-password: ${RABBITMQ_PASSWORD}
-{{- end }}
-
 
 {{- define "geoserver.common.env.variables" -}}
 {{ $profiles := splitList "," .Values.global.profile }}
@@ -153,5 +143,7 @@ password: ${RABBITMQ_PASSWORD}
       name: geoserver-rabbitmq
       key: rabbitmq-password
 - name: RABBITMQ_HOST
-  value: {{ include "geoserver.fullname" . }}-rabbitmq
+  value: {{ .Release.Name }}-rabbitmq
+- name: RABBITMQ_PORT
+  value: "5672"
 {{- end }}
