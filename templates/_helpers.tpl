@@ -137,13 +137,10 @@ Create the name of the service account to use
     secretKeyRef:
       name: geoserver-rabbitmq
       key: rabbitmq-password
-- name: RABBITMQ_PASS
-  valueFrom:
-    secretKeyRef:
-      name: geoserver-rabbitmq
-      key: rabbitmq-password
 - name: RABBITMQ_HOST
   value: {{ .Release.Name }}-rabbitmq
 - name: RABBITMQ_PORT
   value: "5672"
+- name: RABBITMQ_USER
+  value: geoserver
 {{- end }}
