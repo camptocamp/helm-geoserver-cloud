@@ -195,7 +195,6 @@ data:
           max: 20 #default: 200
 
     management:
-      server.port: 8081
       endpoints:
         enabled-by-default: true
         web.exposure.include: "*"
@@ -358,10 +357,8 @@ data:
         org.geotools.autoconfigure: info
         oshi.hardware.platform.linux: error
         oshi.software.os: error
-        org.geoserver: info
+        org.geoserver: warn
         org.geoserver.catalog.plugin: info
-        org.geoserver.wms: info
-        org.geoserver.wfs: info
         org.geoserver.jackson: info
         org.geotools.jackson: info
         org.geoserver.platform: error
@@ -505,9 +502,10 @@ data:
         org.geoserver.platform.resource.FileLockProvider: debug
         org.geoserver.jdbcconfig: info
         # gs-cloud roots
-        org.geoserver.cloud: info
+        org.geoserver.cloud: debug
         org.geoserver.cloud.autoconfigure: trace
         org.geoserver.cloud.config.factory: trace
+        org.geoserver.cloud.gwc: debug
         # bus debugging
         org.geoserver.cloud.bus: trace
         org.springframework.cloud.bus: debug

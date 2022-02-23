@@ -55,6 +55,9 @@ postgresql:
 geoserver:
   name: geoserver
 
+  debug:
+    instanceId: true
+
   # Additional security modules
   security:
     authkey: true

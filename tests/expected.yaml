@@ -89,21 +89,184 @@ data:
 ---
 # Source: ogscloud/charts/geoservercloud/templates/config/configmap.yaml
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: testwithveryveryverylongreleasename-geoser-config-configs
-  labels:
-    helm.sh/chart: geoservercloud-0.0.28
-    deployed_by: helm
-    app.kubernetes.io/app_environment: "master"
-    app.kubernetes.io/base_environment: "dev"
-    app.kubernetes.io/name: geoservercloud
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC10"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: "config"
 data:
-  application.yml: |
+  config-service.yml: |
+    # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
+    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
+    eureka.client.healthcheck.enabled: false
+  gateway-service.yml: |
+    # Defines the root base path at which the gateway exposes all geoserver request paths
+    # We're not setting the spring.webflux.base-path because spring-cloud Gateway doesn't
+    # work properly with it. See https://github.com/spring-cloud/spring-cloud-gateway/issues/1759
+    # For example, if geoserver.base-path=/geoserver-cloud, then geoserver requests will be served
+    # under that path prefix (e.g. http://localhost:9090/geoserver-cloud/web, http://localhost:9090/geoserver-cloud/wfs, etc)
+    # Examples:
+    #geoserver.base-path:
+    #geoserver.base-path: /geoserver-cloud
+    #geoserver.base-path: /geoserver/cloud
+    # Leave it empty for no additional path, setting it to / won't work currently
+    #
+    # Please note any other prefix than the empty string will require a trailing slash in the root URL
+    # for the redirection to the web-ui to work. This is something we need to fix. For example:
+    # http://localhost:9090/geoserver-cloud will return 404, but http://localhost:9090/geoserver-cloud/ will work.
+    geoserver.base-path: ${geoserver_base_path:}
+
+    # by default, assumes a discovery-client is in use, and perform client-side load balancing on
+    # the advertised instances. See the 'static_routes' profile notes for a static config
+    targets:
+      catalog: lb://catalog-service
+      wfs: lb://wfs-service
+      wms: lb://wms-service
+      wcs: lb://wcs-service
+      wps: lb://wps-service
+      rest: lb://restconfig-v1
+      gwc: lb://gwc-service
+      webui: lb://web-ui
+
+    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
+    server:
+      compression:
+        enabled: true
+
+    spring:
+      cloud:
+        gateway:
+          globalcors:
+            cors-configurations:
+              "[/**]":
+                allowedOrigins: "*"
+                allowedMethods:
+                  - GET
+                  - PUT
+                  - POST
+                  - DELETE
+                  - OPTIONS
+                  - HEAD
+          default-filters:
+            - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
+          actuator:
+            verbose:
+              enabled: true
+          routes:
+            - id: catalog
+              uri: ${targets.catalog}
+              predicates:
+                - Path=${geoserver.base-path}/api/v1/**
+              filters: # Expose the catalog and configuration API only if the dev profile is active
+                - RouteProfile=dev,403
+            # WFS routes
+            - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
+              uri: ${targets.wfs}
+              predicates:
+                - Path=${geoserver.base-path}/wfs,${geoserver.base-path}/{workspace}/wfs,${geoserver.base-path}/{workspace}/{layer}/wfs,${geoserver.base-path}/schemas/wfs/**
+            # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
+            - id: wfs_ows
+              uri: ${targets.wfs}
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+                - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
+            # WMS routes
+            - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
+              uri: ${targets.wms}
+              predicates:
+                - Path=${geoserver.base-path}/wms,${geoserver.base-path}/{workspace}/wms,${geoserver.base-path}/{workspace}/{layer}/wms,${geoserver.base-path}/schemas/wms/**,${geoserver.base-path}/openlayers/**,${geoserver.base-path}/openlayers3/**
+            - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
+              uri: ${targets.wms}
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+                - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
+            # WCS routes
+            - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
+              uri: ${targets.wcs}
+              predicates:
+                - Path=${geoserver.base-path}/wcs,${geoserver.base-path}/{workspace}/wcs,${geoserver.base-path}/{workspace}/{layer}/wcs,${geoserver.base-path}/schemas/wcs/**
+            - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
+              uri: ${targets.wcs}
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
+                - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
+            # WPS routes
+            - id: wps # proxies requests to gateway-service:/wps to wfs-service:/wps
+              uri: ${targets.wps}
+              predicates:
+                - Path=${geoserver.base-path}/wps,${geoserver.base-path}/{segment}/wps,${geoserver.base-path}/schemas/wps/**
+            - id: wps_ows # proxy [/{workspace}]/ows?SERVICE=wps to wps-service:[/{workspace}]/ows?SERVICE=wps. Param value is case insensitive, name is not.
+              uri: ${targets.wps}
+              predicates:
+                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{segment}/ows
+                - RegExpQuery=(?i:service),(?i:wps) # match service=wps case insensitively
+            # REST configuration routes
+            - id: restconfig
+              uri: ${targets.rest}
+              predicates:
+                - Path=${geoserver.base-path}/rest/**
+            # GeoWebcache configuration routes
+            - id: gwc
+              uri: ${targets.gwc}
+              predicates:
+                - Path=${geoserver.base-path}/gwc/**
+            # Web UI configuration routes
+            - id: webui
+              uri: ${targets.webui}
+              predicates:
+                - Path=${geoserver.base-path}/**
+              #- Path=${geoserver.base-path},${geoserver.base-path}/,${geoserver.base-path}/index.html,${geoserver.base-path}/web,${geoserver.base-path}/web/**,${geoserver.base-path}/j_spring_security_check,${geoserver.base-path}/j_spring_security_logout
+
+    management:
+      endpoints:
+        enabled-by-default: true
+        web.exposure.include: "*"
+      endpoint:
+        info.enabled: true
+        metrics.enabled: true
+        shutdown.enabled: true
+        health:
+          enabled: true
+          show-details: always
+      metrics:
+        binders:
+          processor.enabled: true
+          uptime.enabled: true
+          jvm.enabled: true
+        enable.all: true
+        enable.jvm: true
+        export:
+          atlas.enabled: false
+
+    ---
+    # this profile is automatically included if any of the embedded
+    # config_first or discovery_first profile groups are active
+    spring.config.activate.on-profile: discovery_eureka
+    # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
+    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
+    eureka.client.healthcheck.enabled: true
+    eureka.server.url: http://discovery:8761/eureka
+    ---
+    spring.config.activate.on-profile: standalone
+    # Define static targets using known host names.
+    # Host names can be docker-compose assigned service names, or k8s service names as appropriate
+    targets:
+      catalog: http://catalog:8080
+      wfs: http://wfs:8080
+      wms: http://wms:8080
+      wcs: http://wcs:8080
+      wps: http://wps:8080
+      rest: http://rest:8080
+      gwc: http://gwc:8080
+      webui: http://webui:8080
+    ---
+    spring.config.activate.on-profile: local
+    targets:
+      catalog: http://localhost:9100
+      wfs: http://localhost:9101
+      wms: http://localhost:9102
+      wcs: http://localhost:9103
+      wps: http://localhost:9104
+      rest: http://localhost:9105
+      webui: http://localhost:9106
+      gwc: http://localhost:9107
+  geoserver.yml: |
+    # shared application config for geoserver-cloud v1.0-SNAPSHOT
     server:
       tomcat:
         # Maximum number of connections that the server accepts and processes at any given time.
@@ -120,6 +283,52 @@ data:
           min-spare: 2 #default: 10
           # Maximum amount of worker threads.
           max: 20 #default: 200
+
+    management:
+      endpoints:
+        enabled-by-default: true
+        web.exposure.include: "*"
+      endpoint:
+        info.enabled: true
+        metrics.enabled: true
+        shutdown.enabled: true
+        health:
+          enabled: true
+          probes.enabled: true
+          show-details: always
+      metrics:
+        binders:
+          processor.enabled: true
+          uptime.enabled: true
+          jvm.enabled: true
+        enable.all: true
+        enable.jvm: true
+        export:
+          atlas.enabled: false
+
+    spring:
+      rabbitmq:
+        host: ${rabbitmq.host:rabbitmq}
+        port: ${rabbitmq.port:5672}
+        username: ${rabbitmq.user:guest}
+        password: ${rabbitmq.password:guest}
+      cloud:
+        bus:
+          enabled: true
+          id: ${info.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
+          trace.enabled: false #switch on tracing of acks (default off).
+        stream:
+          bindings:
+            springCloudBusOutput:
+              destination: gscatalog
+            springCloudBusInput:
+              destination: gscatalog
+      jackson:
+        default-property-inclusion: non-empty
+        serialization.indent-output: false #set to true if doing manual testing and want formatted output
+
+    reactive.feign.cloud.enabled: true
+    reactive.feign.hystrix.enabled: false
 
     # Common configuration for all services. Override or add service specific config
     # properties on each <service-name>-service.yml file
@@ -166,8 +375,6 @@ data:
 
     # GeoServer-Cloud common config properties
     geoserver:
-      debug:
-        instanceId: true
       security:
         enabled: true
         authkey: true
@@ -207,7 +414,7 @@ data:
           web.enabled: true
           cache-directory: ${jdbcconfig.cachedir:${java.io.tmpdir}/cngs/jdbcconfig/cache}
           datasource:
-            url: "${jdbcconfig.url:jdbc:postgresql://${jdbcconfig.host}:${jdbcconfig.port:5432}/${jdbcconfig.database}?currentSchema=${jdbcconfig.schema:public}}"
+            url: ${jdbcconfig.url:jdbc:postgresql://database:5432/geoserver_config}
             username: ${jdbcconfig.username:geoserver}
             password: ${jdbcconfig.password:geo5erver}
             driverClassname: ${jdbcconfig.driverClassname:org.postgresql.Driver}
@@ -224,136 +431,72 @@ data:
             geojson.enabled: true
             topojson.enabled: true
 
-    management:
-      endpoints:
-        enabled-by-default: true
-        web.exposure.include: "*"
-      endpoint:
-        info.enabled: true
-        metrics.enabled: true
-        shutdown.enabled: true
-        health:
-          enabled: true
-          show-details: always
-      metrics:
-        binders:
-          processor.enabled: true
-          uptime.enabled: true
-          jvm.enabled: true
-        enable.all: true
-        enable.jvm: true
-        export:
-          atlas.enabled: false
-
-    spring:
-      rabbitmq:
-        host: testwithveryveryverylongreleasename-rabbitmq
-        port: 5672
-        username: geoserver
-        password: ${RABBITMQ_PASSWORD}
-      cloud:
-        bus:
-          enabled: true
-          id: ${info.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
-          trace.enabled: false #switch on tracing of acks (default off).
-        stream:
-          bindings:
-            springCloudBusOutput:
-              destination: gscatalog
-            springCloudBusInput:
-              destination: gscatalog
-      jackson:
-        default-property-inclusion: non-empty
-        serialization.indent-output: false #set to true if doing manual testing and want formatted output
-
-    reactive.feign.cloud.enabled: true
-    reactive.feign.hystrix.enabled: false
-
-    # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
-    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
-    eureka.client.healthcheck.enabled: true
-
     logging:
       level:
-        root: WARN
-        org.springframework: ERROR
-        org.springframework.cloud.bus: INFO
+        root: warn
+        org.springframework: warn
+        org.springframework.cloud.bus: info
         org.springframework.retry: info
         org.springframework.jdbc.support: info
         com.zaxxer.hikari.pool: OFF
-        org.geotools.autoconfigure: info
-        # geoserver roots
-        org.geoserver: INFO
-        org.geoserver.catalog.plugin: INFO
-        org.geoserver.wms: WARN #don't flood the logs with every request details
-        org.geoserver.wfs: WARN
-        org.geoserver.jackson: INFO
-        org.geotools.jackson: INFO
-        org.geoserver.platform: INFO
-        org.geoserver.platform.resource: INFO
-        org.geoserver.jdbcconfig: INFO
-        oshi.hardware.platform.linux: ERROR
-        oshi.software.os: ERROR
-        # gs-cloud roots
-        org.geoserver.cloud: INFO
-        org.geoserver.cloud.autoconfigure: INFO
-        org.geoserver.cloud.config.factory: INFO
-        # bus debugging
-        org.geoserver.cloud.bus: INFO
-        org.springframework.cloud.bus.BusAutoConfiguration: INFO
-        org.springframework.cloud.bus.DefaultBusPathMatcher: INFO
         # reactivefeign:
-        reactivefeign.client.log: INFO
-        org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
-        com.netflix.eureka.registry.AbstractInstanceRegistry: ERROR # log flooding with "WARN No remote registry available for the remote region us-east-1"
-        com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: ERROR # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        reactivefeign.client.log: info
+    #    com.netflix.eureka.registry.AbstractInstanceRegistry: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+    #    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        # geoserver roots
+        org.geotools.autoconfigure: info
+        oshi.hardware.platform.linux: error
+        oshi.software.os: error
+        org.geoserver: warn
+        org.geoserver.catalog.plugin: info
+        org.geoserver.jackson: info
+        org.geotools.jackson: info
+        org.geoserver.platform: error
+        org.geoserver.platform.resource.MemoryLockProvider: info
+        org.geoserver.platform.resource.NioFileLockProvider: info
+        org.geoserver.platform.resource.FileLockProvider: info
+        org.geoserver.jdbcconfig: info
+        # gs-cloud roots
+        org.geoserver.cloud: info
+        org.geoserver.cloud.autoconfigure: info
+        org.geoserver.cloud.config.factory: info
+        # bus debugging
+        org.geoserver.cloud.bus: info
+        org.springframework.cloud.bus.BusAutoConfiguration: info
+        org.springframework.cloud.bus.DefaultBusPathMatcher: info
+    ---
+    # this profile is automatically included if any of the embedded
+    # config_first or discovery_first profile groups are active
+    spring.config.activate.on-profile: discovery_eureka
+    # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
+    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
+    eureka.client.healthcheck.enabled: true
+    eureka.server.url: http://discovery:8761/eureka
 
+    ###################################################
+    #### GeoServer configuration backend profiles: ####
     ---
     spring.config.activate.on-profile: datadir
     backend.jdbcconfig: false
     backend.catalog: false
     backend.data-directory: true
+
     ---
     spring.config.activate.on-profile: jdbcconfig
     backend.jdbcconfig: true
     backend.catalog: false
     backend.data-directory: false
+
     ---
     spring.config.activate.on-profile: catalog
     backend.catalog: true
     backend.jdbcconfig: false
     backend.data-directory: false
-    ---
-    spring.config.activate.on-profile: debug
 
-    logging:
-      level:
-        root: WARN
-        org.springframework: INFO
-        # geoserver roots
-        org.geoserver: INFO
-        org.geoserver.catalog.plugin: DEBUG
-        org.geoserver.wms: WARN
-        org.geoserver.wfs: WARN
-        org.geoserver.jackson: DEBUG
-        org.geotools.jackson: DEBUG
-        org.geoserver.platform: ERROR
-        org.geoserver.platform.resource.MemoryLockProvider: INFO
-        org.geoserver.platform.resource.NioFileLockProvider: DEBUG
-        org.geoserver.platform.resource.FileLockProvider: DEBUG
-        org.geoserver.jdbcconfig: INFO
-        # gs-cloud roots
-        org.geoserver.cloud: DEBUG
-        org.geoserver.cloud.autoconfigure: DEBUG
-        org.geoserver.cloud.config.factory: DEBUG
-        # bus debugging
-        org.geoserver.cloud.bus: TRACE
-        org.springframework.cloud.bus: DEBUG
-        org.springframework.cloud.bus.BusAutoConfiguration: DEBUG
-        org.springframework.cloud.bus.DefaultBusPathMatcher: INFO
-        # reactivefeign:
-        reactivefeign.client.log: info
-  catalog-service.yml: |
+    #############################################
+    #### per microservice-specific profiles: ####
+    ---
+    spring.config.activate.on-profile: catalog_service
     geoserver:
       security.enabled: false
       # Disable advertised catalog, it checks the org.geoserver.ows.Dispatcher.REQUEST to check if an OWS is in progress,
@@ -380,138 +523,18 @@ data:
         # decide which catalog backend to use on this service, default to using jdbcconfig
         jdbcconfig.enabled: ${backend.jdbcconfig:true}
 
-  config-service.yml: |
-    spring:
-      profiles:
-        active: native #use native filesystem config by default instead of git. REVISIT.
-      config.server.native.searchLocations: ${config.path:file:./config}
-    eureka.client.healthcheck.enabled: false
-
-    logging:
-      level:
-        root: WARN
-        org.springframework.cloud.config.server.environment.NativeEnvironmentRepository: WARN
-
-
-
-  gateway-service.yml: |
-    # Defines the root base path at which the gateway exposes all geoserver request paths
-    # We're not setting the spring.webflux.base-path because spring-cloud Gateway doesn't
-    # work properly with it. See https://github.com/spring-cloud/spring-cloud-gateway/issues/1759
-    # For example, if geoserver.base-path=/geoserver-cloud, then geoserver requests will be served
-    # under that path prefix (e.g. http://localhost:9090/geoserver-cloud/web, http://localhost:9090/geoserver-cloud/wfs, etc)
-    # Examples:
-    #geoserver.base-path:
-    #geoserver.base-path: /geoserver-cloud
-    #geoserver.base-path: /geoserver/cloud
-    # Leave it empty for no additional path, setting it to / won't work currently
-    #
-    # Please note any other prefix than the empty string will require a trailing slash in the root URL
-    # for the redirection to the web-ui to work. This is something we need to fix. For example:
-    # http://localhost:9090/geoserver-cloud will return 404, but http://localhost:9090/geoserver-cloud/ will work.
-    geoserver.base-path:  /geoserver-cloud
-
-    # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
-    server:
-      compression:
-        enabled: true
-
-    management:
-      endpoint.gateway.enabled: true # default value
-      endpoints:
-        enabled-by-default: true
-        web.exposure.include: "*"
-
-    spring:
-      cloud:
-        gateway:
-          globalcors:
-            cors-configurations:
-              '[/**]':
-                allowedOrigins: "*"
-                allowedMethods:
-                - GET
-                - PUT
-                - POST
-                - DELETE
-                - OPTIONS
-                - HEAD
-          default-filters:
-            - StripBasePath=${geoserver.base-path} #remove the base path on downstream requests
-          actuator:
-            verbose:
-              enabled: true
-          routes:
-            - id: catalog
-              uri: lb://catalog-service
-              predicates:
-                - Path=${geoserver.base-path}/api/v1/**
-              filters: # Expose the catalog and configuration API only if the dev profile is active
-                - RouteProfile=dev,403
-            # WFS routes
-            - id: wfs # proxies requests to gateway-service:/wfs to wfs-service:/wfs
-              uri: http://testwithveryveryverylongreleasename-geoser-wfs:8080 #load balanced to the wfs-service instances
-              predicates:
-                - Path=${geoserver.base-path}/wfs,${geoserver.base-path}/{workspace}/wfs,${geoserver.base-path}/{workspace}/{layer}/wfs,${geoserver.base-path}/schemas/wfs/**
-            # proxy [/{workspace}]/ows?SERVICE=wfs to wfs-service:[/{workspace}]/ows?SERVICE=wfs. Param value is case insensitive, name is not.
-            - id: wfs_ows
-              uri: http://testwithveryveryverylongreleasename-geoser-wfs:8080
-              predicates:
-                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
-                - RegExpQuery=(?i:service),(?i:wfs) # match service=wfs case insensitively
-            # WMS routes
-            - id: wms # proxies requests to gateway-service:/wms to wms-service:/wms
-              uri: http://testwithveryveryverylongreleasename-geoser-wms:8080 #load balanced to the wms-service instances
-              predicates:
-                - Path=${geoserver.base-path}/wms,${geoserver.base-path}/{workspace}/wms,${geoserver.base-path}/{workspace}/{layer}/wms,${geoserver.base-path}/schemas/wms/**,${geoserver.base-path}/openlayers/**,${geoserver.base-path}/openlayers3/**
-            - id: wms_ows # proxy [/{workspace}]/ows?SERVICE=wms to wms-service:[/{workspace}]/ows?SERVICE=wms. Param value is case insensitive, name is not.
-              uri: http://testwithveryveryverylongreleasename-geoser-wms:8080 #load balanced to the wms-service instances
-              predicates:
-                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
-                - RegExpQuery=(?i:service),(?i:wms) # match service=wms case insensitively
-            # WCS routes
-            - id: wcs # proxies requests to gateway-service:/wcs to wcs-service:/wcs
-              uri: http://testwithveryveryverylongreleasename-geoser-wcs:8080 #load balanced to the wcs-service instances
-              predicates:
-                - Path=${geoserver.base-path}/wcs,${geoserver.base-path}/{workspace}/wcs,${geoserver.base-path}/{workspace}/{layer}/wcs,${geoserver.base-path}/schemas/wcs/**
-            - id: wcs_ows # proxy [/{workspace}]/ows?SERVICE=wcs to wcs-service:[/{workspace}]/ows?SERVICE=wcs. Param value is case insensitive, name is not.
-              uri: http://testwithveryveryverylongreleasename-geoser-wcs:8080 #load balanced to the wcs-service instances
-              predicates:
-                - Path=${geoserver.base-path}/ows,${geoserver.base-path}/{workspace}/ows,${geoserver.base-path}/{workspace}/{layer}/ows
-                - RegExpQuery=(?i:service),(?i:wcs) # match service=wcs case insensitively
-            # REST configuration routes
-            - id: restconfig
-              uri: http://testwithveryveryverylongreleasename-geoser-rest:8080 #load balanced to the restconfig-v1 instances
-              predicates:
-                - Path=${geoserver.base-path}/rest/**
-            # GeoWebcache configuration routes
-            - id: gwc
-              uri: http://testwithveryveryverylongreleasename-geoser-gwc:8080 #load balanced to the gwc instances
-              predicates:
-                - Path=${geoserver.base-path}/gwc/**
-            # Web UI configuration routes
-            - id: webui
-              uri: http://testwithveryveryverylongreleasename-geoser-webui:8080 #load balanced to the webui instances
-              predicates:
-                - Path=${geoserver.base-path}/**
-    logging:
-      level:
-        root: WARN
-        com.netflix.discovery: INFO
-        com.netflix.eureka: INFO
-        org.springframework.cloud.gateway: info
-        org.springframework.cloud.gateway.handler: info
-        reactor.netty: INFO
-  gwc-service.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
-  restconfig-v1.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
-  wcs-service.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
-  web-ui.yml: |
+    ---
+    spring.config.activate.on-profile: wfs_service
+    ---
+    spring.config.activate.on-profile: wms_service
+    ---
+    spring.config.activate.on-profile: wcs_service
+    ---
+    spring.config.activate.on-profile: wps_service
+    ---
+    spring.config.activate.on-profile: restconfig_service
+    ---
+    spring.config.activate.on-profile: webui_service
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
       web-ui:
@@ -548,19 +571,52 @@ data:
           enabled: true
           resource-browser: true
           catalog-bulk-load: true
-  restconfig-v1.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
-
-  wfs-service.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
-  wms-service.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
-  wps-service.yml: |
-    geoserver:
-      backend.catalog-service.enabled: ${backend.catalog:true}
+    ---
+    spring.config.activate.on-profile: gwc_service
+    ---
+    spring.config.activate.on-profile: debug
+    logging:
+      level:
+        root: info
+        org.springframework: info
+        # geoserver roots
+        org.geoserver: info
+        org.geoserver.catalog.plugin: debug
+        org.geoserver.wms: info
+        org.geoserver.wfs: info
+        org.geoserver.jackson: debug
+        org.geotools.jackson: debug
+        org.geoserver.platform: error
+        org.geoserver.platform.resource.MemoryLockProvider: info
+        org.geoserver.platform.resource.NioFileLockProvider: debug
+        org.geoserver.platform.resource.FileLockProvider: debug
+        org.geoserver.jdbcconfig: info
+        # gs-cloud roots
+        org.geoserver.cloud: debug
+        org.geoserver.cloud.autoconfigure: trace
+        org.geoserver.cloud.config.factory: trace
+        org.geoserver.cloud.gwc: debug
+        # bus debugging
+        org.geoserver.cloud.bus: trace
+        org.springframework.cloud.bus: debug
+        org.springframework.cloud.bus.BusAutoConfiguration: info
+        org.springframework.cloud.bus.DefaultBusPathMatcher: info
+        # reactivefeign:
+        reactivefeign.client.log: info
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: testwithveryveryverylongreleasename-geoser-config-configs
+  labels:
+    helm.sh/chart: geoservercloud-0.0.28
+    deployed_by: helm
+    app.kubernetes.io/app_environment: "master"
+    app.kubernetes.io/base_environment: "dev"
+    app.kubernetes.io/name: geoservercloud
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
+    app.kubernetes.io/version: "1.0-RC10"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: "config"
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/role.yaml
 kind: Role
@@ -898,7 +954,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: 167503e453c7356a0a1dfeeee38737c0451358bcf18438cadf6876f0f675d307
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -921,10 +977,26 @@ spec:
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
+            - name: TARGETS_WMS
+              value: http://testwithveryveryverylongreleasename-geoser-wms:8080
+            - name: TARGETS_WFS
+              value: http://testwithveryveryverylongreleasename-geoser-wfs:8080
+            - name: TARGETS_WCS
+              value: http://testwithveryveryverylongreleasename-geoser-wcs:8080
+            - name: TARGETS_GWC
+              value: http://testwithveryveryverylongreleasename-geoser-gwc:8080
+            - name: TARGETS_REST
+              value: http://testwithveryveryverylongreleasename-geoser-rest:8080
+            - name: TARGETS_WEBUI
+              value: http://testwithveryveryverylongreleasename-geoser-webui:8080
             - name: SPRING_PROFILES_ACTIVE
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -977,23 +1049,26 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           startupProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
@@ -1036,7 +1111,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1071,6 +1146,10 @@ spec:
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1182,7 +1261,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1217,6 +1296,10 @@ spec:
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1328,7 +1411,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1363,6 +1446,10 @@ spec:
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1476,7 +1563,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: af6f6d5604aff08a6864beb7efc74537dffc1053e0b611131ff2f4d487fef297
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1511,6 +1598,10 @@ spec:
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1622,7 +1713,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1657,6 +1748,10 @@ spec:
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY
@@ -1768,7 +1863,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 1fa1ba33f212aa03d756f01f898f7b97abda06b6de15c41e37e55cf4deb44d0b
+        checksum/config: e8fbae94e059105c6aba646696f897b112d11e82a34fef3f9abe00c7f151c7d8
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1803,6 +1898,10 @@ spec:
               value: "standalone,jdbcconfig"
 
 
+            - name: GEOSERVER_BASE_PATH
+              value:  /geoserver-cloud
+            - name: GEOSERVER_DEBUG_INSTANCEID
+              value: "true"
             - name: BACKEND_CATALOG
               value: "false"
             - name: BACKEND_DATA_DIRECTORY

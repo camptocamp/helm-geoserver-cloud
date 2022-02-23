@@ -77,6 +77,12 @@ password: ${RABBITMQ_PASSWORD}
 
 {{- define "geoserver.common.env.variables" -}}
 {{ $profiles := splitList "," .Values.global.profile }}
+- name: GEOSERVER_BASE_PATH
+  value: {{ if not (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ .Values.geoserver.ingress.baseUrl }} {{else}} {{ trimSuffix "/" .Values.geoserver.ingress.baseUrl }} {{ end }}
+{{- if eq .Values.geoserver.debug.instanceId true }}
+- name: GEOSERVER_DEBUG_INSTANCEID
+  value: "true"
+{{- end }}
 - name: BACKEND_CATALOG
   value: {{ has "catalog" $profiles | quote}}
 - name: BACKEND_DATA_DIRECTORY
