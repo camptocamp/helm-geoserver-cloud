@@ -520,4 +520,3 @@ metadata:
   labels:
     {{- include "geoserver.labels" . | nindent 4 }}
     app.kubernetes.io/component: "config"
-
