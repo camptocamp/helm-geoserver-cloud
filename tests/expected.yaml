@@ -1003,31 +1003,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1155,31 +1130,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1304,31 +1254,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1453,31 +1378,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1604,31 +1504,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1753,31 +1628,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1902,31 +1752,6 @@ spec:
               value: "false"
             - name: BACKEND_JDBCCONFIG
               value: "true"
-            - name: JDBCCONFIG_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: DATABASE_NAME
-            - name: JDBCCONFIG_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: HOST
-            - name: JDBCCONFIG_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: ROLE
-            - name: JDBCCONFIG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PASSWORD
-            - name: JDBCCONFIG_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-                  key: PORT
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
