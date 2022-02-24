@@ -28,6 +28,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ include (print $.Template.BasePath "/config/configmap.yaml") . | sha256sum }}
+        specificValues/sha256: {{ toYaml .Values.geoserver.gateway | sha256sum }}
+        globalValues/sha256: {{ toYaml .Values.global | sha256sum }}
       labels:
         {{- include "geoserver.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: gateway
@@ -50,37 +52,61 @@ spec:
             - -c
             - java org.springframework.boot.loader.JarLauncher
           env:
-            - name: EUREKA_SERVER_URL
-              value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
-{{- if .Values.geoserver.config.env }}
-{{ toYaml .Values.geoserver.config.env | indent 12 }}
-{{- end }}
+            - name: TARGETS_WMS
+              value: http://{{ include "geoserver.fullname" . }}-wms:{{ .Values.geoserver.services.wms.service.port }}
+            - name: TARGETS_WFS
+              value: http://{{ include "geoserver.fullname" . }}-wfs:{{ .Values.geoserver.services.wfs.service.port }}
+            - name: TARGETS_WCS
+              value: http://{{ include "geoserver.fullname" . }}-wcs:{{ .Values.geoserver.services.wcs.service.port }}
+            - name: TARGETS_GWC
+              value: http://{{ include "geoserver.fullname" . }}-gwc:{{ .Values.geoserver.services.gwc.service.port }}
+            - name: TARGETS_REST
+              value: http://{{ include "geoserver.fullname" . }}-rest:{{ .Values.geoserver.services.rest.service.port }}
+            - name: TARGETS_WEBUI
+              value: http://{{ include "geoserver.fullname" . }}-webui:{{ .Values.geoserver.services.webui.service.port }}
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.global.profile | quote}}
+            {{ include "geoserver.common.env.variables" . | nindent 12}}
+            {{- if .Values.geoserver.gateway.env }}
+            {{ toYaml .Values.geoserver.gateway.env | nindent 12 }}
+            {{- end }}
+
+          volumeMounts:
+            - name: configs
+              mountPath: /etc/gscloud
 
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           startupProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: health
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: health
             periodSeconds: 10
             failureThreshold: 10
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: http
+              port: health
             periodSeconds: 5
 
           resources:
             {{- toYaml .Values.geoserver.gateway.resources | nindent 12 }}
+      volumes:
+        - name: configs
+          configMap:
+            name: {{ include "geoserver.fullname" . }}-config-configs
       {{- with .Values.geoserver.gateway.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,6 +1,6 @@
 # Helm chart for geoserver-cloud
 
-![Version: 0.0.28](https://img.shields.io/badge/Version-0.0.28-informational?style=flat-square) ![AppVersion: 1.0-RC10](https://img.shields.io/badge/AppVersion-1.0--RC10-informational?style=flat-square)
+![Version: 0.0.29](https://img.shields.io/badge/Version-0.0.29-informational?style=flat-square) ![AppVersion: 1.0-RC11](https://img.shields.io/badge/AppVersion-1.0--RC11-informational?style=flat-square)
 
 A Helm chart for Geoserver
 

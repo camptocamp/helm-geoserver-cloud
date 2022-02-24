@@ -64,26 +64,21 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*
-Generate content of spring config for rabbitmq
-*/}}
-{{- define "geoserver.spring.rabbitmq" -}}
-host: {{ .Release.Name }}-rabbitmq
-port: 5672
-username: {{ .Values.rabbitmq.auth.username }}
-password: ${RABBITMQ_PASSWORD}
-{{- end }}
-
 
 {{- define "geoserver.common.env.variables" -}}
-- name: EUREKA_SERVER_URL
-  value: http://{{ include "geoserver.fullname" . }}-discovery:8761/eureka
-- name: BACKEND_CATALOG
-  value: "false"
-- name: BACKEND_DATA_DIRECTORY
-  value: "false"
-- name: BACKEND_JDBCCONFIG
+{{ $profiles := splitList "," .Values.global.profile }}
+- name: GEOSERVER_BASE_PATH
+  value: {{ if not (hasSuffix "/" .Values.geoserver.ingress.baseUrl) }} {{ .Values.geoserver.ingress.baseUrl }} {{else}} {{ trimSuffix "/" .Values.geoserver.ingress.baseUrl }} {{ end }}
+{{- if eq .Values.geoserver.debug.instanceId true }}
+- name: GEOSERVER_DEBUG_INSTANCEID
   value: "true"
+{{- end }}
+- name: BACKEND_CATALOG
+  value: {{ has "catalog" $profiles | quote}}
+- name: BACKEND_DATA_DIRECTORY
+  value: {{ has "datadir" $profiles | quote}}
+- name: BACKEND_JDBCCONFIG
+  value: {{ has "jdbcconfig" $profiles | quote}}
 {{- if .Values.geoserver.envVariables }}
 {{- range $key, $definition := .Values.geoserver.envVariables }}
 - name: {{ $definition.name }}
@@ -97,7 +92,7 @@ password: ${RABBITMQ_PASSWORD}
   {{- end }}
 {{- end }}
 {{- end }}
-{{- if not .Values.geoserver.jdbc.external }}
+{{- if and (eq .Values.geoserver.jdbc.external false ) (eq .Values.postgresql.enabled true) }}
 - name: JDBCCONFIG_DATABASE
   valueFrom:
     secretKeyRef:
@@ -123,7 +118,7 @@ password: ${RABBITMQ_PASSWORD}
     secretKeyRef:
       name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
       key: PORT
-{{- else }}
+{{- else if and (eq .Values.geoserver.jdbc.external true ) (eq .Values.postgresql.enabled false) }}
 # FIXME: should also be set from some secret etc
 {{- range $key, $definition := .Values.geoserver.jdbc.configVariables }}
 - name: {{ $definition.name }}
@@ -142,11 +137,10 @@ password: ${RABBITMQ_PASSWORD}
     secretKeyRef:
       name: geoserver-rabbitmq
       key: rabbitmq-password
-- name: RABBITMQ_PASS
-  valueFrom:
-    secretKeyRef:
-      name: geoserver-rabbitmq
-      key: rabbitmq-password
 - name: RABBITMQ_HOST
-  value: {{ include "geoserver.fullname" . }}-rabbitmq
+  value: {{ .Release.Name }}-rabbitmq
+- name: RABBITMQ_PORT
+  value: "5672"
+- name: RABBITMQ_USER
+  value: geoserver
 {{- end }}

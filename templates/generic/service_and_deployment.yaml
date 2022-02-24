@@ -68,6 +68,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
         checksum/config: {{ $shaConfigmap }}
+        specificValues/sha256: {{ toYaml $serviceDefinition | sha256sum }}
+        globalValues/sha256: {{ toYaml $values.global | sha256sum }}
       labels:
         {{ $geoserverSelectorLabels | nindent 8 }}
         app.kubernetes.io/component: {{ $serviceName }}
@@ -75,13 +77,14 @@ spec:
           {{- toYaml $values.global.custom_pod_labels | nindent 8 }}
         {{- end }}
     spec:
-      {{- if $values.geoserver.volumeMounts }}
       volumes:
+        - name: configs
+          configMap:
+            name: {{ $geoserverName }}-config-configs
       {{- range $mountPointName := $values.geoserver.volumeMounts }}
         - name: {{ $mountPointName.mountName }}
           persistentVolumeClaim:
            claimName: {{ $mountPointName.pvcName }}
-      {{- end }}
       {{- end }}
 
       serviceAccountName: {{ $geoserverServiceAccountName }}
@@ -112,12 +115,12 @@ spec:
             - name: health
               containerPort: 8081
               protocol: TCP
-          {{- if $values.geoserver.volumeMounts }}
           volumeMounts:
+            - name: configs
+              mountPath: /etc/gscloud
           {{- range $mountPointName := $values.geoserver.volumeMounts }}
             - mountPath: {{ $mountPointName.mountPath | quote }}
               name: {{ $mountPointName.mountName }}
-          {{- end }}
           {{- end }}
           startupProbe:
             httpGet:
