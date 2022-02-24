@@ -92,7 +92,7 @@ Create the name of the service account to use
   {{- end }}
 {{- end }}
 {{- end }}
-{{- if not .Values.geoserver.jdbc.external }}
+{{- if and (eq .Values.geoserver.jdbc.external false ) (eq .Values.postgresql.enabled true) }}
 - name: JDBCCONFIG_DATABASE
   valueFrom:
     secretKeyRef:
@@ -118,7 +118,7 @@ Create the name of the service account to use
     secretKeyRef:
       name: {{ .Values.geoserver.database.secretConfig }}-{{ include "geoserver.fullname" . }}
       key: PORT
-{{- else }}
+{{- else if and (eq .Values.geoserver.jdbc.external true ) (eq .Values.postgresql.enabled false) }}
 # FIXME: should also be set from some secret etc
 {{- range $key, $definition := .Values.geoserver.jdbc.configVariables }}
 - name: {{ $definition.name }}
