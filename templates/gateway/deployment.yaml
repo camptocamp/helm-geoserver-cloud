@@ -82,12 +82,14 @@ spec:
             - name: health
               containerPort: 8081
               protocol: TCP
+          {{- if eq .Values.global.legacyk8s false }}
           startupProbe:
             httpGet:
               path: /actuator/health
               port: health
             failureThreshold: 30
             periodSeconds: 10
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /actuator/health

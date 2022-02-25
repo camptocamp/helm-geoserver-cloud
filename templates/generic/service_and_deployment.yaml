@@ -122,12 +122,14 @@ spec:
             - mountPath: {{ $mountPointName.mountPath | quote }}
               name: {{ $mountPointName.mountName }}
           {{- end }}
+          {{- if eq $values.global.legacyk8s false }}
           startupProbe:
             httpGet:
               path: /actuator/health/liveness
               port: health
             failureThreshold: 30
             periodSeconds: 10
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

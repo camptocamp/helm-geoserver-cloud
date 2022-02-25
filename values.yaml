@@ -1,4 +1,5 @@
 global:
+  legacyk8s: false
   profile: standalone,jdbcconfig
   revisionHistoryLimit: 3
   deployed_by: helm
