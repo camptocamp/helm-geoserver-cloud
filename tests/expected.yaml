@@ -20,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -93,7 +93,7 @@ kind: ConfigMap
 metadata:
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -728,7 +728,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -758,7 +758,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -787,7 +787,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -816,7 +816,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -845,7 +845,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -876,7 +876,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -905,7 +905,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -933,7 +933,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -955,7 +955,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: 167503e453c7356a0a1dfeeee38737c0451358bcf18438cadf6876f0f675d307
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1065,7 +1065,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1086,7 +1086,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1189,7 +1189,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1210,7 +1210,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1313,7 +1313,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1334,7 +1334,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1437,7 +1437,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1460,7 +1460,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: af6f6d5604aff08a6864beb7efc74537dffc1053e0b611131ff2f4d487fef297
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1563,7 +1563,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1584,7 +1584,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
@@ -1687,7 +1687,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.29
+    helm.sh/chart: geoservercloud-0.0.30
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1708,7 +1708,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 09c41f783212d3a6ad2e847d87efca6b0d09d8b7a2c007cc5c93564efec8a69b
+        checksum/config: 30a7adedec1cb6bde8128b6f3dc4dc4b476d62fb90772fdc06a760a7ebe10ca8
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: e9928a5904a920eb34e124cd277554fd56bc7f7a27f07e6505dae521cc4ad566
       labels:
