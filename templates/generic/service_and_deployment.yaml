@@ -96,10 +96,6 @@ spec:
             {{- toYaml $serviceDefinition.securityContext | nindent 12 }}
           image: "{{ trimSuffix "/" $values.global.image.registry | default "docker.io" }}/{{ $serviceDefinition.image.repository }}:{{ $serviceDefinition.image.tag | default $chart.AppVersion }}"
           imagePullPolicy: {{ $values.global.image.pullPolicy }}
-          command:
-            - /bin/sh
-            - -c
-            - java {{ if eq $values.global.allowEnvParametrization true -}} -DALLOW_ENV_PARAMETRIZATION=true {{- end }} org.springframework.boot.loader.JarLauncher
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ $values.global.profile | quote}}
@@ -107,7 +103,6 @@ spec:
           {{- if $serviceDefinition.env }}
           {{ toYaml $serviceDefinition.env | nindent 12 }}
           {{- end }}
-
           ports:
             - name: http
               containerPort: 8080
