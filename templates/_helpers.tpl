@@ -79,6 +79,10 @@ Create the name of the service account to use
   value: {{ has "datadir" $profiles | quote}}
 - name: BACKEND_JDBCCONFIG
   value: {{ has "jdbcconfig" $profiles | quote}}
+{{ if eq .Values.global.allowEnvParametrization true -}}
+- name: JAVA_OPTS
+  value: "-DALLOW_ENV_PARAMETRIZATION=true"
+{{- end }}
 {{- if .Values.geoserver.envVariables }}
 {{- range $key, $definition := .Values.geoserver.envVariables }}
 - name: {{ $definition.name }}

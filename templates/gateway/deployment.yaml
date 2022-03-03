@@ -46,11 +46,6 @@ spec:
             {{- toYaml .Values.geoserver.gateway.securityContext | nindent 12 }}
           image: "{{ trimSuffix "/" .Values.global.image.registry | default "docker.io" }}/{{ .Values.geoserver.gateway.image.repository }}:{{ .Values.geoserver.gateway.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
-          command:
-
-            - /bin/sh
-            - -c
-            - java org.springframework.boot.loader.JarLauncher
           env:
             - name: TARGETS_WMS
               value: http://{{ include "geoserver.fullname" . }}-wms:{{ .Values.geoserver.services.wms.service.port }}
