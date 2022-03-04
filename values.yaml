@@ -206,7 +206,7 @@ geoserver:
           memory: 128Mi
           cpu: 0.1
         limits:
-          memory: 512Mi
+          memory: 1024Mi
           cpu: 2.0
 
       nodeSelector: {}
