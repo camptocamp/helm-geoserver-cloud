@@ -20,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -93,7 +93,7 @@ kind: ConfigMap
 metadata:
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -730,7 +730,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -760,7 +760,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -789,7 +789,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -818,7 +818,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -847,7 +847,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -878,7 +878,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -907,7 +907,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -935,7 +935,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -957,7 +957,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: 167503e453c7356a0a1dfeeee38737c0451358bcf18438cadf6876f0f675d307
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1064,7 +1064,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1085,7 +1085,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1095,6 +1095,9 @@ spec:
         app.kubernetes.io/component: gwc
     spec:
       volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
         - name: configs
           configMap:
             name: testwithveryveryverylongreleasename-geoser-config-configs
@@ -1105,6 +1108,16 @@ spec:
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       containers:
         - name: gwc
           securityContext:
@@ -1147,6 +1160,8 @@ spec:
               containerPort: 8081
               protocol: TCP
           volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare
             - name: configs
               mountPath: /etc/gscloud
             - mountPath: "/var/geoserver/nfsrasters"
@@ -1185,7 +1200,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1206,7 +1221,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1216,6 +1231,9 @@ spec:
         app.kubernetes.io/component: rest
     spec:
       volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
         - name: configs
           configMap:
             name: testwithveryveryverylongreleasename-geoser-config-configs
@@ -1226,6 +1244,16 @@ spec:
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       containers:
         - name: rest
           securityContext:
@@ -1268,6 +1296,8 @@ spec:
               containerPort: 8081
               protocol: TCP
           volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare
             - name: configs
               mountPath: /etc/gscloud
             - mountPath: "/var/geoserver/nfsrasters"
@@ -1306,7 +1336,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1327,7 +1357,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1337,6 +1367,9 @@ spec:
         app.kubernetes.io/component: wcs
     spec:
       volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
         - name: configs
           configMap:
             name: testwithveryveryverylongreleasename-geoser-config-configs
@@ -1347,6 +1380,16 @@ spec:
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       containers:
         - name: wcs
           securityContext:
@@ -1389,6 +1432,8 @@ spec:
               containerPort: 8081
               protocol: TCP
           volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare
             - name: configs
               mountPath: /etc/gscloud
             - mountPath: "/var/geoserver/nfsrasters"
@@ -1427,7 +1472,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1450,7 +1495,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: 0a4ad591b6dae7d9aaad1927ae7716c473fedd10af8dd6dea047850f24407186
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1460,6 +1505,9 @@ spec:
         app.kubernetes.io/component: webui
     spec:
       volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
         - name: configs
           configMap:
             name: testwithveryveryverylongreleasename-geoser-config-configs
@@ -1470,6 +1518,16 @@ spec:
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       containers:
         - name: webui
           securityContext:
@@ -1512,6 +1570,8 @@ spec:
               containerPort: 8081
               protocol: TCP
           volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare
             - name: configs
               mountPath: /etc/gscloud
             - mountPath: "/var/geoserver/nfsrasters"
@@ -1550,7 +1610,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1571,7 +1631,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1581,6 +1641,9 @@ spec:
         app.kubernetes.io/component: wfs
     spec:
       volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
         - name: configs
           configMap:
             name: testwithveryveryverylongreleasename-geoser-config-configs
@@ -1591,6 +1654,16 @@ spec:
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       containers:
         - name: wfs
           securityContext:
@@ -1633,6 +1706,8 @@ spec:
               containerPort: 8081
               protocol: TCP
           volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare
             - name: configs
               mountPath: /etc/gscloud
             - mountPath: "/var/geoserver/nfsrasters"
@@ -1671,7 +1746,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.33
+    helm.sh/chart: geoservercloud-0.0.34
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1692,7 +1767,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fdc6fb9ae7ca56c9fb0cc5aae1276dd1c9c8da1b966b844f389388c306b57aef
+        checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1702,6 +1777,9 @@ spec:
         app.kubernetes.io/component: wms
     spec:
       volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
         - name: configs
           configMap:
             name: testwithveryveryverylongreleasename-geoser-config-configs
@@ -1712,6 +1790,16 @@ spec:
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       containers:
         - name: wms
           securityContext:
@@ -1754,6 +1842,8 @@ spec:
               containerPort: 8081
               protocol: TCP
           volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare
             - name: configs
               mountPath: /etc/gscloud
             - mountPath: "/var/geoserver/nfsrasters"

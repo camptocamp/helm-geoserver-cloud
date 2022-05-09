@@ -10,6 +10,18 @@ geoservercloud:
   postgresql:
     enabled: false
   geoserver:
+    custom:
+      commonInitContainers:
+        - name: extract-config
+          volumeMounts:
+            - name: localshare
+              mountPath: /mnt/localshare/
+          command:
+            - /bin/bash
+            - -c
+            - touch /mnt/localshare/test.txt;
+          image: busybox
+
     volumeMounts:
       - mountPath: '/var/geoserver/nfsrasters'
         mountName: 'nfs-pv-storage-rasters'
