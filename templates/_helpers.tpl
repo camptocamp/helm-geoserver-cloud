@@ -81,7 +81,7 @@ Create the name of the service account to use
   value: {{ has "jdbcconfig" $profiles | quote}}
 {{ if eq .Values.global.allowEnvParametrization true -}}
 - name: JAVA_OPTS
-  value: "-DALLOW_ENV_PARAMETRIZATION=true"
+  value: "-DALLOW_ENV_PARAMETRIZATION=true {{ .Values.geoserver.custom.javaopts }}"
 {{- end }}
 {{- if .Values.geoserver.envVariables }}
 {{- range $key, $definition := .Values.geoserver.envVariables }}

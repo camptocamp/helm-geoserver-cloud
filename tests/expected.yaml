@@ -958,13 +958,30 @@ spec:
     metadata:
       annotations:
         checksum/config: e8698e23612264f70811f584df575fc8456240e536039c77f245c63186547845
-        specificValues/sha256: 167503e453c7356a0a1dfeeee38737c0451358bcf18438cadf6876f0f675d307
+        specificValues/sha256: e8bd46520d20c5e2dfdb553d200fdd7607a59c6110a8581d5948360a7a12993e
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
         app.kubernetes.io/name: geoservercloud
         app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/component: gateway
     spec:
+      volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
+        - name: configs
+          configMap:
+            name: testwithveryveryverylongreleasename-geoser-config-configs
+      initContainers:
+        - command:
+          - /bin/bash
+          - -c
+          - touch /mnt/localshare/test.txt;
+          image: busybox
+          name: extract-config
+          volumeMounts:
+          - mountPath: /mnt/localshare/
+            name: localshare
       serviceAccountName: testwithveryveryverylongreleasename-geoser
       securityContext:
         runAsUser: 630
@@ -1002,7 +1019,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1018,6 +1035,8 @@ spec:
           volumeMounts:
             - name: configs
               mountPath: /etc/gscloud
+            - name: localshare
+              mountPath: /mnt/localshare
 
           ports:
             - name: http
@@ -1052,10 +1071,6 @@ spec:
             requests:
               cpu: 0.1
               memory: 128Mi
-      volumes:
-        - name: configs
-          configMap:
-            name: testwithveryveryverylongreleasename-geoser-config-configs
 ---
 # Source: ogscloud/charts/geoservercloud/templates/generic/service_and_deployment.yaml
 # deployment gwc
@@ -1140,7 +1155,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1276,7 +1291,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1412,7 +1427,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1550,7 +1565,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1686,7 +1701,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1822,7 +1837,7 @@ spec:
             - name: BACKEND_JDBCCONFIG
               value: "true"
             - name: JAVA_OPTS
-              value: "-DALLOW_ENV_PARAMETRIZATION=true"
+              value: "-DALLOW_ENV_PARAMETRIZATION=true "
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:

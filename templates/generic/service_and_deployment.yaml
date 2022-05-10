@@ -86,8 +86,13 @@ spec:
             name: {{ $geoserverName }}-config-configs
       {{- range $mountPointName := $values.geoserver.volumeMounts }}
         - name: {{ $mountPointName.mountName }}
+          {{- if hasKey $mountPointName "pvcName" }}
           persistentVolumeClaim:
            claimName: {{ $mountPointName.pvcName }}
+          {{- else if hasKey $mountPointName "configMap" }}
+          configMap:
+            name: {{ $mountPointName.configMap.name }}
+          {{- end }}
       {{- end }}
 
       serviceAccountName: {{ $geoserverServiceAccountName }}

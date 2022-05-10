@@ -155,6 +155,7 @@ geoserver:
     port: 5672
 
   gateway:
+    initContainers: []
     replicaCount: 1
     image:
       repository: geoservercloud/geoserver-cloud-gateway
