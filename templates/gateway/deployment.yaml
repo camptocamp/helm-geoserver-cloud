@@ -37,6 +37,22 @@ spec:
           {{- toYaml .Values.global.custom_pod_labels | nindent 8 }}
         {{- end }}
     spec:
+      volumes:
+        # we define an emptyDir that can be used by optional initContainers if needed
+        - name: localshare
+          emptyDir: {}
+        - name: configs
+          configMap:
+            name: {{ include "geoserver.fullname" . }}-config-configs
+      {{- if or .Values.geoserver.custom.commonInitContainers .Values.geoserver.gateway.initContainers }}
+      initContainers:
+      {{- if .Values.geoserver.custom.commonInitContainers }}
+      {{- toYaml .Values.geoserver.custom.commonInitContainers | nindent 8 }}
+      {{- end }}
+      {{- if .Values.geoserver.gateway.initContainers }}
+      {{- toYaml .Values.geoserver.gateway.initContainers | nindent 8 }}
+      {{- end }}
+      {{- end }}
       serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.geoserver.gateway.podSecurityContext | nindent 8 }}
@@ -69,6 +85,8 @@ spec:
           volumeMounts:
             - name: configs
               mountPath: /etc/gscloud
+            - name: localshare
+              mountPath: /mnt/localshare
 
           ports:
             - name: http
@@ -100,10 +118,6 @@ spec:
 
           resources:
             {{- toYaml .Values.geoserver.gateway.resources | nindent 12 }}
-      volumes:
-        - name: configs
-          configMap:
-            name: {{ include "geoserver.fullname" . }}-config-configs
       {{- with .Values.geoserver.gateway.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
