@@ -20,13 +20,13 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -93,13 +93,13 @@ kind: ConfigMap
 metadata:
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
@@ -281,113 +281,16 @@ data:
       gwc: http://localhost:9107
 
   geoserver.yml: |-
-    # shared application config for geoserver-cloud v1.0-SNAPSHOT
-    server:
-      tomcat:
-        # Maximum number of connections that the server accepts and processes at any given time.
-        # Once the limit has been reached, the operating system may still accept connections based on the "acceptCount" property.
-        max-connections: 1000 # default: 8192
-        # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
-        accept-count: 100 # default: 100
-        accesslog:
-          enabled: false
-          directory: logs
-          encoding: UTF-8
-        threads:
-          # Minimum amount of worker threads.
-          min-spare: 2 #default: 10
-          # Maximum amount of worker threads.
-          max: 20 #default: 200
+    # This configuration file is imported by all geoserver-specific services' bootstrap.yml
+    # For the sake of clarity, configuration properties relative to the spring-boot application
+    # itself is imported from geoserver_spring.yml, and properties specific to geoserver from this file.
+    spring.config.import: geoserver_spring.yml
 
-    management:
-      endpoints:
-        enabled-by-default: true
-        web.exposure.include: "*"
-      endpoint:
-        info.enabled: true
-        metrics.enabled: true
-        shutdown.enabled: true
-        health:
-          enabled: true
-          probes.enabled: true
-          show-details: always
-      metrics:
-        binders:
-          processor.enabled: true
-          uptime.enabled: true
-          jvm.enabled: true
-        enable.all: true
-        enable.jvm: true
-        export:
-          atlas.enabled: false
-
-    spring:
-      rabbitmq:
-        host: ${rabbitmq.host:rabbitmq}
-        port: ${rabbitmq.port:5672}
-        username: ${rabbitmq.user:guest}
-        password: ${rabbitmq.password:guest}
-      cloud:
-        bus:
-          enabled: true
-          id: ${info.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
-          trace.enabled: false #switch on tracing of acks (default off).
-        stream:
-          bindings:
-            springCloudBusOutput:
-              destination: gscatalog
-            springCloudBusInput:
-              destination: gscatalog
-      jackson:
-        default-property-inclusion: non-empty
-        serialization.indent-output: false #set to true if doing manual testing and want formatted output
-
-    reactive.feign.cloud.enabled: true
-    reactive.feign.hystrix.enabled: false
-
+    # The following geoserver, geotools, and geowebcache configuration properties
+    # are common to all geoserver microservices, despite some may not apply to a given service,
+    # it's easier to have them all here in the default spring profile.
     # Common configuration for all services. Override or add service specific config
     # properties on each <service-name>-service.yml file
-
-    # GeoTools HTTP Client proxy configuration, allows configuring cascaded WMS/WMTS/WFS stores
-    # that need to go through an HTTP proxy without affecting all the http clients at the JVM level
-    # These are default settings. The enabled property can be set to false to disable the custom
-    # HTTPClientFactory altogether.
-    # The following OS environment variables can be set for easier configuration:
-    # HTTP(S)_PROXYHOST, HTTP(S)_PROXYPORT, HTTP(S)_PROXYUSER, HTTP(S)_PROXYPASSWORD, HTTP(S)_NONPROXYHOSTS
-    geotools:
-      httpclient:
-        proxy:
-          enabled: true
-          http:
-            host: ${http.proxyHost:}
-            port: ${http.proxyPort:}
-            user: ${http.proxyUser:}
-            password: ${http.proxyPassword:}
-            nonProxyHosts: ${http.nonProxyHosts:localhost.*}
-            # comma separated list of Java regular expressions, e.g.: nonProxyHosts: localhost, example.*
-          https:
-            host: ${https.proxyHost:${geotools.httpclient.proxy.http.host}}
-            port: ${https.proxyPort:${geotools.httpclient.proxy.http.port}}
-            user: ${https.proxyUser:${geotools.httpclient.proxy.http.user}}
-            password: ${https.proxyPassword:${geotools.httpclient.proxy.http.password}}
-            nonProxyHosts: ${https.nonProxyHosts:${geotools.httpclient.proxy.http.nonProxyHosts}}
-
-    gwc:
-      enabled: true
-      cache-directory: ${GEOWEBCACHE_CACHE_DIR:${geoserver.backend.data-directory.location}/gwc}
-      rest-config: true
-      web-ui: true
-      wms-integration: true
-      services:
-        wmts: true
-        tms: true
-        wms: true
-        kml: true
-        gmaps: true
-        mgmaps: true
-      blobstores:
-        azure: true
-        s3: true
 
     # GeoServer-Cloud common config properties
     geoserver:
@@ -451,47 +354,53 @@ data:
             geojson.enabled: true
             topojson.enabled: true
 
-    logging:
-      level:
-        root: warn
-        org.springframework: warn
-        org.springframework.cloud.bus: info
-        org.springframework.retry: info
-        org.springframework.jdbc.support: info
-        com.zaxxer.hikari.pool: OFF
-        # reactivefeign:
-        reactivefeign.client.log: info
-    #    com.netflix.eureka.registry.AbstractInstanceRegistry: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
-    #    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
-        # geoserver roots
-        org.geotools.autoconfigure: info
-        oshi.hardware.platform.linux: error
-        oshi.software.os: error
-        org.geoserver: warn
-        org.geoserver.catalog.plugin: info
-        org.geoserver.jackson: info
-        org.geotools.jackson: info
-        org.geoserver.platform: error
-        org.geoserver.platform.resource.MemoryLockProvider: info
-        org.geoserver.platform.resource.NioFileLockProvider: info
-        org.geoserver.platform.resource.FileLockProvider: info
-        org.geoserver.jdbcconfig: info
-        # gs-cloud roots
-        org.geoserver.cloud: info
-        org.geoserver.cloud.autoconfigure: info
-        org.geoserver.cloud.config.factory: info
-        # bus debugging
-        org.geoserver.cloud.bus: info
-        org.springframework.cloud.bus.BusAutoConfiguration: info
-        org.springframework.cloud.bus.DefaultBusPathMatcher: info
-    ---
-    # this profile is automatically included if any of the embedded
-    # config_first or discovery_first profile groups are active
-    spring.config.activate.on-profile: discovery_eureka
-    # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
-    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
-    eureka.client.healthcheck.enabled: true
-    eureka.server.url: http://discovery:8761/eureka
+    # GeoTools HTTP Client proxy configuration, allows configuring cascaded WMS/WMTS/WFS stores
+    # that need to go through an HTTP proxy without affecting all the http clients at the JVM level
+    # These are default settings. The enabled property can be set to false to disable the custom
+    # HTTPClientFactory altogether.
+    # The following OS environment variables can be set for easier configuration:
+    # HTTP(S)_PROXYHOST, HTTP(S)_PROXYPORT, HTTP(S)_PROXYUSER, HTTP(S)_PROXYPASSWORD, HTTP(S)_NONPROXYHOSTS
+    geotools:
+      httpclient:
+        proxy:
+          enabled: true
+          http:
+            host: ${http.proxyHost:}
+            port: ${http.proxyPort:}
+            user: ${http.proxyUser:}
+            password: ${http.proxyPassword:}
+            nonProxyHosts: ${http.nonProxyHosts:localhost.*}
+            # comma separated list of Java regular expressions, e.g.: nonProxyHosts: localhost, example.*
+          https:
+            host: ${https.proxyHost:${geotools.httpclient.proxy.http.host}}
+            port: ${https.proxyPort:${geotools.httpclient.proxy.http.port}}
+            user: ${https.proxyUser:${geotools.httpclient.proxy.http.user}}
+            password: ${https.proxyPassword:${geotools.httpclient.proxy.http.password}}
+            nonProxyHosts: ${https.nonProxyHosts:${geotools.httpclient.proxy.http.nonProxyHosts}}
+
+    # GeoWebCache-specific configuration properties, apply to services that run some GWC
+    # internal components. For example, all of gwc-service, wms-service, and web-ui, will
+    # need to access GeoWebCache's blob stores, and tile-layer configuration resources.
+    # wms-service and web-ui won't event load components related to GWC REST/Web APIs, web UI,
+    # and others. Unlike web-ui, wms-service will load the internal components needed for
+    # on-demand tile seeding in order to serve WMC-C tiled requests if gwc.wms-integration=true,
+    # so that gwc/wms-c integration workds independently of gwc-service.
+    gwc:
+      enabled: true
+      cache-directory: ${GEOWEBCACHE_CACHE_DIR:${geoserver.backend.data-directory.location}/gwc}
+      rest-config: true
+      web-ui: true
+      wms-integration: true
+      services:
+        wmts: true
+        tms: true
+        wms: true
+        kml: true
+        gmaps: true
+        mgmaps: true
+      blobstores:
+        azure: true
+        s3: true
 
     ###################################################
     #### GeoServer configuration backend profiles: ####
@@ -516,34 +425,6 @@ data:
     #############################################
     #### per microservice-specific profiles: ####
     ---
-    spring.config.activate.on-profile: catalog_service
-    geoserver:
-      security.enabled: false
-      # Disable advertised catalog, it checks the org.geoserver.ows.Dispatcher.REQUEST to check if an OWS is in progress,
-      # which can never be the case, and causes a java.lang.NoClassDefFoundError on org.springframework.web.servlet.mvc.AbstractController
-      catalog:
-        advertised: false
-        # Disable LocalWorkspaceCatalog decorator, this service exposes a "raw catalog" backend, there's no concept of local workspaces
-        localWorkspace: false
-        secure: false
-        # enable caching while using the jdbcconfig backend, we've disabled its own internal caching due to concurrency related bugs
-        caching.enabled: ${geoserver.backend.jdbcconfig.enabled}
-      catalog-service:
-        io-threads:
-          # Number of back-end threads to hit the actual catalog with. Defaults 4 * number of cores if unset.
-          # If using jdbcconfig, let io-threads be about half the size of geoserver.backend.jdbcconfig.datasource.maximumPoolSize,
-          # it has the tendency to use more than one jdbc connection for some requests.
-          max-size: ${catalog.io.threads:8}
-          # maximum number of queued requests per worker thread before rejecting new requests
-          max-queued: ${catalog.io.maxQueued:10000}
-      bus:
-        # receive events but don't publish, it's the front catalogs that publish events to better track where the changes come from
-        send-events: false
-      backend:
-        # decide which catalog backend to use on this service, default to using jdbcconfig
-        jdbcconfig.enabled: ${backend.jdbcconfig:true}
-
-    ---
     spring.config.activate.on-profile: wfs_service
     ---
     spring.config.activate.on-profile: wms_service
@@ -553,6 +434,8 @@ data:
     spring.config.activate.on-profile: wps_service
     ---
     spring.config.activate.on-profile: restconfig_service
+    ---
+    spring.config.activate.on-profile: gwc_service
     ---
     spring.config.activate.on-profile: webui_service
     geoserver:
@@ -592,7 +475,139 @@ data:
           resource-browser: true
           catalog-bulk-load: true
     ---
-    spring.config.activate.on-profile: gwc_service
+    spring.config.activate.on-profile: catalog_service
+    geoserver:
+      security.enabled: false
+      # Disable advertised catalog, it checks the org.geoserver.ows.Dispatcher.REQUEST to check if an OWS is in progress,
+      # which can never be the case, and causes a java.lang.NoClassDefFoundError on org.springframework.web.servlet.mvc.AbstractController
+      catalog:
+        advertised: false
+        # Disable LocalWorkspaceCatalog decorator, this service exposes a "raw catalog" backend, there's no concept of local workspaces
+        localWorkspace: false
+        secure: false
+        # enable caching while using the jdbcconfig backend, we've disabled its own internal caching due to concurrency related bugs
+        caching.enabled: ${geoserver.backend.jdbcconfig.enabled}
+      catalog-service:
+        io-threads:
+          # Number of back-end threads to hit the actual catalog with. Defaults 4 * number of cores if unset.
+          # If using jdbcconfig, let io-threads be about half the size of geoserver.backend.jdbcconfig.datasource.maximumPoolSize,
+          # it has the tendency to use more than one jdbc connection for some requests.
+          max-size: ${catalog.io.threads:8}
+          # maximum number of queued requests per worker thread before rejecting new requests
+          max-queued: ${catalog.io.maxQueued:10000}
+      # receive events but don't publish, it's the front catalogs that publish events to better track where the changes come from
+      bus.send-events: false
+      # decide which catalog backend to use on this service, defaults to jdbcconfig
+      backend.jdbcconfig.enabled: ${backend.jdbcconfig:true}
+
+  geoserver_spring.yml: |-
+    # Spring Boot application-specific config properties to be shared by all
+    # GeoServer microservices. Imported from geoserver.yml, in order to separate
+    # application from geoserver configuration.
+    server:
+      tomcat:
+        # Maximum number of connections that the server accepts and processes at any given time.
+        # Once the limit has been reached, the operating system may still accept connections based on the "acceptCount" property.
+        max-connections: 1000 # default: 8192
+        # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
+        accept-count: 100 # default: 100
+        accesslog.enabled: false
+        threads:
+          # Minimum amount of worker threads.
+          min-spare: 2 #default: 10
+          # Maximum amount of worker threads.
+          max: 20 #default: 200
+
+    spring:
+      rabbitmq:
+        host: ${rabbitmq.host:rabbitmq}
+        port: ${rabbitmq.port:5672}
+        username: ${rabbitmq.user:guest}
+        password: ${rabbitmq.password:guest}
+      cloud:
+        bus:
+          enabled: true
+          id: ${info.instance-id} # use the same instance id for eureka (see service's' bootstrap.yml) and cloud-bus' rabbitmq instance id
+          trace.enabled: false #switch on tracing of acks (default off).
+        stream:
+          bindings:
+            springCloudBusOutput:
+              destination: gscatalog
+            springCloudBusInput:
+              destination: gscatalog
+      jackson:
+        default-property-inclusion: non-empty
+        serialization.indent-output: false #set to true if doing manual testing and want formatted output
+
+    reactive.feign.cloud.enabled: true
+    reactive.feign.hystrix.enabled: false
+
+    management:
+      endpoints:
+        enabled-by-default: true
+        web.exposure.include: "*"
+      endpoint:
+        info.enabled: true
+        metrics.enabled: true
+        shutdown.enabled: true
+        health:
+          enabled: true
+          probes.enabled: true
+          show-details: always
+      metrics:
+        binders:
+          processor.enabled: true
+          uptime.enabled: true
+          jvm.enabled: true
+        enable.all: true
+        enable.jvm: true
+        export:
+          atlas.enabled: false
+
+    logging:
+      level:
+        root: warn
+        org.springframework: warn
+        org.springframework.cloud.bus: info
+        org.springframework.retry: info
+        org.springframework.jdbc.support: info
+        com.zaxxer.hikari.pool: OFF
+        # reactivefeign:
+        reactivefeign.client.log: info
+    #    com.netflix.eureka.registry.AbstractInstanceRegistry: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+    #    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        # geoserver roots
+        org.geotools.autoconfigure: info
+        oshi.hardware.platform.linux: error
+        oshi.software.os: error
+        org.geoserver: warn
+        org.geoserver.catalog.plugin: info
+        org.geoserver.jackson: info
+        org.geotools.jackson: info
+        org.geoserver.platform: error
+        org.geoserver.platform.resource.MemoryLockProvider: info
+        org.geoserver.platform.resource.NioFileLockProvider: info
+        org.geoserver.platform.resource.FileLockProvider: info
+        org.geoserver.jdbcconfig: info
+        # gs-cloud roots
+        org.geoserver.cloud: info
+        org.geoserver.cloud.autoconfigure: info
+        org.geoserver.cloud.config.factory: info
+        # bus debugging
+        org.geoserver.cloud.bus: info
+        org.springframework.cloud.bus.BusAutoConfiguration: info
+        org.springframework.cloud.bus.DefaultBusPathMatcher: info
+
+    ---
+    # this profile is automatically included if any of the embedded
+    # config_first or discovery_first profile groups are active
+    spring.config.activate.on-profile: discovery_eureka
+    # Should only be set in application.yml (i.e. not in bootstrap.yml).
+    # Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
+    # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
+    eureka.client.healthcheck.enabled: true
+    eureka.server.url: http://discovery:8761/eureka
+
     ---
     spring.config.activate.on-profile: debug
     logging:
@@ -733,13 +748,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -763,13 +778,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -792,13 +807,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -821,13 +836,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -850,13 +865,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -881,13 +896,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -910,13 +925,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -938,13 +953,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -960,7 +975,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: e8bd46520d20c5e2dfdb553d200fdd7607a59c6110a8581d5948360a7a12993e
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -992,7 +1007,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: TARGETS_WMS
@@ -1082,13 +1097,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -1103,7 +1118,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1140,7 +1155,7 @@ spec:
         - name: gwc
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1218,13 +1233,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -1239,7 +1254,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1276,7 +1291,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1354,13 +1369,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -1375,7 +1390,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1412,7 +1427,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1490,13 +1505,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -1513,7 +1528,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: 0a4ad591b6dae7d9aaad1927ae7716c473fedd10af8dd6dea047850f24407186
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1550,7 +1565,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1628,13 +1643,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1649,7 +1664,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1686,7 +1701,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1764,13 +1779,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.35
+    helm.sh/chart: geoservercloud-0.0.36
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC18"
+    app.kubernetes.io/version: "1.0-RC19"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1785,7 +1800,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: e5cf5fb3442331bd8abe99459c54e2abe033602b443bb80c14921546362bf02c
+        checksum/config: 5aff9dd44c2fcb49d86d7a195291ef1848b4e583560fbc2380422ad202658d2b
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1822,7 +1837,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC18"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC19"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
