@@ -20,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -93,7 +93,7 @@ kind: ConfigMap
 metadata:
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -528,15 +528,16 @@ data:
       tomcat:
         # Maximum number of connections that the server accepts and processes at any given time.
         # Once the limit has been reached, the operating system may still accept connections based on the "acceptCount" property.
-        max-connections: 1000 # default: 8192
+        max-connections: ${tomcat.max.connections:8192}
         # Maximum queue length for incoming connection requests when all possible request processing threads are in use.
-        accept-count: 100 # default: 100
-        accesslog.enabled: false
+        accept-count: ${tomcat.accept.count:100}
+        accesslog.enabled: ${tomcat.accesslog.enabled:false}
+        mbeanregistry.enabled: ${tomcat.mbeanregistry.enabled:false}
         threads:
           # Minimum amount of worker threads.
-          min-spare: 2 #default: 10
+          min-spare: ${tomcat.threads.min.spare:10}
           # Maximum amount of worker threads.
-          max: 20 #default: 200
+          max: ${tomcat.threads.max:200}
 
     spring:
       rabbitmq:
@@ -594,8 +595,8 @@ data:
         com.zaxxer.hikari.pool: OFF
         # reactivefeign:
         reactivefeign.client.log: info
-    #    com.netflix.eureka.registry.AbstractInstanceRegistry: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
-    #    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        #    com.netflix.eureka.registry.AbstractInstanceRegistry: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        #    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
         # geoserver roots
         org.geotools.autoconfigure: info
         oshi.hardware.platform.linux: error
@@ -768,7 +769,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -798,7 +799,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -827,7 +828,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -856,7 +857,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -885,7 +886,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -916,7 +917,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -945,7 +946,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -973,7 +974,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -995,7 +996,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: e8bd46520d20c5e2dfdb553d200fdd7607a59c6110a8581d5948360a7a12993e
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1058,6 +1059,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1117,7 +1124,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1138,7 +1145,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1194,6 +1201,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1253,7 +1266,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1274,7 +1287,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1330,6 +1343,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1389,7 +1408,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1410,7 +1429,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1466,6 +1485,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1525,7 +1550,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1548,7 +1573,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: 0a4ad591b6dae7d9aaad1927ae7716c473fedd10af8dd6dea047850f24407186
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1604,6 +1629,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1663,7 +1694,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1684,7 +1715,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1740,6 +1771,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -1799,7 +1836,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.37
+    helm.sh/chart: geoservercloud-0.0.38
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1820,7 +1857,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: da251e433fcb2b4643d603ba9da6b714e84206e3d234aace513b1a2bda68d970
+        checksum/config: 0fe3ba433cc4fe965294d7ec8c67d5b4833ea91b7a15984f67f702c90cfd1b19
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1876,6 +1913,12 @@ spec:
               value: "true"
             - name: JAVA_OPTS
               value: "-DALLOW_ENV_PARAMETRIZATION=true "
+            - name: TOMCAT_ACCESSLOG_ENABLED
+              value: "true"
+            - name: TOMCAT_MBEANREGISTRY_ENABLED
+              value: "true"
+            - name: TOMCAT_THREADS_MIN_SPARE
+              value: "5"
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:

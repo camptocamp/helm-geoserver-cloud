@@ -10,6 +10,16 @@ geoservercloud:
   postgresql:
     enabled: false
   geoserver:
+    envVariables:
+      tomcatAccessLog:
+        name: 'TOMCAT_ACCESSLOG_ENABLED'
+        value: 'true'
+      tomcatMinSpare:
+        name: 'TOMCAT_THREADS_MIN_SPARE'
+        value: '5'
+      tomcatMbean:
+        name: 'TOMCAT_MBEANREGISTRY_ENABLED'
+        value: 'true'
     custom:
       commonInitContainers:
         - name: extract-config
