@@ -9,6 +9,9 @@ checks:
   black:
     ignore_patterns_re:
       - .*\.yaml
+  prettier:
+    ignore_patterns_re:
+      - .*\.md
 
 publish:
   helm:
