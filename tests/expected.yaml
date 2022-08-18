@@ -20,13 +20,13 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
@@ -93,13 +93,13 @@ kind: ConfigMap
 metadata:
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
@@ -619,6 +619,8 @@ data:
         org.geoserver.platform.resource.NioFileLockProvider: info
         org.geoserver.platform.resource.FileLockProvider: info
         org.geoserver.jdbcconfig: info
+        org.geoserver.security: info
+        org.geoserver.cloud.security: info
         # gs-cloud roots
         org.geoserver.cloud: info
         org.geoserver.cloud.autoconfigure: info
@@ -657,6 +659,8 @@ data:
         org.geoserver.platform.resource.NioFileLockProvider: debug
         org.geoserver.platform.resource.FileLockProvider: debug
         org.geoserver.jdbcconfig: info
+        org.geoserver.security: debug
+        org.geoserver.cloud.security: debug
         # gs-cloud roots
         org.geoserver.cloud: debug
         org.geoserver.cloud.autoconfigure: trace
@@ -780,13 +784,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -810,13 +814,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -839,13 +843,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -868,13 +872,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -897,13 +901,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -928,13 +932,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -957,13 +961,13 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -985,13 +989,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -1007,7 +1011,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: e8bd46520d20c5e2dfdb553d200fdd7607a59c6110a8581d5948360a7a12993e
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1039,7 +1043,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: TARGETS_WMS
@@ -1135,13 +1139,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -1156,7 +1160,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1193,7 +1197,7 @@ spec:
         - name: gwc
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1277,13 +1281,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -1298,7 +1302,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1335,7 +1339,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1419,13 +1423,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -1440,7 +1444,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1477,7 +1481,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1561,13 +1565,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -1584,7 +1588,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: 0a4ad591b6dae7d9aaad1927ae7716c473fedd10af8dd6dea047850f24407186
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1621,7 +1625,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1705,13 +1709,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1726,7 +1730,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1763,7 +1767,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1847,13 +1851,13 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.40
+    helm.sh/chart: geoservercloud-0.0.41
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC24"
+    app.kubernetes.io/version: "1.0-RC25"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1868,7 +1872,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 117b643a1bc07ad09be0f6f58b6abcde2a52a42aa081011eb2f2388c0509f4e7
+        checksum/config: 89f0852d708c35798c6c619c9dd6b51dba1139991050a5d6f135c621b86fa04c
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1905,7 +1909,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC24"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC25"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
