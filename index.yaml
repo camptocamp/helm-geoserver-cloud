@@ -90,6 +90,23 @@ entries:
     version: 0.0.6
   geoservercloud:
   - apiVersion: v2
+    appVersion: 1.0-RC25
+    created: "2022-08-18T07:34:55.223015332Z"
+    dependencies:
+    - name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.28.1
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.16.2
+    description: A Helm chart for Geoserver-cloud
+    digest: d27445f44775a02ed4ba23d4eb2c110e4833cb6c5490e10630daf5e972bcd70c
+    name: geoservercloud
+    urls:
+    - https://github.com/camptocamp/helm-geoserver-cloud/releases/download/0.0.41/geoservercloud-0.0.41.tgz
+    version: 0.0.41
+  - apiVersion: v2
     appVersion: 1.0-RC24
     created: "2022-08-03T14:11:09.446347563Z"
     dependencies:
@@ -650,4 +667,4 @@ entries:
     urls:
     - https://github.com/camptocamp/helm-geoserver-cloud/releases/download/0.0.7/geoservercloud-0.0.7.tgz
     version: 0.0.7
-generated: "2022-08-03T14:11:09.446805285Z"
+generated: "2022-08-18T07:34:55.223579175Z"
