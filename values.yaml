@@ -13,6 +13,8 @@ global:
   cluster_environment: dev
   image:
     registry: docker.io
+    # example of usage with a private docker registry
+    #registrySecretName: 'regcred'
     pullPolicy: IfNotPresent
   annotations: {}
 
