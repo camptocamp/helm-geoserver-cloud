@@ -51,6 +51,11 @@ k3d registry create registry.localhost --port 5000
 k3d cluster create k3d-cluster-1 --k3s-arg '--kubelet-arg=eviction-soft-grace-period=imagefs.available=60s,nodefs.available=60s@all'  --k3s-arg '--kubelet-arg=eviction-hard=imagefs.available<10Mi,nodefs.available<10Mi@all' --k3s-arg '--kubelet-arg=eviction-minimum-reclaim=imagefs.available=10Mi,nodefs.available=10Mi@all'  -p "8085:80@loadbalancer"
 ```
 
+
+### check that the configuration is available
+
+This repository provides a default configuration thanks to a git submodule : if you don't have performed a recursive clone of the repository, don't forget to do a `git submodule update` before installing the chart !
+
 ### start the chart
 
 ```bash
@@ -68,8 +73,6 @@ If everything went well you should see something similar with kubectl:
 ~# kubectl get po
 NAME                                   READY   STATUS    RESTARTS   AGE
 geoserver-postgresql-0                 1/1     Running   0          6m17s
-geoserver-discovery-6694fdccb6-92sxn   1/1     Running   0          6m17s
-geoserver-config-7b64cf454-hjqrv       1/1     Running   0          6m17s
 geoserver-rabbitmq-0                   1/1     Running   0          6m17s
 geoserver-gateway-7d99c5c864-wpbt4     1/1     Running   0          6m17s
 geoserver-webui-67dfc967d7-x8cx8       1/1     Running   0          6m17s
