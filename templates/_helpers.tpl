@@ -139,7 +139,7 @@ Create the name of the service account to use
 - name: RABBITMQ_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: geoserver-rabbitmq
+      name: {{ .Release.Name }}-rabbitmq
       key: rabbitmq-password
 - name: RABBITMQ_HOST
   value: {{ .Release.Name }}-rabbitmq

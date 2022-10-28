@@ -29,6 +29,22 @@ metadata:
     app.kubernetes.io/version: "1.0-RC26"
     app.kubernetes.io/managed-by: Helm
 ---
+# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testwithveryveryverylongreleasename-rabbitmq
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-8.28.1
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  rabbitmq-password: "dHJJWkdHS2g2Mw=="
+  rabbitmq-erlang-cookie: "b01lZDVvYU5Vdm5RckpsU0hnajdVNmtQMjNoekdHU2w="
+---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
 data:
@@ -42,17 +58,6 @@ data:
 kind: Secret
 metadata:
   name: jdbcconfig-testwithveryveryverylongreleasename-geoser
-type: Opaque
----
-# Source: ogscloud/charts/geoservercloud/templates/secrets/secret_rabbitmq.yaml
-apiVersion: v1
-data:
-  rabbitmq-erlang-cookie: UDQ1UXdPNEJaZFBOZkFLNGhMVnZnQ0tUbVFoZ1pn
-  rabbitmq-password: Z2Vvc2VydmVy
-kind: Secret
-metadata:
-  name: geoserver-rabbitmq
-  #namespace: sig-dev
 type: Opaque
 ---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/configuration.yaml
@@ -1083,7 +1088,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -1225,7 +1230,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -1367,7 +1372,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -1509,7 +1514,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -1653,7 +1658,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -1795,7 +1800,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -1937,7 +1942,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_HOST
               value: testwithveryveryverylongreleasename-rabbitmq
@@ -2016,6 +2021,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
       annotations:
         checksum/config: e8cef8d9688ab6adadece4c365c3145ec7ec99f7dbf2ae8f2c13bf36d32ba094
+        checksum/secret: bc0b0f4954fc9bd7c99e87397dc641b5f1a575e967c45b3214c6e3124b922b31
     spec:
 
       serviceAccountName: testwithveryveryverylongreleasename-rabbitmq
@@ -2081,7 +2087,7 @@ spec:
             - name: RABBITMQ_ERL_COOKIE
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-erlang-cookie
             - name: RABBITMQ_LOAD_DEFINITIONS
               value: "no"
@@ -2092,7 +2098,7 @@ spec:
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: geoserver-rabbitmq
+                  name: testwithveryveryverylongreleasename-rabbitmq
                   key: rabbitmq-password
             - name: RABBITMQ_PLUGINS
               value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"

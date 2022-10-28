@@ -33,14 +33,14 @@ jobs:
       - name: Checks
         run: c2cciutils-checks
 
-      - uses: azure/setup-helm@v1
+      - uses: azure/setup-helm@v3
       - run: helm lint .
 
       - run: helm dependency update .
       - run: helm dependency update tests/chart
       - run: helm lint tests/chart
       - run: helm template --namespace=default testwithveryveryverylongreleasename tests/chart > tests/actual.yaml
-      - run: diff -Naur --ignore-trailing-space tests/expected.yaml tests/actual.yaml
+      - run: diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' --ignore-trailing-space tests/expected.yaml tests/actual.yaml
 
       - name: Publish
         run: c2cciutils-publish
