@@ -20,7 +20,7 @@ kind: ServiceAccount
 metadata:
   name: testwithveryveryverylongreleasename-geoser
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -42,8 +42,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  rabbitmq-password: "dHJJWkdHS2g2Mw=="
-  rabbitmq-erlang-cookie: "b01lZDVvYU5Vdm5RckpsU0hnajdVNmtQMjNoekdHU2w="
+  rabbitmq-password: "SHhSelZ1WGFmOA=="
+  rabbitmq-erlang-cookie: "Ym1QUnhOOW1ZNVVDdFhqM21kcmpMUnJNT3N2Yk1YZDg="
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
@@ -98,7 +98,7 @@ kind: ConfigMap
 metadata:
   name: testwithveryveryverylongreleasename-geoser-config-configs
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -789,7 +789,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -819,7 +819,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -848,7 +848,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -877,7 +877,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -906,7 +906,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -937,7 +937,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -966,7 +966,7 @@ kind: Service
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -994,7 +994,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gateway
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1016,7 +1016,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: e8bd46520d20c5e2dfdb553d200fdd7607a59c6110a8581d5948360a7a12993e
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1144,7 +1144,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-gwc
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1165,7 +1165,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: a9690740264bb9e2309fedbd26ad898f336f5321e9fe023626470d1c3f8c3682
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1286,7 +1286,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-rest
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1307,7 +1307,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: 1df2cc19cf6772f2cd4bc4fe41bf77ab7b212de9547481ee68995c51b45c7350
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1428,7 +1428,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wcs
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1449,7 +1449,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: 8862be7440511b1889f3724370edc912e1615b3edfc346122a7cb70edfc70654
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1570,7 +1570,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-webui
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1593,7 +1593,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: 0a4ad591b6dae7d9aaad1927ae7716c473fedd10af8dd6dea047850f24407186
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1714,7 +1714,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wfs
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1735,7 +1735,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: 57cfdc1dc38052d83e3c54ba9151b795a5a7aa4e9f3539cda14be2c82258ed09
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1856,7 +1856,7 @@ kind: Deployment
 metadata:
   name: testwithveryveryverylongreleasename-geoser-wms
   labels:
-    helm.sh/chart: geoservercloud-0.0.42
+    helm.sh/chart: geoservercloud-0.0.44
     deployed_by: helm
     app.kubernetes.io/app_environment: "master"
     app.kubernetes.io/base_environment: "dev"
@@ -1877,7 +1877,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: d516838b2eb34ccb1eaa1a2cbce5b1934caee0ccb696f0511b04b735f69c2531
+        checksum/config: 3fb62c953ca40f8cfdfd2eba2b3e3ea8809060b2f6f1f0b62bd64e6d30c014cc
         specificValues/sha256: 200a01537285002addd55515b8da6293fc56f77cb7c6230512694ae1ef903985
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -2021,7 +2021,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
       annotations:
         checksum/config: e8cef8d9688ab6adadece4c365c3145ec7ec99f7dbf2ae8f2c13bf36d32ba094
-        checksum/secret: bc0b0f4954fc9bd7c99e87397dc641b5f1a575e967c45b3214c6e3124b922b31
+        checksum/secret: caa6ecdfbf4699d38928f299f0ba2669aa6760f80ae7132b08ac55fab6be8bc4
     spec:
 
       serviceAccountName: testwithveryveryverylongreleasename-rabbitmq
