@@ -35,6 +35,8 @@ rabbitmq:
     username: geoserver
   persistence:
     enabled: false
+  external:
+    enabled: false
 
 postgresql:
   enabled: true
