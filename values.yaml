@@ -19,6 +19,7 @@ global:
   annotations: {}
 
 rabbitmq:
+  enabled: true
   resources:
     limits:
       cpu: 2
@@ -34,8 +35,6 @@ rabbitmq:
   auth:
     username: geoserver
   persistence:
-    enabled: false
-  external:
     enabled: false
 
 postgresql:

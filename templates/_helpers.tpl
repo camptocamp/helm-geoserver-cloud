@@ -136,21 +136,21 @@ Create the name of the service account to use
   {{- end }}
 {{- end }}
 {{- end }}
-{{- if (eq .Values.rabbitmq.external.enabled true) }}
+{{- if (eq .Values.rabbitmq.enabled false) }}
 - name: RABBITMQ_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.rabbitmq.external.secretConfig }}
-      key: {{ .Values.rabbitmq.external.passwordKey }}
+      name: {{ .Values.geoserver.rabbitmq.external.secretConfig }}
+      key: {{ .Values.geoserver.rabbitmq.external.passwordKey }}
 - name: RABBITMQ_USER
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.rabbitmq.external.secretConfig }}
-      key: {{ .Values.rabbitmq.external.userKey }}
+      name: {{ .Values.geoserver.rabbitmq.external.secretConfig }}
+      key: {{ .Values.geoserver.rabbitmq.external.userKey }}
 - name: RABBITMQ_HOST
-  value: {{ .Values.rabbitmq.external.host | quote }} 
+  value: {{ .Values.geoserver.rabbitmq.external.host | quote }} 
 - name: RABBITMQ_PORT
-  value: {{ .Values.rabbitmq.external.port | quote }}
+  value: {{ .Values.geoserver.rabbitmq.external.port | quote }}
 {{- else }}
 - name: RABBITMQ_PASSWORD
   valueFrom:
