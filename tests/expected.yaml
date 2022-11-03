@@ -42,8 +42,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  rabbitmq-password: "SHhSelZ1WGFmOA=="
-  rabbitmq-erlang-cookie: "Ym1QUnhOOW1ZNVVDdFhqM21kcmpMUnJNT3N2Yk1YZDg="
+  rabbitmq-password: "d21BOEZ2TUJMeg=="
+  rabbitmq-erlang-cookie: "NWlobWJuckJiSVdFWmE1cDhTdGRLcDFyZFdVeWlOWkc="
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
@@ -2021,7 +2021,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
       annotations:
         checksum/config: e8cef8d9688ab6adadece4c365c3145ec7ec99f7dbf2ae8f2c13bf36d32ba094
-        checksum/secret: caa6ecdfbf4699d38928f299f0ba2669aa6760f80ae7132b08ac55fab6be8bc4
+        checksum/secret: 9d7c79818c782717672b428a1e15b96f031a8f3c1756473fbbb5cad4a7b7c0d0
     spec:
 
       serviceAccountName: testwithveryveryverylongreleasename-rabbitmq
