@@ -136,6 +136,22 @@ Create the name of the service account to use
   {{- end }}
 {{- end }}
 {{- end }}
+{{- if (eq .Values.rabbitmq.enabled false) }}
+- name: RABBITMQ_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.rabbitmq.external.secretConfig }}
+      key: {{ .Values.geoserver.rabbitmq.external.passwordKey }}
+- name: RABBITMQ_USER
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.rabbitmq.external.secretConfig }}
+      key: {{ .Values.geoserver.rabbitmq.external.userKey }}
+- name: RABBITMQ_HOST
+  value: {{ .Values.geoserver.rabbitmq.external.host | quote }} 
+- name: RABBITMQ_PORT
+  value: {{ .Values.geoserver.rabbitmq.external.port | quote }}
+{{- else }}
 - name: RABBITMQ_PASSWORD
   valueFrom:
     secretKeyRef:
@@ -147,4 +163,5 @@ Create the name of the service account to use
   value: "5672"
 - name: RABBITMQ_USER
   value: geoserver
+{{- end }}
 {{- end }}

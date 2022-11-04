@@ -19,6 +19,7 @@ global:
   annotations: {}
 
 rabbitmq:
+  enabled: true
   resources:
     limits:
       cpu: 2
