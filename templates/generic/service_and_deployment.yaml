@@ -145,21 +145,21 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            failureThreshold: 30
-            periodSeconds: 10
+            failureThreshold: {{ $serviceDefinition.probes.startupProbe.failureThreshold }}
+            periodSeconds: {{ $serviceDefinition.probes.startupProbe.periodSeconds }}
           {{- end }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            periodSeconds: 10
-            failureThreshold: 10
-            initialDelaySeconds: 30
+            periodSeconds: {{ $serviceDefinition.probes.livenessProbe.periodSeconds }}
+            failureThreshold: {{ $serviceDefinition.probes.livenessProbe.failureThreshold }}
+            initialDelaySeconds: {{ $serviceDefinition.probes.livenessProbe.initialDelaySeconds }}
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: health
-            periodSeconds: 5
+            periodSeconds: {{ $serviceDefinition.probes.readinessProbe.periodSeconds }}
 
           resources:
             {{- toYaml $serviceDefinition.resources | nindent 12 }}

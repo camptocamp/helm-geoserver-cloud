@@ -148,7 +148,9 @@ Create the name of the service account to use
       name: {{ .Values.geoserver.rabbitmq.external.secretConfig }}
       key: {{ .Values.geoserver.rabbitmq.external.userKey }}
 - name: RABBITMQ_HOST
-  value: {{ .Values.geoserver.rabbitmq.external.host | quote }} 
+  value: {{ .Values.geoserver.rabbitmq.external.host | quote }}
+- name: RABBITMQ_VHOST
+  value: {{ .Values.geoserver.rabbitmq.external.vhost | quote }}
 - name: RABBITMQ_PORT
   value: {{ .Values.geoserver.rabbitmq.external.port | quote }}
 {{- else }}
