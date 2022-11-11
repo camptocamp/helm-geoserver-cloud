@@ -223,6 +223,17 @@ geoserver:
         type: ClusterIP
         port: 8080
 
+      probes:
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 10
+          periodSeconds: 10
+          initialDelaySeconds: 30
+        readinessProbe:
+          periodSeconds: 5
+
     rest:
       replicaCount: 1
       image:
@@ -255,6 +266,18 @@ geoserver:
       service:
         type: ClusterIP
         port: 8080
+
+      probes:
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 10
+          periodSeconds: 10
+          initialDelaySeconds: 30
+        readinessProbe:
+          periodSeconds: 5
+
 
     wfs:
       replicaCount: 1
@@ -289,6 +312,17 @@ geoserver:
         type: ClusterIP
         port: 8080
 
+      probes:
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 10
+          periodSeconds: 10
+          initialDelaySeconds: 30
+        readinessProbe:
+          periodSeconds: 5
+
     wms:
       replicaCount: 1
       image:
@@ -321,6 +355,17 @@ geoserver:
       service:
         type: ClusterIP
         port: 8080
+
+      probes:
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 10
+          periodSeconds: 10
+          initialDelaySeconds: 30
+        readinessProbe:
+          periodSeconds: 5
 
     wcs:
       replicaCount: 1
@@ -355,6 +400,17 @@ geoserver:
         type: ClusterIP
         port: 8080
 
+      probes:
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 10
+          periodSeconds: 10
+          initialDelaySeconds: 30
+        readinessProbe:
+          periodSeconds: 5
+
     gwc:
       replicaCount: 1
       image:
@@ -387,3 +443,14 @@ geoserver:
       service:
         type: ClusterIP
         port: 8080
+
+      probes:
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          failureThreshold: 10
+          periodSeconds: 10
+          initialDelaySeconds: 30
+        readinessProbe:
+          periodSeconds: 5
