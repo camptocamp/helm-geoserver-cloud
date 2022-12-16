@@ -152,6 +152,9 @@ geoserver:
     extensions:
       - pg_stat_statements
 
+  gwc:
+    enabled: true
+
   rabbitmq:
     port: 5672
 

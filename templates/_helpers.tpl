@@ -150,7 +150,16 @@ Create the name of the service account to use
 - name: RABBITMQ_HOST
   value: {{ .Values.geoserver.rabbitmq.external.host | quote }}
 - name: RABBITMQ_VHOST
-  value: {{ .Values.geoserver.rabbitmq.external.vhost | quote }}
+# if vhost not defined, then use anonymous (and vhostSuffix is ignored)
+# if vhost defined, use value+{vhostSuffix}
+#    if value in vhost = {{.Release.Namespace}} then use the .Release.Namespace as the vhost+{vhostSuffix}
+  {{- if .Values.geoserver.rabbitmq.external.vhost }}
+  {{- if (eq .Values.geoserver.rabbitmq.external.vhost "{{.Release.Namespace}}") }}
+  value: {{ print .Release.Namespace (default "" .Values.geoserver.rabbitmq.external.vhostSuffix)  | quote }}
+  {{- else }}
+  value: {{ print .Values.geoserver.rabbitmq.external.vhost (default "" .Values.geoserver.rabbitmq.external.vhostSuffix)  | quote }}
+  {{- end }}
+  {{- end }}
 - name: RABBITMQ_PORT
   value: {{ .Values.geoserver.rabbitmq.external.port | quote }}
 {{- else }}
@@ -166,4 +175,6 @@ Create the name of the service account to use
 - name: RABBITMQ_USER
   value: geoserver
 {{- end }}
+- name: GWC_ENABLED
+  value: {{ .Values.geoserver.gwc.enabled | quote }}
 {{- end }}
