@@ -73,6 +73,18 @@ Create the name of the service account to use
 - name: GEOSERVER_DEBUG_INSTANCEID
   value: "true"
 {{- end }}
+{{- if .Values.geoserver.adminCredentials }}
+- name: GEOSERVER_ADMIN_USERNAME
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.adminCredentials.secretConfig }}
+      key: {{ .Values.geoserver.adminCredentials.userKey }}
+- name: GEOSERVER_ADMIN_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.geoserver.adminCredentials.secretConfig }}
+      key: {{ .Values.geoserver.adminCredentials.passKey }}
+{{- end }}
 - name: BACKEND_CATALOG
   value: {{ has "catalog" $profiles | quote}}
 - name: BACKEND_DATA_DIRECTORY
