@@ -7,7 +7,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken: true
@@ -29,6 +29,22 @@ metadata:
     app.kubernetes.io/version: "1.0-RC30"
     app.kubernetes.io/managed-by: Helm
 ---
+# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/config-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testwithveryveryverylongreleasename-rabbitmq-config
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: rabbitmq
+    helm.sh/chart: rabbitmq-11.3.0
+    app.kubernetes.io/instance: testwithveryveryverylongreleasename
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  rabbitmq.conf: |-
+    IyMgVXNlcm5hbWUgYW5kIHBhc3N3b3JkCiMjCmRlZmF1bHRfdXNlciA9IGdlb3NlcnZlcgojIyBDbHVzdGVyaW5nCiMjCmNsdXN0ZXJfZm9ybWF0aW9uLnBlZXJfZGlzY292ZXJ5X2JhY2tlbmQgID0gcmFiYml0X3BlZXJfZGlzY292ZXJ5X2s4cwpjbHVzdGVyX2Zvcm1hdGlvbi5rOHMuaG9zdCA9IGt1YmVybmV0ZXMuZGVmYXVsdApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAuaW50ZXJ2YWwgPSAxMApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAub25seV9sb2dfd2FybmluZyA9IHRydWUKY2x1c3Rlcl9wYXJ0aXRpb25faGFuZGxpbmcgPSBhdXRvaGVhbAojIHF1ZXVlIG1hc3RlciBsb2NhdG9yCnF1ZXVlX21hc3Rlcl9sb2NhdG9yID0gbWluLW1hc3RlcnMKIyBlbmFibGUgZ3Vlc3QgdXNlcgpsb29wYmFja191c2Vycy5ndWVzdCA9IGZhbHNlCiNkZWZhdWx0X3Zob3N0ID0gZGVmYXVsdC12aG9zdAojZGlza19mcmVlX2xpbWl0LmFic29sdXRlID0gNTBNQg==
+---
 # Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/secrets.yaml
 apiVersion: v1
 kind: Secret
@@ -37,13 +53,14 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  rabbitmq-password: "bUUzSlVYS3dKNg=="
-  rabbitmq-erlang-cookie: "VlJybURZZWZXVmdpUmQ3WWZoUmRQRDJoYzIxSnpUT1A="
+  rabbitmq-password: "blVRU0owYnpiUnNxR1dOMA=="
+
+  rabbitmq-erlang-cookie: "amZDU3c0VnJJN1BFYmJsYjh6U1RSejFBM0luMk5WZEw="
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
@@ -59,38 +76,6 @@ kind: Secret
 metadata:
   name: jdbcconfig-testwithveryveryverylongreleasename-geoser
 type: Opaque
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/configuration.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq-config
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-data:
-  rabbitmq.conf: |-
-    ## Username and password
-    ##
-    default_user = geoserver
-    default_pass = CHANGEME
-    ## Clustering
-    ##
-    cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
-    cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
-    cluster_formation.node_cleanup.interval = 10
-    cluster_formation.node_cleanup.only_log_warning = true
-    cluster_partition_handling = autoheal
-    # queue master locator
-    queue_master_locator = min-masters
-    # enable guest user
-    loopback_users.guest = false
-    #default_vhost = default-vhost
-    #disk_free_limit.absolute = 50MB
-    #load_definitions = /app/load_definition.json
 ---
 # Source: ogscloud/charts/geoservercloud/templates/config/configmap.yaml
 apiVersion: v1
@@ -734,7 +719,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 rules:
@@ -753,7 +738,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 subjects:
@@ -772,7 +757,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -803,11 +788,12 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
+  sessionAffinity: None
   ports:
     - name: amqp
       port: 5672
@@ -2059,7 +2045,7 @@ metadata:
   namespace: "default"
   labels:
     app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-8.28.1
+    helm.sh/chart: rabbitmq-11.3.0
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -2076,12 +2062,12 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: rabbitmq
-        helm.sh/chart: rabbitmq-8.28.1
+        helm.sh/chart: rabbitmq-11.3.0
         app.kubernetes.io/instance: testwithveryveryverylongreleasename
         app.kubernetes.io/managed-by: Helm
       annotations:
-        checksum/config: e8cef8d9688ab6adadece4c365c3145ec7ec99f7dbf2ae8f2c13bf36d32ba094
-        checksum/secret: d4061a5d3ef99050142baf6fa8739df7f7139201b65a2d6cdb078799b859d709
+        checksum/config: 93ef00cf9e3c0c7e51dbc61a9fc29da3f14258a262bbb75ea05064b652f54334
+        checksum/secret: 38026d382e76771b650df14b9c775fd208a74c7d01289b6c64effefd109ecd0d
     spec:
 
       serviceAccountName: testwithveryveryverylongreleasename-rabbitmq
@@ -2095,20 +2081,33 @@ spec:
                   matchLabels:
                     app.kubernetes.io/name: rabbitmq
                     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-                namespaces:
-                  - "default"
                 topologyKey: kubernetes.io/hostname
               weight: 1
         nodeAffinity:
 
       securityContext:
         fsGroup: 1001
-        runAsUser: 1001
       terminationGracePeriodSeconds: 120
+      initContainers:
       containers:
         - name: rabbitmq
           image: docker.io/bitnami/rabbitmq:3.9.13-debian-10-r14
           imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/bash
+                  - -ec
+                  - |
+                    if [[ -f /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh ]]; then
+                        /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh -t "120" -d "false"
+                    else
+                        rabbitmqctl stop_app
+                    fi
           env:
             - name: BITNAMI_DEBUG
               value: "false"
@@ -2125,7 +2124,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: K8S_SERVICE_NAME
-              value: "testwithveryveryverylongreleasename-rabbitmq-headless"
+              value: testwithveryveryverylongreleasename-rabbitmq-headless
             - name: K8S_ADDRESS_TYPE
               value: hostname
             - name: RABBITMQ_FORCE_BOOT
@@ -2151,6 +2150,8 @@ spec:
                   key: rabbitmq-erlang-cookie
             - name: RABBITMQ_LOAD_DEFINITIONS
               value: "no"
+            - name: RABBITMQ_DEFINITIONS_FILE
+              value: "/app/load_definition.json"
             - name: RABBITMQ_SECURE_PASSWORD
               value: "yes"
             - name: RABBITMQ_USERNAME
@@ -2162,6 +2163,7 @@ spec:
                   key: rabbitmq-password
             - name: RABBITMQ_PLUGINS
               value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"
+          envFrom:
           ports:
             - name: amqp
               containerPort: 5672
@@ -2172,39 +2174,27 @@ spec:
             - name: epmd
               containerPort: 4369
           livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 20
             exec:
               command:
                 - /bin/bash
                 - -ec
                 - rabbitmq-diagnostics -q ping
-            initialDelaySeconds: 120
-            periodSeconds: 30
-            timeoutSeconds: 20
-            successThreshold: 1
-            failureThreshold: 6
           readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 20
             exec:
               command:
                 - /bin/bash
                 - -ec
                 - rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 20
-            successThreshold: 1
-            failureThreshold: 3
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - /bin/bash
-                  - -ec
-                  - |
-                    if [[ -f /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh ]]; then
-                        /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh -t "120" -d  "false"
-                    else
-                        rabbitmqctl stop_app
-                    fi
           resources:
             limits:
               cpu: 2
@@ -2219,10 +2209,9 @@ spec:
               mountPath: /bitnami/rabbitmq/mnesia
       volumes:
         - name: configuration
-          configMap:
-            name: testwithveryveryverylongreleasename-rabbitmq-config
-            items:
-              - key: rabbitmq.conf
-                path: rabbitmq.conf
+          projected:
+            sources:
+              - secret:
+                  name: testwithveryveryverylongreleasename-rabbitmq-config
         - name: data
           emptyDir: {}
