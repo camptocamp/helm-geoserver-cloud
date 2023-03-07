@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: "1.0"
+description: Example for geoserver-cloud with jdbc config
+name: gs-cloud-jdbc
+version: 0.1.0
+dependencies:
+  - name: geoservercloud
+    repository: file://../../
+    version: 0.1.0

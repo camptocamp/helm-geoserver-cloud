@@ -1,0 +1,35 @@
+
+{{- range $key, $definition := .Values.nfs }}
+---
+# PV {{ print $key }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{$definition.pvname}}
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: {{$definition.storage}}
+  mountOptions:
+    - nfsvers=4.1
+  nfs:
+    path: {{$definition.path}}
+    server: {{$.Values.nfsserver}}
+  persistentVolumeReclaimPolicy: Retain
+---
+# PVC {{ print $key }}-claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{$definition.pvcname}}
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{$definition.storage}}
+  volumeName: {{$definition.pvname}}
+  storageClassName: ""
+{{- end }}
