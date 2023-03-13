@@ -1,22 +1,89 @@
-global:
-  legacyk8s: false
-  profile: standalone,jdbcconfig
-  revisionHistoryLimit: 3
-  deployed_by: helm
-  allowEnvParametrization: true
-  cors:
-    enabled: true
-  revision: HEAD
-  custom_pod_labels: {}
-  base_environment_name: 'dev'
-  app_environment_name: 'master'
-  cluster_environment: dev
-  image:
-    registry: docker.io
-    # example of usage with a private docker registry
-    #registrySecretName: 'regcred'
-    pullPolicy: IfNotPresent
-  annotations: {}
+tolerations: []
+podSecurityContext: {}
+securityContext: {}
+
+common-image-stuff: &common-image-stuff
+  tag: '1.0-RC30'
+
+service: &common-service-definition
+  type: ClusterIP
+  servicePort: 8080
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+
+volumes: &common-volumes
+  vol-etc-gscloud:
+    configMap:
+      name: cm-etc-gscloud
+
+
+volumeMounts: &common-volume-mounts
+  /etc/gscloud:
+    name: vol-etc-gscloud
+
+
+ports: &common-ports
+  http:
+    containerPort: 8080
+    hostIP: 127.0.0.1
+  health:
+    containerPort: 8081
+    hostIP: 127.0.0.1
+
+resources: &common-resources
+  requests:
+    memory: 512Mi
+    cpu: 0.1
+  limits:
+    memory: 4Gi
+    cpu: 4.0
+
+env: &common-env
+  GEOSERVER_BASE_PATH:
+    # NB: do not put a trailing '/' character
+    value: "/geoserver-cloud"
+  SPRING_PROFILES_ACTIVE:
+    # this must be explicitly overridden with either
+    # "standalone,jdbcconfig" or "standalone,datadir"
+    value: not-set
+  GWC_ENABLED:
+    value: "true"
+  JAVA_OPTS:
+    value: '-DALLOW_ENV_PARAMETRIZATION=true'
+  GEOTOOLS_HTTPCLIENT_PROXY_ENABLED:
+    value: "false"
+  # RABBITMQ_PASSWORD:
+  #   type: secret
+  #   name: rabbitmq-secret
+  #   key: RABBITMQ_PASSWORD
+  # GEOSERVER_ADMIN_USERNAME:
+  #   type: secret
+  #   name: secret-name
+  #   key: my-key
+  # GEOSERVER_ADMIN_PASSWORD:
+  #   type: secret
+  #   name: secret-name
+  #   key: my-key
+
+
+common-spring-container-stuff: &common-spring-container-stuff
+  resources:
+    <<: *common-resources
+  ports:
+    <<: *common-ports
+  volumeMounts:
+    <<: *common-volume-mounts
+  env:
+    <<: *common-env
+
+common-generic-stuff: &common-generic-stuff
+  replicaCount: 1
+  initContainers: {}
+  nodeSelector: {}
+  affinity: {}
 
 rabbitmq:
   enabled: true
@@ -54,406 +121,150 @@ postgresql:
   volumePermissions:
     enabled: true
 
+
 geoserver:
-  name: geoserver
-
-  custom: {}
-
-  debug:
-    instanceId: true
-
-  # Additional security modules
-  security:
-    authkey: true
-
-  # Additional styling modules
-  styling:
-    css: true
-    mapbox: true
-
-  # volumeMounts only work for the moment only if
-  # NFS PV is used, and that the PV is already defined
-  # within the cluster
-  # example
-  # volumeMounts:
-  #   - mountPath: '/var/geoserver/nfsrasters'
-  #     mountName: 'nfs-pv-storage-rasters'
-  #     pvcName: 'nfs-rasters-pv-claim'
-  volumeMounts: []
-
-  # environment variables, same format as jdbc.configVariables
-  envVariables: {}
-  # Define outgoing proxy (note: not tested)
-  # httpProxyHost:
-  #   name: "HTTP_PROXYHOST"
-  #   value: "192.168.0.13"
-  # httpProxyPort:
-  #   name: "HTTP_PROXYPORT"
-  #   value: "3128"
-  # httpsProxyHost:
-  #   name: "HTTPS_PROXYHOST"
-  #   value: "192.168.0.13"
-  # httpsProxyPort:
-  #   name: "HTTPS_PROXYPORT"
-  #   value: "3128"
-
-  jdbc:
-    external: false
-    postgresqlDatabase:
-      value: ''
-      secretKey: ''
-      secretName: ''
-    postgresqlUsername:
-      value: ''
-      secretKey: ''
-      secretName: ''
-    postgresqlPassword:
-      value: ''
-      secretKey: ''
-      secretName: ''
-    postgresqlHostName:
-      value: ''
-      secretKey: ''
-      secretName: ''
-    postgresqlPort:
-      value: ''
-      secretKey: ''
-      secretName: ''
-  # example of usage with external secret for the DB connection
-  # jdbc:
-  #   external: true
-  #   postgresqlDatabase:
-  #     value: "configdb"
-  #   postgresqlUsername:
-  #     value: ""
-  #     secretKey: "username"
-  #   postgresqlPassword:
-  #     value: ""
-  #     secretKey: "password"
-  #   postgresqlHostName:
-  #     value: ""
-  #     secretKey: "hostname"
-  #   postgresqlPort:
-  #     value: ""
-  #     secretKey: "port"
-
   ingress:
-    deploy: true
-    baseUrl: '/geoserver-cloud/'
+    enabled: false
+    # For example #
+    # hostGroups:
+    #   host1:
+    #     tls:
+    #       enabled: false
+    #       secretName: 'my-tls-secret'
+    #     hosts:
+    #       - one.example.com
+    #       - two.example.com
+    #   host2:
+    #     tls:
+    #       enabled: true
+    #       secretName: 'my-wildcard-tls-secret'
+    #     hosts:
+    #       - '*.example.com'
 
   serviceAccount:
-    create: true
-    annotations: {}
-    name: ''
-
-  database:
-    dropOnDelete: false
-    secretConfig: jdbcconfig
-    extensions:
-      - pg_stat_statements
-
-  gwc:
-    enabled: true
-
-  rabbitmq:
-    port: 5672
-
-  gateway:
-    initContainers: []
-    replicaCount: 1
-    image:
-      repository: geoservercloud/geoserver-cloud-gateway
-      tag: ''
-
-    env: []
-
-    podAnnotations: {}
-
-    podSecurityContext:
-      runAsUser: 630
-
-    securityContext: {}
-
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 0.1
-      limits:
-        memory: 512Mi
-        cpu: 2.0
-
-    nodeSelector: {}
-
-    tolerations: {}
-
-    affinity: {}
-
-    service:
-      type: ClusterIP
-      port: 8080
-
+    # Specifies whether a service account should be created
+    create: false
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: default
   services:
+    gateway:
+      enabled: true
+      ingress:
+        # NB: if .Values.gscloud.ingress.enabled=true put true here as well
+        enabled: false
+        path: /geoserver-cloud/
+      <<: *common-generic-stuff
+      service:
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-gateway
+            sha: ''
     webui:
-      replicaCount: 1
-      image:
-        repository: geoservercloud/geoserver-cloud-webui
-        tag: ''
-
-      env: []
-
-      podAnnotations: {}
-
-      podSecurityContext:
-        runAsUser: 630
-
-      securityContext: {}
-
-      resources:
-        requests:
-          memory: 128Mi
-          cpu: 0.1
-        limits:
-          memory: 1024Mi
-          cpu: 2.0
-
-      nodeSelector: {}
-
-      tolerations: {}
-
-      affinity: {}
-
+      enabled: true
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
       service:
-        type: ClusterIP
-        port: 8080
-
-      probes:
-        startupProbe:
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          failureThreshold: 10
-          periodSeconds: 10
-          initialDelaySeconds: 30
-        readinessProbe:
-          periodSeconds: 5
-
+        name: webui
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-webui
+            sha: ''
     rest:
-      replicaCount: 1
-      image:
-        repository: geoservercloud/geoserver-cloud-rest
-        tag: ''
-
-      env: []
-
-      podAnnotations: {}
-
-      podSecurityContext:
-        runAsUser: 630
-
-      securityContext: {}
-
-      resources:
-        requests:
-          memory: 512Mi
-          cpu: 0.1
-        limits:
-          memory: 2Gi
-          cpu: 2.0
-
-      nodeSelector: {}
-
-      tolerations: {}
-
-      affinity: {}
-
+      enabled: true
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
       service:
-        type: ClusterIP
-        port: 8080
-
-      probes:
-        startupProbe:
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          failureThreshold: 10
-          periodSeconds: 10
-          initialDelaySeconds: 30
-        readinessProbe:
-          periodSeconds: 5
-
-
+        name: rest
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-rest
+            sha: ''
     wfs:
-      replicaCount: 1
-      image:
-        repository: geoservercloud/geoserver-cloud-wfs
-        tag: ''
-
-      env: []
-
-      podAnnotations: {}
-
-      podSecurityContext:
-        runAsUser: 630
-
-      securityContext: {}
-
-      resources:
-        requests:
-          memory: 512Mi
-          cpu: 0.1
-        limits:
-          memory: 4Gi
-          cpu: 4.0
-
-      nodeSelector: {}
-
-      tolerations: {}
-
-      affinity: {}
-
+      enabled: true
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
       service:
-        type: ClusterIP
-        port: 8080
-
-      probes:
-        startupProbe:
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          failureThreshold: 10
-          periodSeconds: 10
-          initialDelaySeconds: 30
-        readinessProbe:
-          periodSeconds: 5
-
+        name: wfs
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-wfs
+            sha: ''
     wms:
-      replicaCount: 1
-      image:
-        repository: geoservercloud/geoserver-cloud-wms
-        tag: ''
-
-      env: []
-
-      podAnnotations: {}
-
-      podSecurityContext:
-        runAsUser: 630
-
-      securityContext: {}
-
-      resources:
-        requests:
-          memory: 512Mi
-          cpu: 0.1
-        limits:
-          memory: 4Gi
-          cpu: 4.0
-
-      nodeSelector: {}
-
-      tolerations: {}
-
-      affinity: {}
-
+      enabled: true
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
       service:
-        type: ClusterIP
-        port: 8080
-
-      probes:
-        startupProbe:
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          failureThreshold: 10
-          periodSeconds: 10
-          initialDelaySeconds: 30
-        readinessProbe:
-          periodSeconds: 5
-
+        name: wms
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-wms
+            sha: ''
     wcs:
-      replicaCount: 1
-      image:
-        repository: geoservercloud/geoserver-cloud-wcs
-        tag: ''
-
-      env: []
-
-      podAnnotations: {}
-
-      podSecurityContext:
-        runAsUser: 630
-
-      securityContext: {}
-
-      resources:
-        requests:
-          memory: 512Mi
-          cpu: 0.1
-        limits:
-          memory: 4Gi
-          cpu: 4.0
-
-      nodeSelector: {}
-
-      tolerations: {}
-
-      affinity: {}
-
+      enabled: true
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
       service:
-        type: ClusterIP
-        port: 8080
-
-      probes:
-        startupProbe:
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          failureThreshold: 10
-          periodSeconds: 10
-          initialDelaySeconds: 30
-        readinessProbe:
-          periodSeconds: 5
-
+        name: wcs
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-wcs
+            sha: ''
     gwc:
-      replicaCount: 1
-      image:
-        repository: geoservercloud/geoserver-cloud-gwc
-        tag: ''
-
-      env: []
-
-      podAnnotations: {}
-
-      podSecurityContext:
-        runAsUser: 630
-
-      securityContext: {}
-
-      resources:
-        requests:
-          memory: 512Mi
-          cpu: 0.1
-        limits:
-          memory: 4Gi
-          cpu: 4.0
-
-      nodeSelector: {}
-
-      tolerations: {}
-
-      affinity: {}
-
+      enabled: true
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
       service:
-        type: ClusterIP
-        port: 8080
-
-      probes:
-        startupProbe:
-          failureThreshold: 30
-          periodSeconds: 10
-        livenessProbe:
-          failureThreshold: 10
-          periodSeconds: 10
-          initialDelaySeconds: 30
-        readinessProbe:
-          periodSeconds: 5
+        name: gwc
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-gwc
+            sha: ''

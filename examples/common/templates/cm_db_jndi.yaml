@@ -1,0 +1,23 @@
+# NB: this suppose that a docker postgis container
+# is running on the host, and that its gateway
+# is 172.17.0.1
+apiVersion: v1
+data:
+  jndi.yml: |+
+    jndi:
+      datasources:
+        geodata:
+          enabled: true
+          wait-for-it: true
+          wait-timeout: 10
+          url: jdbc:postgresql://172.17.0.1:5432/ogscloud
+          username: username
+          password: password
+          maximum-pool-size: 10
+          minimum-idle: 2
+          connection-timeout: 250
+          idle-timeout: 60000
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm-jndi-geodata

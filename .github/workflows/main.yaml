@@ -15,6 +15,13 @@ jobs:
     timeout-minutes: 20
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
+    strategy:
+      fail-fast: true
+      matrix:
+        helm:
+          - latest
+          - 3.11.0
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -33,14 +40,28 @@ jobs:
       - name: Checks
         run: c2cciutils-checks
 
-      - uses: azure/setup-helm@v3
+      - name: Install helm
+        uses: azure/setup-helm@v3
+        with:
+          version: ${{ matrix.helm }}
+      - run: helm dependency update .
       - run: helm lint .
 
       - run: helm dependency update .
-      - run: helm dependency update tests/chart
-      - run: helm lint tests/chart
-      - run: helm template --namespace=default testwithveryveryverylongreleasename tests/chart > tests/actual.yaml
-      - run: diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' --ignore-trailing-space tests/expected.yaml tests/actual.yaml
+      - run: helm dependency update examples/common
+      - run: helm lint examples/common
+      - run: helm template --namespace=default gs-cloud-common examples/common > tests/actual-common.yaml
+      - run: diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' --ignore-trailing-space tests/expected-common.yaml tests/actual-common.yaml
+
+      - run: helm dependency update examples/datadir
+      - run: helm lint examples/datadir
+      - run: helm template --namespace=default gs-cloud-datadir examples/datadir > tests/actual-datadir.yaml
+      - run: diff -Naur --ignore-trailing-space tests/expected-datadir.yaml tests/actual-datadir.yaml
+
+      - run: helm dependency update examples/jdbc
+      - run: helm lint examples/jdbc
+      - run: helm template --namespace=default gs-cloud-jdbc examples/jdbc > tests/actual-jdbc.yaml
+      - run: diff -Naur --ignore-trailing-space tests/expected-jdbc.yaml tests/actual-jdbc.yaml
 
       - name: Publish
         run: c2cciutils-publish

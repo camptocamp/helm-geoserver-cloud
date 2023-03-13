@@ -1,15 +1,37 @@
-HELM != helm
+HELM ?= helm
+LOCAL_IP ?= $(shell hostname -I | awk '{print $$1}')
 
-clean:
-	rm templates/config/configmap.yaml
+.PHONY examples-clean:
+examples-clean:
+	rm -f examples/common/charts/*.tgz
+	${HELM} uninstall gs-cloud-common || /bin/true
+	${HELM} uninstall gs-cloud-datadir || /bin/true
+	${HELM} uninstall gs-cloud-jdbc || /bin/true
+
+examples/common/charts/postgresql-12.1.6.tgz:
+	${HELM} dependency update examples/common
 
 gen-expected:
-	${HELM} dependency update tests/chart
-	${HELM} template --namespace=default testwithveryveryverylongreleasename tests/chart > tests/expected.yaml
-	sed -i 's/[[:blank:]]\+$$//g'  tests/expected.yaml
+	${HELM} dependency update examples/common
+	${HELM} dependency update examples/datadir
+	${HELM} dependency update examples/jdbc
+	${HELM} template --namespace=default gs-cloud-common examples/common > tests/expected-common.yaml
+	${HELM} template --namespace=default gs-cloud-datadir examples/datadir > tests/expected-datadir.yaml
+	${HELM} template --namespace=default gs-cloud-jdbc examples/jdbc > tests/expected-jdbc.yaml
+	sed -i 's/[[:blank:]]\+$$//g'  tests/expected*.yaml
 
-.PHONY gen-configmap:
-gen-configmap: templates/config/configmap.yaml
+.PHONY example-common:
+example-common: examples/common/charts/postgresql-12.1.6.tgz
+	${HELM} upgrade --install --set-json 'nfsserver="${LOCAL_IP}"' gs-cloud-common examples/common
 
-templates/config/configmap.yaml:
-	./scripts/createConfigMap.sh
+.PHONY example-datadir:
+example-datadir: example-common
+	${HELM} dependency update examples/datadir
+	${HELM} upgrade --install gs-cloud-datadir examples/datadir
+
+
+.PHONY example-jdbc:
+example-jdbc: example-common
+	${HELM} dependency update examples/jdbc
+	${HELM} upgrade --install gs-cloud-jdbc examples/jdbc
+

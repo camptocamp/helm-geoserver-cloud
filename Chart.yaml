@@ -1,15 +1,9 @@
 apiVersion: v2
-appVersion: '1.0-RC30'
-#appVersion: '1.0-SNAPSHOT'
 description: A Helm chart for Geoserver-cloud
 name: geoservercloud
-version: 0.0.49
+version: 0.1.0
 dependencies:
-  - name: 'rabbitmq'
-    version: 11.3.0
-    repository: 'https://charts.bitnami.com/bitnami'
-    condition: rabbitmq.enabled
-  - name: 'postgresql'
-    version: 12.1.6
-    repository: 'https://charts.bitnami.com/bitnami'
-    condition: postgresql.enabled
+  - name: custom-pod
+    repository: https://camptocamp.github.io/helm-custom-pod/
+    alias: geoserver
+    version: 0.4.5
