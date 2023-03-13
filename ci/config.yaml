@@ -2,11 +2,6 @@
 
 checks:
   prettier: False
-  required_workflows:
-    clean.yaml: false
-    audit.yaml: false
-    backport.yaml: false
-    codeql.yaml: false
   black:
     ignore_patterns_re:
       - .*\.yaml
