@@ -15,6 +15,13 @@ jobs:
     timeout-minutes: 20
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
+    strategy:
+      fail-fast: true
+      matrix:
+        helm:
+          - latest
+          - 3.5.1
+
     steps:
       - uses: actions/checkout@v2
         with:
