@@ -20,7 +20,7 @@ jobs:
       matrix:
         helm:
           - latest
-          - 3.5.1
+          - 3.11.0
 
     steps:
       - uses: actions/checkout@v2
