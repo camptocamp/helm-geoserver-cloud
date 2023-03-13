@@ -5,3 +5,4 @@
 /tests/*actual.yaml
 */__pycache__/*
 .venv/
+/.github/changelog-generator-cache/
