@@ -728,7 +728,7 @@ data:
     # application container specific fongiuration files (i.e. tomcat, jetty, etc. xml config files)
     #
     # Each JNDI datasource configuration properties is named after the jndi.datasources property,
-    # has the following attribtues:
+    # has the following attributes:
     #
     # * enabled: Whether the datasource shall be configured. Defaults to true.
     # * wait-for-it: Whether to wait for the datasource to be ready (connection succeed) at startup
