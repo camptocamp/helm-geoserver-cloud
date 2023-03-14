@@ -1,12 +1,10 @@
-# Helm chart for geoserver-cloud
+# Helm chart for GeoServer-Cloud
 
-![Version: 0.0.49](https://img.shields.io/badge/Version-0.0.49-informational?style=flat-square) ![AppVersion: 1.0-RC30](https://img.shields.io/badge/AppVersion-1.0--RC30-informational?style=flat-square)
-
-A Helm chart for Geoserver
+A Helm chart for GeoServer-Cloud
 
 ## include this chart as dependency of your own chart:
 
-just include the following section in your `Chart.yaml`:
+This chart is intended to be used as a dependency in a "umbrella chart". To use it, include the following section in your `Chart.yaml`:
 
 ```yaml
 dependencies:
