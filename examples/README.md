@@ -1,3 +1,7 @@
+# Examples
+
+To run these examples, you will install a local k8s on your machine, also a PG database and an NFS mount.
+
 ## Setup a local K3D cluster
 
 ### install kubectl
