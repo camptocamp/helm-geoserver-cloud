@@ -53,9 +53,9 @@ spec:
       {{- toYaml .Values.geoserver.gateway.initContainers | nindent 8 }}
       {{- end }}
       {{- end }}
-      {{- if $values.global.image.registrySecretName }}
+      {{- if .Values.global.image.registrySecretName }}
       imagePullSecrets:
-        - name: {{ $values.global.image.registrySecretName }}
+        - name: {{ .Values.global.image.registrySecretName }}
       {{- end }}
       serviceAccountName: {{ include "geoserver.serviceAccountName" . }}
       securityContext:
