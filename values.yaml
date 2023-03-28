@@ -80,10 +80,15 @@ common-spring-container-stuff: &common-spring-container-stuff
     <<: *common-env
 
 common-generic-stuff: &common-generic-stuff
+  enabled: true
+  ingress:
+    enabled: false
   replicaCount: 1
   initContainers: {}
   nodeSelector: {}
   affinity: {}
+  service: *common-service-definition
+  volumes: *common-volumes
 
 geoserver:
   ingress:
@@ -110,18 +115,14 @@ geoserver:
     # The name of the service account to use.
     # If not set and create is true, a name is generated using the fullname template
     name: default
+
   services:
     gateway:
-      enabled: true
+      <<: *common-generic-stuff
       ingress:
         # NB: if .Values.gscloud.ingress.enabled=true put true here as well
         enabled: false
         path: /geoserver-cloud/
-      <<: *common-generic-stuff
-      service:
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
@@ -130,15 +131,7 @@ geoserver:
             repository: geoservercloud/geoserver-cloud-gateway
             sha: ''
     webui:
-      enabled: true
-      ingress:
-        enabled: false
       <<: *common-generic-stuff
-      service:
-        name: webui
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
@@ -147,15 +140,7 @@ geoserver:
             repository: geoservercloud/geoserver-cloud-webui
             sha: ''
     rest:
-      enabled: true
-      ingress:
-        enabled: false
       <<: *common-generic-stuff
-      service:
-        name: rest
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
@@ -164,15 +149,7 @@ geoserver:
             repository: geoservercloud/geoserver-cloud-rest
             sha: ''
     wfs:
-      enabled: true
-      ingress:
-        enabled: false
       <<: *common-generic-stuff
-      service:
-        name: wfs
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
@@ -181,15 +158,7 @@ geoserver:
             repository: geoservercloud/geoserver-cloud-wfs
             sha: ''
     wms:
-      enabled: true
-      ingress:
-        enabled: false
       <<: *common-generic-stuff
-      service:
-        name: wms
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
@@ -198,15 +167,7 @@ geoserver:
             repository: geoservercloud/geoserver-cloud-wms
             sha: ''
     wcs:
-      enabled: true
-      ingress:
-        enabled: false
       <<: *common-generic-stuff
-      service:
-        name: wcs
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
@@ -215,15 +176,7 @@ geoserver:
             repository: geoservercloud/geoserver-cloud-wcs
             sha: ''
     gwc:
-      enabled: true
-      ingress:
-        enabled: false
       <<: *common-generic-stuff
-      service:
-        name: gwc
-        <<: *common-service-definition
-      volumes:
-        <<: *common-volumes
       containers:
         spring:
           <<: *common-spring-container-stuff
