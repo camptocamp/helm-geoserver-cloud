@@ -4,6 +4,8 @@ LOCAL_IP ?= $(shell hostname -I | awk '{print $$1}')
 .PHONY examples-clean:
 examples-clean:
 	rm -f examples/common/charts/*.tgz
+	rm -f examples/datadir/charts/*.tgz
+	rm -f examples/jdbc/charts/*.tgz
 	${HELM} uninstall gs-cloud-common || /bin/true
 	${HELM} uninstall gs-cloud-datadir || /bin/true
 	${HELM} uninstall gs-cloud-jdbc || /bin/true
