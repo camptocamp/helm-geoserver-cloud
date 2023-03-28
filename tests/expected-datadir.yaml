@@ -1008,6 +1008,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1111,6 +1123,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1214,6 +1238,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1317,6 +1353,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1420,6 +1468,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1523,6 +1583,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1626,6 +1698,18 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: health
+            periodSeconds: 5
       volumes:
         - name: cache
           persistentVolumeClaim:

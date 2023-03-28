@@ -19,11 +19,9 @@ volumes: &common-volumes
     configMap:
       name: cm-etc-gscloud
 
-
 volumeMounts: &common-volume-mounts
   /etc/gscloud:
     name: vol-etc-gscloud
-
 
 ports: &common-ports
   http:
@@ -52,7 +50,7 @@ env: &common-env
   GWC_ENABLED:
     value: "true"
   JAVA_OPTS:
-    value: '-DALLOW_ENV_PARAMETRIZATION=true'
+    value: '-DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80'
   GEOTOOLS_HTTPCLIENT_PROXY_ENABLED:
     value: "false"
   # RABBITMQ_PASSWORD:
@@ -78,6 +76,18 @@ common-spring-container-stuff: &common-spring-container-stuff
     <<: *common-volume-mounts
   env:
     <<: *common-env
+  livenessProbe: &geoserver-spring-livenessProbe
+    httpGet:
+      path: /actuator/health/liveness
+      port: health
+    periodSeconds: 10
+    failureThreshold: 10
+    initialDelaySeconds: 30
+  readinessProbe: &geoserver-spring-readinessProbe
+    httpGet:
+      path: /actuator/health/readiness
+      port: health
+    periodSeconds: 5
 
 common-generic-stuff: &common-generic-stuff
   replicaCount: 1
