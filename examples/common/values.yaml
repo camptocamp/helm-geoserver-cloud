@@ -1,7 +1,26 @@
-nfsserver: "not-set"
+volumes: &volumes
+  vol-etc-gscloud:
+    configMap:
+      name: gs-cloud-datadir-etc
+
+additional-stuff: &additional-stuff
+  volumes: *volumes
+
+geoservercloud:
+  geoserver:
+    services:
+      gateway: *additional-stuff
+      webui: *additional-stuff
+      rest: *additional-stuff
+      wms: *additional-stuff
+      wcs: *additional-stuff
+      wfs: *additional-stuff
+      gwc: *additional-stuff
+
+nfsserver: 'not-set'
 nfs:
   raster:
-    pvcname:  gs-cloud-raster-nfs-claim
+    pvcname: gs-cloud-raster-nfs-claim
     pvname: gs-cloud-raster-nfs
     path: /nfs/raster
     storage: 10Gi
@@ -15,7 +34,6 @@ nfs:
     pvname: gs-cloud-gwc-cache-nfs
     path: /nfs/tiles
     storage: 10Gi
-
 
 rabbitmq:
   enabled: true

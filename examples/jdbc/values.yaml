@@ -1,5 +1,7 @@
-
-additionalVolumes: &additional-volumes
+volumes: &volumes
+  vol-etc-gscloud:
+    configMap:
+      name: gs-cloud-jdbc-etc
   cache:
     persistentVolumeClaim:
       claimName: gs-cloud-gwc-cache-nfs-claim
@@ -7,59 +9,56 @@ additionalVolumes: &additional-volumes
     configMap:
       name: cm-jndi-geodata
 
-
 additionalVolumeMounts: &additional-volume-mounts
   /mnt/cache:
-    name: "cache"
+    name: 'cache'
   /custom/geodata:
-    name: "geodata"
+    name: 'geodata'
     readOnly: true
-
 
 env: &env-override
   RABBITMQ_HOST:
-    value: "gs-cloud-common-rabbitmq"
+    value: 'gs-cloud-common-rabbitmq'
   RABBITMQ_USER:
-    value: "geoserver"
+    value: 'geoserver'
   RABBITMQ_PASSWORD:
     type: secret
-    name: "gs-cloud-common-rabbitmq"
-    key: "rabbitmq-password"
+    name: 'gs-cloud-common-rabbitmq'
+    key: 'rabbitmq-password'
   SPRING_PROFILES_ACTIVE:
     value: standalone,jdbcconfig
   GEOWEBCACHE_CACHE_DIR:
-    value: "/mnt/cache"
+    value: '/mnt/cache'
   JAVA_OPTS:
-    value: "-Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
+    value: '-Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml'
   JDBCCONFIG_DATABASE:
     type: secret
-    name: "gs-cloud-jdbc-db"
-    key: "database"
+    name: 'gs-cloud-jdbc-db'
+    key: 'database'
   JDBCCONFIG_HOST:
     type: secret
-    name: "gs-cloud-jdbc-db"
-    key: "hostname"
+    name: 'gs-cloud-jdbc-db'
+    key: 'hostname'
   JDBCCONFIG_USERNAME:
     type: secret
-    name: "gs-cloud-jdbc-db"
-    key: "username"
+    name: 'gs-cloud-jdbc-db'
+    key: 'username'
   JDBCCONFIG_PASSWORD:
     type: secret
-    name: "gs-cloud-jdbc-db"
-    key: "password"
+    name: 'gs-cloud-jdbc-db'
+    key: 'password'
   JDBCCONFIG_PORT:
     type: secret
-    name: "gs-cloud-jdbc-db"
-    key: "port"
+    name: 'gs-cloud-jdbc-db'
+    key: 'port'
   JDBCCONFIG_SCHEMA:
     type: secret
-    name: "gs-cloud-jdbc-db"
-    key: "schema"
-
+    name: 'gs-cloud-jdbc-db'
+    key: 'schema'
 
 additional-stuff: &additional-stuff
   volumes:
-    <<: *additional-volumes
+    <<: *volumes
   containers:
     spring:
       env:
