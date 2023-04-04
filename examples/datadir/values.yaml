@@ -55,6 +55,8 @@ geoservercloud:
       pullPolicy: IfNotPresent
   geoserver:
     ingress:
+      annotations:
+        my-annotation: 'coucou'
       enabled: true
       hostGroups:
         host1:
