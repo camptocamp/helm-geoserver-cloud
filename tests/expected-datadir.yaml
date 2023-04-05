@@ -1736,6 +1736,8 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: main
+  annotations:
+    my-annotation: coucou
 spec:
 # Add tls only if ingress.tls.enabled is set to true and the other fields are complete.
   rules:
