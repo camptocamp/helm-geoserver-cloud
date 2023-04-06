@@ -13,7 +13,7 @@ examples-clean:
 examples/common/charts/postgresql-12.1.6.tgz:
 	${HELM} dependency update examples/common
 
-.PHONY dependencies:
+.PHONY dependencies
 dependencies:
 	${HELM} dependency update .
 
