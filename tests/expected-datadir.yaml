@@ -459,8 +459,8 @@ data:
       catalog:
         # not sure why isolated workspaces don't work with jdbcconfig as backend
         isolated: false
-        # enable caching if using the jdbcconfig as backend, reduces the number of db roundtrips considerably
-        caching.enabled: true
+        # disable caching if using the jdbcconfig as backend, as it does its own caching internally
+        caching.enabled: false
 
     ---
     spring.config.activate.on-profile: catalog
