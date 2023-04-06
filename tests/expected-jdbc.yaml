@@ -771,7 +771,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -796,7 +795,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -821,7 +819,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -846,7 +843,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -871,7 +867,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -896,7 +891,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -921,7 +915,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:

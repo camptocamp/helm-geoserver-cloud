@@ -43,9 +43,9 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 type: Opaque
 data:
-  rabbitmq-password: "TjQySDJCSDVGeHJQVFoyYw=="
+  rabbitmq-password: "M3dTdlQ2elFyOEUxYnU1WQ=="
 
-  rabbitmq-erlang-cookie: "WTViUldxUTZiTHNzQWdwUUpGVGNtSTAyREZZdXRQVDU="
+  rabbitmq-erlang-cookie: "TTkwYmsxeGd6VGcyMTdqcWl3TjE1MEpvSXhBZzJmc0c="
 ---
 # Source: examples-common/templates/cm_db_jndi.yaml
 # NB: this suppose that a docker postgis container
@@ -308,7 +308,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
       annotations:
         checksum/config: fc0b91f081a2da0a894a7149dd689d8172b001c909cc4ddd69dc0756d5a23efe
-        checksum/secret: 2029a0b5acf519153cbabdc1d26c1e915e48d3f89975ea6fdaa5475023c3697f
+        checksum/secret: aee49f2da04135f47988c279d0f8f2bde9b59b1df9501f2ac723b2503d7a0d2a
     spec:
 
       serviceAccountName: gs-cloud-common-rabbitmq
