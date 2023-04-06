@@ -17,6 +17,7 @@ examples/common/charts/postgresql-12.1.6.tgz:
 dependencies:
 	${HELM} dependency update .
 
+.PHONY gen-expected
 gen-expected: dependencies
 	${HELM} dependency update examples/common
 	${HELM} dependency update examples/datadir
