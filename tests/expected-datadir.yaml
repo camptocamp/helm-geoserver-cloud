@@ -459,8 +459,8 @@ data:
       catalog:
         # not sure why isolated workspaces don't work with jdbcconfig as backend
         isolated: false
-        # enable caching if using the jdbcconfig as backend, reduces the number of db roundtrips considerably
-        caching.enabled: true
+        # disable caching if using the jdbcconfig as backend, as it does its own caching internally
+        caching.enabled: false
 
     ---
     spring.config.activate.on-profile: catalog
@@ -756,7 +756,9 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: gateway
-    prometheus: "true"
+    one-custom-label: my-label
+  annotations:
+    my-custom-annotation: hello
 spec:
   type: ClusterIP
   ports:
@@ -781,7 +783,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: gwc
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -806,7 +807,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: rest
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -831,7 +831,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: wcs
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -856,7 +855,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: webui
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -881,7 +879,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: wfs
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:
@@ -906,7 +903,6 @@ metadata:
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-datadir
     app.kubernetes.io/component: wms
-    prometheus: "true"
 spec:
   type: ClusterIP
   ports:

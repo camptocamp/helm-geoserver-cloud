@@ -66,6 +66,11 @@ geoservercloud:
             - gscloud.local
     services:
       gateway:
+        service:
+          annotations:
+            my-custom-annotation: 'hello'
+          labels:
+            one-custom-label: 'my-label'
         ingress:
           enabled: true
         <<: *additional-stuff
