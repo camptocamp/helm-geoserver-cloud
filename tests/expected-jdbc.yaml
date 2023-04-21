@@ -965,7 +965,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1105,7 +1105,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gwc:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-gwc:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1245,7 +1245,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-rest:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1385,7 +1385,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1525,7 +1525,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-webui:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1665,7 +1665,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1805,7 +1805,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:v1.0-RC32"
+          image: "geoservercloud/geoserver-cloud-wms:1.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
