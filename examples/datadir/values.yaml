@@ -35,7 +35,7 @@ env: &env-override
   GEOWEBCACHE_CACHE_DIR:
     value: "/mnt/cache"
   JAVA_OPTS:
-    value: "-Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
+    value: "-XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
 
 
 additional-stuff: &additional-stuff

@@ -953,7 +953,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gateway:1.0.0"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -965,7 +965,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1068,7 +1068,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-gwc:1.0.0"
+          image: "geoservercloud/geoserver-cloud-gwc:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1080,7 +1080,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1183,7 +1183,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-rest:1.0.0"
+          image: "geoservercloud/geoserver-cloud-rest:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1195,7 +1195,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1298,7 +1298,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wcs:1.0.0"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1310,7 +1310,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1413,7 +1413,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-webui:1.0.0"
+          image: "geoservercloud/geoserver-cloud-webui:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1425,7 +1425,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1528,7 +1528,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wfs:1.0.0"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1540,7 +1540,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1643,7 +1643,7 @@ spec:
         - name: spring
           securityContext:
             {}
-          image: "geoservercloud/geoserver-cloud-wms:1.0.0"
+          image: "geoservercloud/geoserver-cloud-wms:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "GEOSERVER_BASE_PATH"
@@ -1655,7 +1655,7 @@ spec:
             - name: "GWC_ENABLED"
               value: "true"
             - name: "JAVA_OPTS"
-              value: -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
