@@ -30,7 +30,7 @@ env: &env-override
   GEOWEBCACHE_CACHE_DIR:
     value: "/mnt/cache"
   JAVA_OPTS:
-    value: "-Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
+    value: "$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
   JDBCCONFIG_DATABASE:
     type: secret
     name: "gs-cloud-jdbc-db"

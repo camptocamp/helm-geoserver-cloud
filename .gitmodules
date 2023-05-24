@@ -1,3 +1,0 @@
-[submodule "submodule_config"]
-	path = submodule_config
-	url = git@github.com:geoserver/geoserver-cloud-config.git

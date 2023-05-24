@@ -3,7 +3,7 @@ podSecurityContext: {}
 securityContext: {}
 
 common-image-stuff: &common-image-stuff
-  tag: '1.0.1'
+  tag: '1.0.2'
 
 service: &common-service-definition
   type: ClusterIP
@@ -15,13 +15,19 @@ service: &common-service-definition
       targetPort: http
 
 volumes: &common-volumes
-  vol-etc-gscloud:
-    configMap:
-      name: cm-etc-gscloud
+  # this comes from the config initContainer
+  vol-local-gscloud:
+    emptyDir: {}
+  # /tmp as emptyDir, required if running with readOnlyRootFilesystem=true
+  tmp-empty-dir:
+    emptyDir: {}
 
 volumeMounts: &common-volume-mounts
-  /etc/gscloud:
-    name: vol-etc-gscloud
+  /etc/localconfig:
+    name: vol-local-gscloud
+  # /tmp as emptyDir, required if running with readOnlyRootFilesystem=true
+  /tmp/:
+    name: "tmp-empty-dir"
 
 ports: &common-ports
   http:
@@ -45,14 +51,54 @@ env: &common-env
     value: "/geoserver-cloud"
   SPRING_PROFILES_ACTIVE:
     # this must be explicitly overridden with either
-    # "standalone,jdbcconfig" or "standalone,datadir"
+    # "standalone,jdbcconfig,kube" or "standalone,datadir,kube"
     value: not-set
   GWC_ENABLED:
     value: "true"
-  JAVA_OPTS:
+  JAVA_OPTS_DEFAULT:
     value: '-DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80'
+  JAVA_OPTS:
+    order: 1
+    value: '$(JAVA_OPTS_DEFAULT)'
   GEOTOOLS_HTTPCLIENT_PROXY_ENABLED:
     value: "false"
+  APP_KUBERNETES_IO_INSTANCE:
+    type: "downwardAPI"
+    valueFrom:
+      fieldRef:
+        fieldPath: "metadata.labels['app.kubernetes.io/instance']"
+  APP_KUBERNETES_IO_NAME:
+    type: "downwardAPI"
+    valueFrom:
+      fieldRef:
+        fieldPath: "metadata.labels['app.kubernetes.io/name']"
+  APP_KUBERNETES_IO_COMPONENT:
+    type: "downwardAPI"
+    valueFrom:
+      fieldRef:
+        fieldPath: "metadata.labels['app.kubernetes.io/component']"
+  TARGETS_WMS:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080"
+  TARGETS_WFS:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080"
+  TARGETS_WPS:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080"
+  TARGETS_WCS:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080"
+  TARGETS_GWC:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080"
+  TARGETS_REST:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080"
+  TARGETS_WEBUI:
+    order: 1
+    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080"
+
   # RABBITMQ_PASSWORD:
   #   type: secret
   #   name: rabbitmq-secret
@@ -65,7 +111,6 @@ env: &common-env
   #   type: secret
   #   name: secret-name
   #   key: my-key
-
 
 common-spring-container-stuff: &common-spring-container-stuff
   resources:
@@ -92,10 +137,14 @@ common-spring-container-stuff: &common-spring-container-stuff
 common-generic-stuff: &common-generic-stuff
   replicaCount: 1
   initContainers: {}
+    #<<: *common-init-containers
   nodeSelector: {}
   affinity: {}
 
 geoserver:
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
   ingress:
     enabled: false
     # For example #
@@ -145,7 +194,6 @@ geoserver:
         enabled: false
       <<: *common-generic-stuff
       service:
-        name: webui
         <<: *common-service-definition
       volumes:
         <<: *common-volumes
@@ -162,7 +210,6 @@ geoserver:
         enabled: false
       <<: *common-generic-stuff
       service:
-        name: rest
         <<: *common-service-definition
       volumes:
         <<: *common-volumes
@@ -179,7 +226,6 @@ geoserver:
         enabled: false
       <<: *common-generic-stuff
       service:
-        name: wfs
         <<: *common-service-definition
       volumes:
         <<: *common-volumes
@@ -196,7 +242,6 @@ geoserver:
         enabled: false
       <<: *common-generic-stuff
       service:
-        name: wms
         <<: *common-service-definition
       volumes:
         <<: *common-volumes
@@ -213,7 +258,6 @@ geoserver:
         enabled: false
       <<: *common-generic-stuff
       service:
-        name: wcs
         <<: *common-service-definition
       volumes:
         <<: *common-volumes
@@ -230,7 +274,6 @@ geoserver:
         enabled: false
       <<: *common-generic-stuff
       service:
-        name: gwc
         <<: *common-service-definition
       volumes:
         <<: *common-volumes

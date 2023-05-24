@@ -949,10 +949,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-gateway:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -995,6 +1028,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1026,9 +1061,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1064,10 +1100,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-gwc:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -1110,6 +1179,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1141,9 +1212,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1179,10 +1251,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-rest:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -1225,6 +1330,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1256,9 +1363,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1294,10 +1402,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-wcs:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -1340,6 +1481,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1371,9 +1514,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1409,10 +1553,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-webui:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -1455,6 +1632,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1486,9 +1665,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1524,10 +1704,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-wfs:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -1570,6 +1783,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1601,9 +1816,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1639,10 +1855,43 @@ spec:
         {}
       affinity:
         null
+      initContainers:
+        - name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "danduk82/gs-cloud-config:1.0.1"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 0.1
+              memory: 50Mi
+            requests:
+              cpu: 0.1
+              memory: 50Mi
+          volumeMounts:
+            - mountPath: /etc/gscloud
+              name: vol-etc-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
       containers:
         - name: spring
           securityContext:
-            {}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
           image: "geoservercloud/geoserver-cloud-wms:1.0.1"
           imagePullPolicy: IfNotPresent
           env:
@@ -1685,6 +1934,8 @@ spec:
               name: cache
             - mountPath: /opt/app/data_directory
               name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
 
           ports:
             - name: health
@@ -1716,9 +1967,10 @@ spec:
         - name: geodata
           configMap:
             name: cm-jndi-geodata
+        - name: tmp-empty-dir
+          emptyDir: {}
         - name: vol-etc-gscloud
-          configMap:
-            name: cm-etc-gscloud
+          emptyDir: {}
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
