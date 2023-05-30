@@ -10,7 +10,6 @@ additionalVolumes: &additional-volumes
     configMap:
       name: cm-jndi-geodata
 
-
 additionalVolumeMounts: &additional-volume-mounts
   /opt/app/data_directory:
     name: "datadir"
@@ -19,7 +18,6 @@ additionalVolumeMounts: &additional-volume-mounts
   /custom/geodata:
     name: "geodata"
     readOnly: true
-
 
 env: &env-override
   RABBITMQ_HOST:
@@ -35,8 +33,7 @@ env: &env-override
   GEOWEBCACHE_CACHE_DIR:
     value: "/mnt/cache"
   JAVA_OPTS:
-    value: "-XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80 -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
-
+    value: "$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
 
 additional-stuff: &additional-stuff
   volumes:
@@ -54,6 +51,10 @@ geoservercloud:
     image:
       pullPolicy: IfNotPresent
   geoserver:
+    # podSecurityContext:
+    #   runAsUser: 1001
+    #   runAsGroup: 1001
+    #   fsGroup: 1001
     ingress:
       annotations:
         my-annotation: 'coucou'
