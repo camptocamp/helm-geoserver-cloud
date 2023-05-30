@@ -328,7 +328,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.0.2"
+          image: "geoservercloud/geoserver-cloud-gateway:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -475,7 +475,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.0.2"
+          image: "geoservercloud/geoserver-cloud-gwc:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -622,7 +622,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.0.2"
+          image: "geoservercloud/geoserver-cloud-rest:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -769,7 +769,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.0.2"
+          image: "geoservercloud/geoserver-cloud-wcs:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -916,7 +916,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.0.2"
+          image: "geoservercloud/geoserver-cloud-webui:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1063,7 +1063,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.0.2"
+          image: "geoservercloud/geoserver-cloud-wfs:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1210,7 +1210,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.0.2"
+          image: "geoservercloud/geoserver-cloud-wms:1.0.3"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
