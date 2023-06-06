@@ -3,16 +3,16 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-gateway
+  name: gs-cloud-jdbc-gsc-gateway
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gateway
 ---
@@ -20,16 +20,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-gwc
+  name: gs-cloud-jdbc-gsc-gwc
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gwc
 ---
@@ -37,16 +37,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-rest
+  name: gs-cloud-jdbc-gsc-rest
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: rest
 ---
@@ -54,16 +54,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-wcs
+  name: gs-cloud-jdbc-gsc-wcs
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wcs
 ---
@@ -71,16 +71,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-webui
+  name: gs-cloud-jdbc-gsc-webui
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: webui
 ---
@@ -88,16 +88,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-wfs
+  name: gs-cloud-jdbc-gsc-wfs
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wfs
 ---
@@ -105,16 +105,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-geoserver-wms
+  name: gs-cloud-jdbc-gsc-wms
   labels:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wms
 ---
@@ -133,16 +133,49 @@ type: Opaque
 metadata:
   name: "gs-cloud-jdbc-db"
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: gs-cloud-jdbc-geoserver-gateway
+  name: gs-cloud-jdbc-geoserver
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/component: main
+data:
+  CHART_NAME: geoserver
+  RELEASE_NAME: gs-cloud-jdbc
+  RELEASE_NAMESPACE: default
+  SERVICE_GATEWAY_NAME: gs-cloud-jdbc-gsc-gateway
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_GWC_NAME: gs-cloud-jdbc-gsc-gwc
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_REST_NAME: gs-cloud-jdbc-gsc-rest
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_WCS_NAME: gs-cloud-jdbc-gsc-wcs
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_WEBUI_NAME: gs-cloud-jdbc-gsc-webui
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_WFS_NAME: gs-cloud-jdbc-gsc-wfs
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_WMS_NAME: gs-cloud-jdbc-gsc-wms
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+  SERVICE_WPS_NAME: gs-cloud-jdbc-gsc-wps
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
+---
+# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gs-cloud-jdbc-gsc-gateway
+  labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 spec:
@@ -153,7 +186,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 ---
@@ -161,12 +194,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-geoserver-gwc
+  name: gs-cloud-jdbc-gsc-gwc
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 spec:
@@ -177,7 +210,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 ---
@@ -185,12 +218,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-geoserver-rest
+  name: gs-cloud-jdbc-gsc-rest
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 spec:
@@ -201,7 +234,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 ---
@@ -209,12 +242,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-geoserver-wcs
+  name: gs-cloud-jdbc-gsc-wcs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 spec:
@@ -225,7 +258,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 ---
@@ -233,12 +266,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-geoserver-webui
+  name: gs-cloud-jdbc-gsc-webui
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 spec:
@@ -249,7 +282,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 ---
@@ -257,12 +290,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-geoserver-wfs
+  name: gs-cloud-jdbc-gsc-wfs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 spec:
@@ -273,7 +306,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 ---
@@ -281,12 +314,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-geoserver-wms
+  name: gs-cloud-jdbc-gsc-wms
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 spec:
@@ -297,7 +330,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 ---
@@ -305,12 +338,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-gateway
+  name: gs-cloud-jdbc-gsc-gateway
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 spec:
@@ -320,13 +353,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gateway
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: gateway
     spec:
@@ -404,24 +437,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -477,12 +550,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-gwc
+  name: gs-cloud-jdbc-gsc-gwc
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 spec:
@@ -492,13 +565,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gwc
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: gwc
     spec:
@@ -576,24 +649,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -649,12 +762,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-rest
+  name: gs-cloud-jdbc-gsc-rest
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 spec:
@@ -664,13 +777,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: rest
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: rest
     spec:
@@ -748,24 +861,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -821,12 +974,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-wcs
+  name: gs-cloud-jdbc-gsc-wcs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 spec:
@@ -836,13 +989,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wcs
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wcs
     spec:
@@ -920,24 +1073,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -993,12 +1186,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-webui
+  name: gs-cloud-jdbc-gsc-webui
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 spec:
@@ -1008,13 +1201,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: webui
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: webui
     spec:
@@ -1092,24 +1285,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -1165,12 +1398,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-wfs
+  name: gs-cloud-jdbc-gsc-wfs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 spec:
@@ -1180,13 +1413,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wfs
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wfs
     spec:
@@ -1264,24 +1497,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -1337,12 +1610,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-geoserver-wms
+  name: gs-cloud-jdbc-gsc-wms
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 spec:
@@ -1352,13 +1625,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: geoserver
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wms
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: geoserver
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wms
     spec:
@@ -1436,24 +1709,64 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-jdbc-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,jdbcconfig
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080
+              value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080
+              value: http://$(SERVICE_REST_NAME):8080
             - name: "TARGETS_WCS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080
+              value: http://$(SERVICE_WCS_NAME):8080
             - name: "TARGETS_WEBUI"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080
+              value: http://$(SERVICE_WEBUI_NAME):8080
             - name: "TARGETS_WFS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080
+              value: http://$(SERVICE_WFS_NAME):8080
             - name: "TARGETS_WMS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080
+              value: http://$(SERVICE_WMS_NAME):8080
             - name: "TARGETS_WPS"
-              value: http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -1527,7 +1840,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gs-cloud-jdbc-geoserver-gateway
+                name: gs-cloud-jdbc-gsc-gateway
                 port:
                   number: 8080
 ---

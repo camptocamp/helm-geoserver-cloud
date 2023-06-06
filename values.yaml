@@ -2,6 +2,7 @@ tolerations: []
 podSecurityContext: {}
 securityContext: {}
 
+
 common-image-stuff: &common-image-stuff
   tag: '1.0.3'
 
@@ -77,27 +78,59 @@ env: &common-env
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/component']"
+  SERVICE_GATEWAY_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_GATEWAY_NAME
+  SERVICE_GWC_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_GWC_NAME
+  SERVICE_REST_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_REST_NAME
+  SERVICE_WCS_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_WCS_NAME
+  SERVICE_WEBUI_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_WEBUI_NAME
+  SERVICE_WFS_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_WFS_NAME
+  SERVICE_WMS_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_WMS_NAME
+  SERVICE_WPS_NAME:
+    type: "configMap"
+    name: self
+    key: SERVICE_WPS_NAME
   TARGETS_WMS:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wms:8080"
+    value: "http://$(SERVICE_WMS_NAME):8080"
   TARGETS_WFS:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wfs:8080"
+    value: "http://$(SERVICE_WFS_NAME):8080"
   TARGETS_WPS:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wps:8080"
+    value: "http://$(SERVICE_WPS_NAME):8080"
   TARGETS_WCS:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-wcs:8080"
+    value: "http://$(SERVICE_WCS_NAME):8080"
   TARGETS_GWC:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-gwc:8080"
+    value: "http://$(SERVICE_GWC_NAME):8080"
   TARGETS_REST:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-rest:8080"
+    value: "http://$(SERVICE_REST_NAME):8080"
   TARGETS_WEBUI:
     order: 1
-    value: "http://$(APP_KUBERNETES_IO_INSTANCE)-$(APP_KUBERNETES_IO_NAME)-webui:8080"
+    value: "http://$(SERVICE_WEBUI_NAME):8080"
 
   # RABBITMQ_PASSWORD:
   #   type: secret
@@ -135,13 +168,20 @@ common-spring-container-stuff: &common-spring-container-stuff
     periodSeconds: 5
 
 common-generic-stuff: &common-generic-stuff
+  template: true
   replicaCount: 1
+  nameOverride: "gsc"
+  releaseTrunc: 45
+  prefixTrunc: 51
   initContainers: {}
     #<<: *common-init-containers
   nodeSelector: {}
   affinity: {}
 
 geoserver:
+  metadata: true
+  releaseTrunc: 45
+  prefixTrunc: 51
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
@@ -267,6 +307,22 @@ geoserver:
           image:
             <<: *common-image-stuff
             repository: geoservercloud/geoserver-cloud-wcs
+            sha: ''
+    wps:
+      enabled: false
+      ingress:
+        enabled: false
+      <<: *common-generic-stuff
+      service:
+        <<: *common-service-definition
+      volumes:
+        <<: *common-volumes
+      containers:
+        spring:
+          <<: *common-spring-container-stuff
+          image:
+            <<: *common-image-stuff
+            repository: geoservercloud/geoserver-cloud-wps
             sha: ''
     gwc:
       enabled: true
