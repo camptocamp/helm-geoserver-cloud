@@ -170,9 +170,9 @@ common-spring-container-stuff: &common-spring-container-stuff
 common-generic-stuff: &common-generic-stuff
   template: true
   replicaCount: 1
-  nameOverride: "gs"
-  releaseTrunc: 46
-  prefixTrunc: 52
+  nameOverride: "gsc"
+  releaseTrunc: 45
+  prefixTrunc: 51
   initContainers: {}
     #<<: *common-init-containers
   nodeSelector: {}
@@ -180,8 +180,8 @@ common-generic-stuff: &common-generic-stuff
 
 geoserver:
   metadata: true
-  releaseTrunc: 46
-  prefixTrunc: 52
+  releaseTrunc: 45
+  prefixTrunc: 51
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false

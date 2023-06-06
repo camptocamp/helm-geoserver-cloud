@@ -3,16 +3,16 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-gateway
+  name: gs-cloud-jdbc-gsc-gateway
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gateway
 ---
@@ -20,16 +20,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-gwc
+  name: gs-cloud-jdbc-gsc-gwc
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gwc
 ---
@@ -37,16 +37,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-rest
+  name: gs-cloud-jdbc-gsc-rest
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: rest
 ---
@@ -54,16 +54,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-wcs
+  name: gs-cloud-jdbc-gsc-wcs
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wcs
 ---
@@ -71,16 +71,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-webui
+  name: gs-cloud-jdbc-gsc-webui
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: webui
 ---
@@ -88,16 +88,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-wfs
+  name: gs-cloud-jdbc-gsc-wfs
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wfs
 ---
@@ -105,16 +105,16 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gs-wms
+  name: gs-cloud-jdbc-gsc-wms
   labels:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wms
 ---
@@ -149,33 +149,33 @@ data:
   CHART_NAME: geoserver
   RELEASE_NAME: gs-cloud-jdbc
   RELEASE_NAMESPACE: default
-  SERVICE_GATEWAY_NAME: gs-cloud-jdbc-gs-gateway
+  SERVICE_GATEWAY_NAME: gs-cloud-jdbc-gsc-gateway
   SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_GWC_NAME: gs-cloud-jdbc-gs-gwc
+  SERVICE_GWC_NAME: gs-cloud-jdbc-gsc-gwc
   SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_REST_NAME: gs-cloud-jdbc-gs-rest
+  SERVICE_REST_NAME: gs-cloud-jdbc-gsc-rest
   SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_WCS_NAME: gs-cloud-jdbc-gs-wcs
+  SERVICE_WCS_NAME: gs-cloud-jdbc-gsc-wcs
   SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_WEBUI_NAME: gs-cloud-jdbc-gs-webui
+  SERVICE_WEBUI_NAME: gs-cloud-jdbc-gsc-webui
   SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_WFS_NAME: gs-cloud-jdbc-gs-wfs
+  SERVICE_WFS_NAME: gs-cloud-jdbc-gsc-wfs
   SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_WMS_NAME: gs-cloud-jdbc-gs-wms
+  SERVICE_WMS_NAME: gs-cloud-jdbc-gsc-wms
   SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
-  SERVICE_WPS_NAME: gs-cloud-jdbc-gs-wps
+  SERVICE_WPS_NAME: gs-cloud-jdbc-gsc-wps
   SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: 1.0.3
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-gateway
+  name: gs-cloud-jdbc-gsc-gateway
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 spec:
@@ -186,7 +186,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 ---
@@ -194,12 +194,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-gwc
+  name: gs-cloud-jdbc-gsc-gwc
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 spec:
@@ -210,7 +210,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 ---
@@ -218,12 +218,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-rest
+  name: gs-cloud-jdbc-gsc-rest
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 spec:
@@ -234,7 +234,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 ---
@@ -242,12 +242,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-wcs
+  name: gs-cloud-jdbc-gsc-wcs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 spec:
@@ -258,7 +258,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 ---
@@ -266,12 +266,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-webui
+  name: gs-cloud-jdbc-gsc-webui
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 spec:
@@ -282,7 +282,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 ---
@@ -290,12 +290,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-wfs
+  name: gs-cloud-jdbc-gsc-wfs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 spec:
@@ -306,7 +306,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 ---
@@ -314,12 +314,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gs-wms
+  name: gs-cloud-jdbc-gsc-wms
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 spec:
@@ -330,7 +330,7 @@ spec:
       protocol: TCP
       targetPort: http
   selector:
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 ---
@@ -338,12 +338,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-gateway
+  name: gs-cloud-jdbc-gsc-gateway
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gateway
 spec:
@@ -353,13 +353,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gateway
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: gateway
     spec:
@@ -550,12 +550,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-gwc
+  name: gs-cloud-jdbc-gsc-gwc
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: gwc
 spec:
@@ -565,13 +565,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: gwc
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: gwc
     spec:
@@ -762,12 +762,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-rest
+  name: gs-cloud-jdbc-gsc-rest
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: rest
 spec:
@@ -777,13 +777,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: rest
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: rest
     spec:
@@ -974,12 +974,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-wcs
+  name: gs-cloud-jdbc-gsc-wcs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wcs
 spec:
@@ -989,13 +989,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wcs
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wcs
     spec:
@@ -1186,12 +1186,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-webui
+  name: gs-cloud-jdbc-gsc-webui
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: webui
 spec:
@@ -1201,13 +1201,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: webui
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: webui
     spec:
@@ -1398,12 +1398,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-wfs
+  name: gs-cloud-jdbc-gsc-wfs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wfs
 spec:
@@ -1413,13 +1413,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wfs
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wfs
     spec:
@@ -1610,12 +1610,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gs-wms
+  name: gs-cloud-jdbc-gsc-wms
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gs
+    app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-jdbc
     app.kubernetes.io/component: wms
 spec:
@@ -1625,13 +1625,13 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: gs
+      app.kubernetes.io/name: gsc
       app.kubernetes.io/instance: gs-cloud-jdbc
       app.kubernetes.io/component: wms
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: gs
+        app.kubernetes.io/name: gsc
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wms
     spec:
@@ -1840,7 +1840,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gs-cloud-jdbc-gs-gateway
+                name: gs-cloud-jdbc-gsc-gateway
                 port:
                   number: 8080
 ---
