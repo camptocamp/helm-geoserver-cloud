@@ -1,19 +1,4 @@
 ---
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-automountServiceAccountToken: true
-secrets:
-  - name: testwithveryveryverylongreleasename-rabbitmq
----
 # Source: ogscloud/charts/geoservercloud/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -26,41 +11,8 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/config-secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq-config
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  rabbitmq.conf: |-
-    IyMgVXNlcm5hbWUgYW5kIHBhc3N3b3JkCiMjCmRlZmF1bHRfdXNlciA9IGdlb3NlcnZlcgojIyBDbHVzdGVyaW5nCiMjCmNsdXN0ZXJfZm9ybWF0aW9uLnBlZXJfZGlzY292ZXJ5X2JhY2tlbmQgID0gcmFiYml0X3BlZXJfZGlzY292ZXJ5X2s4cwpjbHVzdGVyX2Zvcm1hdGlvbi5rOHMuaG9zdCA9IGt1YmVybmV0ZXMuZGVmYXVsdApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAuaW50ZXJ2YWwgPSAxMApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAub25seV9sb2dfd2FybmluZyA9IHRydWUKY2x1c3Rlcl9wYXJ0aXRpb25faGFuZGxpbmcgPSBhdXRvaGVhbAojIHF1ZXVlIG1hc3RlciBsb2NhdG9yCnF1ZXVlX21hc3Rlcl9sb2NhdG9yID0gbWluLW1hc3RlcnMKIyBlbmFibGUgZ3Vlc3QgdXNlcgpsb29wYmFja191c2Vycy5ndWVzdCA9IGZhbHNlCiNkZWZhdWx0X3Zob3N0ID0gZGVmYXVsdC12aG9zdAojZGlza19mcmVlX2xpbWl0LmFic29sdXRlID0gNTBNQg==
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-type: Opaque
-data:
-  rabbitmq-password: "R213V05sbnRaemZDU0dlVg=="
-
-  rabbitmq-erlang-cookie: "cnl2NGljdFpKajJ1WjZINjIza2Z3TFducXUxOU9kbGs="
 ---
 # Source: ogscloud/charts/geoservercloud/templates/secrets/secret_postgres.yaml
 apiVersion: v1
@@ -89,10 +41,85 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: "config"
 data:
+  acl-service.yml: |-
+    geoserver.base-path: ${geoserver_base_path:}
+
+    jndi:
+      datasources:
+        acl:
+          enabled: true
+          wait-for-it: true
+          wait-timeout: 15
+          url: jdbc:postgresql://acldb:5432/acl
+          username: acl
+          password: acls3cr3t
+          maximum-pool-size: 50
+          minimum-idle: 2
+          connection-timeout: 3000
+          idle-timeout: 60000
+
+    acl.db.jndiName: java:comp/env/jdbc/acl
+    acl.db.schema: acl
+    acl.db.dialect: org.hibernate.spatial.dialect.postgis.PostgisPG10Dialect
+
+    geoserver:
+      acl:
+        security:
+          headers:
+            enabled: false
+            user-header: sec-username
+            roles-header: sec-roles
+            admin-roles: ["ROLE_ADMINISTRATOR"]
+          internal:
+            enabled: true
+            users:
+              admin:
+                admin: true
+                enabled: ${acl.admin.enabled:true}
+                # password is a bcrypt encoded value for s3cr3t
+                password: "${acl.admin.password:{bcrypt}$2a$10$FE62N3ejbKm56EX5VrtSQeDDka8YjwgjwF9sSEKbatGZuZ8e7S9v.}"
+                #for a plain-text password (e.g. coming from a docker or kubernetes secret,
+                # use the {noop} prefix, as in: password: "{noop}plaintextpwd}", or password: "{noop}${ACL_ADMIN_PASSWORD}"
+              user:
+                admin: false
+                enabled: true
+                # password is a bcrypt encoded value for s3cr3t
+                password: "{bcrypt}$2a$10$eMyaZRLZBAZdor8nOX.qwuwOyWazXjR2hddGLCT6f6c382WiwdQGG"
+
+    springdoc:
+      cache.disabled: true
+      api-docs:
+        enabled: true
+        path: /api-docs
+      swagger-ui:
+        enabled: true
+        use-root-path: true
+        config-url: ${geoserver.base-path}/acl/api-docs/swagger-config
+        url: ${geoserver.base-path}/acl/api-docs
+
+
+    logging:
+      level:
+        root: warn
+        org.geoserver.acl: info
+        org.geoserver.cloud.config: info
+        org.springframework.jdbc.support: info
+
+    management:
+      endpoint:
+        health:
+          probes:
+            enabled: true
+      endpoints:
+        web:
+          exposure:
+            include:
+            - '*'
+
   config-service.yml: |-
     # Should only be set in application.yml. Setting the value in bootstrap.yml will cause undesirable side effects like registering in eureka with an UNKNOWN status.
     # See https://cloud.spring.io/spring-cloud-netflix/2.0.x/multi/multi__service_discovery_eureka_clients.html#_eureka_s_health_checks
@@ -118,6 +145,7 @@ data:
     # by default, assumes a discovery-client is in use, and perform client-side load balancing on
     # the advertised instances. See the 'static_routes' profile notes for a static config
     targets:
+      acl: http://acl:8080
       catalog: lb://catalog-service
       wfs: lb://wfs-service
       wms: lb://wms-service
@@ -126,6 +154,7 @@ data:
       rest: lb://restconfig-v1
       gwc: lb://gwc-service
       webui: lb://web-ui
+      webui-demo: lb://web-ui
 
     # Configure routes to services. See https://cloud.spring.io/spring-cloud-gateway/single/spring-cloud-gateway.html
     server:
@@ -135,6 +164,12 @@ data:
     spring:
       cloud:
         gateway:
+          x-forwarded:
+            for-enabled: true
+            host-enabled: true
+            port-enabled: true
+            proto-enabled: true
+            prefix-enabled: true
           globalcors:
             cors-configurations:
               "[/**]":
@@ -152,6 +187,10 @@ data:
             verbose:
               enabled: true
           routes:
+            - id: acl
+              uri: ${targets.acl}
+              predicates:
+                - Path=${geoserver.base-path}/acl,${geoserver.base-path}/acl/**
             - id: catalog
               uri: ${targets.catalog}
               predicates:
@@ -219,7 +258,11 @@ data:
               predicates:
                 - Path=${geoserver.base-path}/**
               #- Path=${geoserver.base-path},${geoserver.base-path}/,${geoserver.base-path}/index.html,${geoserver.base-path}/web,${geoserver.base-path}/web/**,${geoserver.base-path}/j_spring_security_check,${geoserver.base-path}/j_spring_security_logout
-
+            # WebUi - demo
+            - id: webui_demo
+              uri: ${targets.webui-demo}
+              predicates:
+               - Path=${geoserver.base-path}/TestWfsPost
     management:
       endpoints:
         enabled-by-default: true
@@ -265,6 +308,7 @@ data:
     ---
     spring.config.activate.on-profile: local
     targets:
+      acl: http://localhost:9000
       catalog: http://localhost:9100
       wfs: http://localhost:9101
       wms: http://localhost:9102
@@ -294,6 +338,15 @@ data:
         # add an X-gs-cloud-service-id:<service-id> response header to each response
         # to track which cluster node replied
         instanceId: false
+      # Access Control List client config. Usually enabled through the acl spring profile.
+      acl:
+        enabled: ${acl.enabled:false}
+        instanceName: ${acl.instanceName:default-gs}
+        client:
+          basePath: ${acl.url:http://acl:8080/api}
+          username: ${acl.username:}
+          password: ${acl.password:}
+          debug: ${acl.debug:false}
       metrics:
         enabled: true
         instance-id: ${info.instance-id}
@@ -408,6 +461,17 @@ data:
         azure: true
         s3: true
 
+    ---
+    #########################################################
+    #### Access Control List client applications profile ####
+    spring.config.activate.on-profile: acl
+
+    acl.enabled: true
+    acl.url: http://acl:8080/acl/api
+    acl.username: admin
+    acl.password: s3cr3t
+    acl.debug: false
+
     ###################################################
     #### GeoServer configuration backend profiles: ####
     ---
@@ -426,8 +490,8 @@ data:
       catalog:
         # not sure why isolated workspaces don't work with jdbcconfig as backend
         isolated: false
-        # enable caching if using the jdbcconfig as backend, reduces the number of db roundtrips considerably
-        caching.enabled: true
+        # disable caching if using the jdbcconfig as backend, as it does its own caching internally
+        caching.enabled: false
 
     ---
     spring.config.activate.on-profile: catalog
@@ -458,13 +522,14 @@ data:
     geoserver:
       backend.catalog-service.enabled: ${backend.catalog:true}
       web-ui:
+        acl.enabled: ${geoserver.acl.enabled}
         file-browser.hide-file-system: ${webui.hide-filesystem:false}
         # These are all default values, here just for reference. You can omit them and add only the ones to disable or further configure
         security.enabled: true
         wfs.enabled: ${webui.wfs.enabled:true}
         wms.enabled: ${webui.wms.enabled:true}
         wcs.enabled: ${webui.wcs.enabled:true}
-        wps.enabled: false # not working yet
+        wps.enabled: ${webui.wps.enabled:true}
         gwc:
           enabled: ${gwc.enabled:false}
           capabilities:
@@ -521,6 +586,7 @@ data:
     # local profile, used for development only. Other settings like config and eureka urls in gs_cloud_bootstrap_profiles.yml
     spring.config.activate.on-profile: local
     geoserver.backend.jdbcconfig.datasource.url: jdbc:postgresql://localhost:54321/geoserver_config?currentSchema=public
+    acl.url: http://localhost:9000/acl/api
 
 
   geoserver_spring.yml: |-
@@ -601,12 +667,18 @@ data:
         reactivefeign.client.log: info
         #    com.netflix.eureka.registry.AbstractInstanceRegistry: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
         #    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: error # log flooding with "WARN No remote registry available for the remote region us-east-1"
+        # geotools roots
+        org.geotools: info
+        org.geotools.util.factory: warn
+        org.geotools.referencing.factory: warn
+        org.geowebcache.config.XMLConfiguration: error
         # geoserver roots
         org.geotools.autoconfigure: info
         oshi.hardware.platform.linux: error
         oshi.software.os: error
         org.geoserver: warn
         org.geoserver.catalog.datadir: info
+        org.geoserver.catalog.datadir.internal: warn
         org.geoserver.catalog.plugin: info
         org.geoserver.jackson: info
         org.geotools.jackson: info
@@ -617,6 +689,9 @@ data:
         org.geoserver.jdbcconfig: info
         org.geoserver.security: info
         org.geoserver.cloud.security: info
+        # gs-acl roots
+        org.geoserver.acl.plugin: info
+        org.geoserver.acl.api.client: info
         # gs-cloud roots
         org.geoserver.cloud: info
         org.geoserver.cloud.autoconfigure: info
@@ -659,6 +734,10 @@ data:
         org.geoserver.jdbcconfig: info
         org.geoserver.security: debug
         org.geoserver.cloud.security: debug
+        # ACL
+        org.geoserver.acl: debug
+        org.geoserver.acl.plugin: debug
+        org.geoserver.acl.api.client: debug
         # gs-cloud roots
         org.geoserver.cloud: debug
         org.geoserver.cloud.config: debug
@@ -711,110 +790,6 @@ data:
           connection-timeout: 250
           idle-timeout: 60000
 ---
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/role.yaml
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq-endpoint-reader
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-rules:
-  - apiGroups: [""]
-    resources: ["endpoints"]
-    verbs: ["get"]
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["create"]
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/rolebinding.yaml
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq-endpoint-reader
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-subjects:
-  - kind: ServiceAccount
-    name: testwithveryveryverylongreleasename-rabbitmq
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: testwithveryveryverylongreleasename-rabbitmq-endpoint-reader
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/svc-headless.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq-headless
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-spec:
-  clusterIP: None
-  ports:
-    - name: epmd
-      port: 4369
-      targetPort: epmd
-    - name: amqp
-      port: 5672
-      targetPort: amqp
-    - name: dist
-      port: 25672
-      targetPort: dist
-    - name: http-stats
-      port: 15672
-      targetPort: stats
-  selector:
-    app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-  publishNotReadyAddresses: true
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/svc.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-spec:
-  type: ClusterIP
-  sessionAffinity: None
-  ports:
-    - name: amqp
-      port: 5672
-      targetPort: amqp
-      nodePort: null
-    - name: epmd
-      port: 4369
-      targetPort: epmd
-      nodePort: null
-    - name: dist
-      port: 25672
-      targetPort: dist
-      nodePort: null
-    - name: http-stats
-      port: 15672
-      targetPort: stats
-      nodePort: null
-  selector:
-    app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
----
 # Source: ogscloud/charts/geoservercloud/templates/gateway/service.yaml
 apiVersion: v1
 kind: Service
@@ -827,7 +802,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -857,7 +832,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -886,7 +861,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -915,7 +890,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -944,7 +919,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -975,7 +950,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1004,7 +979,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1032,7 +1007,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gateway
   annotations:
@@ -1048,7 +1023,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: e8bd46520d20c5e2dfdb553d200fdd7607a59c6110a8581d5948360a7a12993e
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1080,7 +1055,7 @@ spec:
         - name: geoservercloud-gateway
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gateway:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: TARGETS_WMS
@@ -1184,7 +1159,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: gwc
 spec:
@@ -1199,7 +1174,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: 6ab46366e29d7b8f1dd74a8b0217ed0093bf9137661231ac4a17b050a3356424
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1236,7 +1211,7 @@ spec:
         - name: gwc
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-gwc:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1328,7 +1303,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: rest
 spec:
@@ -1343,7 +1318,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: 3d845352867e525da0a8916c256f78fd5223b6fcebd9b7bfdab0644c9688f602
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1380,7 +1355,7 @@ spec:
         - name: rest
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-rest:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1472,7 +1447,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wcs
 spec:
@@ -1487,7 +1462,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: e6263b0022444bd86d73b366c0875b0fdd0fdacaa7e2813046884bbb82197afd
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1524,7 +1499,7 @@ spec:
         - name: wcs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wcs:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1616,7 +1591,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: webui
   annotations:
@@ -1633,7 +1608,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: 1a9046ea8349ea9547ed76a3d9e9bce4020a1ef26737b72b7a273de4cc87a30c
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1670,7 +1645,7 @@ spec:
         - name: webui
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-webui:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1762,7 +1737,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wfs
 spec:
@@ -1777,7 +1752,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: a2909c1514e265546f27bcef30d65dd1e0a800fed6c4b2346c35dca12101c0ac
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1814,7 +1789,7 @@ spec:
         - name: wfs
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wfs:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -1906,7 +1881,7 @@ metadata:
     app.kubernetes.io/base_environment: "dev"
     app.kubernetes.io/name: geoservercloud
     app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/version: "1.0-RC29"
+    app.kubernetes.io/version: "1.2.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: wms
 spec:
@@ -1921,7 +1896,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: 6962797d08f602d5b55218e03104734ccc19a0403d0c7ee2127f7763fde6a5f1
+        checksum/config: 01f6523dc307f2c5f0453b36838e3b8a6a0f4c1d125562cc42a048773a8fac79
         specificValues/sha256: 61977953f997d969fabbdcbabdce0cf8315ea3e02b1c66c31ec2c1a76e753582
         globalValues/sha256: 130a2567c866307fcd6950b0976112984d2fac6b38c6e55b0a07b3ae8a866247
       labels:
@@ -1958,7 +1933,7 @@ spec:
         - name: wms
           securityContext:
             {}
-          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.0-RC29"
+          image: "sanitize.me/geoservercloud/geoserver-cloud-wms:1.2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -2036,182 +2011,3 @@ spec:
             requests:
               cpu: 0.1
               memory: 512Mi
----
-# Source: ogscloud/charts/geoservercloud/charts/rabbitmq/templates/statefulset.yaml
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: testwithveryveryverylongreleasename-rabbitmq
-  namespace: "default"
-  labels:
-    app.kubernetes.io/name: rabbitmq
-    helm.sh/chart: rabbitmq-11.3.0
-    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-    app.kubernetes.io/managed-by: Helm
-spec:
-  serviceName: testwithveryveryverylongreleasename-rabbitmq-headless
-  podManagementPolicy: OrderedReady
-  replicas: 1
-  updateStrategy:
-    type: RollingUpdate
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: rabbitmq
-      app.kubernetes.io/instance: testwithveryveryverylongreleasename
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: rabbitmq
-        helm.sh/chart: rabbitmq-11.3.0
-        app.kubernetes.io/instance: testwithveryveryverylongreleasename
-        app.kubernetes.io/managed-by: Helm
-      annotations:
-        checksum/config: 93ef00cf9e3c0c7e51dbc61a9fc29da3f14258a262bbb75ea05064b652f54334
-        checksum/secret: 1b5451ff0c631a919018ff4959f5839658c12306183b60424b14fe9b8322a9fc
-    spec:
-
-      serviceAccountName: testwithveryveryverylongreleasename-rabbitmq
-      affinity:
-        podAffinity:
-
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app.kubernetes.io/name: rabbitmq
-                    app.kubernetes.io/instance: testwithveryveryverylongreleasename
-                topologyKey: kubernetes.io/hostname
-              weight: 1
-        nodeAffinity:
-
-      securityContext:
-        fsGroup: 1001
-      terminationGracePeriodSeconds: 120
-      initContainers:
-      containers:
-        - name: rabbitmq
-          image: docker.io/bitnami/rabbitmq:3.9.13-debian-10-r14
-          imagePullPolicy: "IfNotPresent"
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1001
-          lifecycle:
-            preStop:
-              exec:
-                command:
-                  - /bin/bash
-                  - -ec
-                  - |
-                    if [[ -f /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh ]]; then
-                        /opt/bitnami/scripts/rabbitmq/nodeshutdown.sh -t "120" -d "false"
-                    else
-                        rabbitmqctl stop_app
-                    fi
-          env:
-            - name: BITNAMI_DEBUG
-              value: "false"
-            - name: MY_POD_IP
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.podIP
-            - name: MY_POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: MY_POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: K8S_SERVICE_NAME
-              value: testwithveryveryverylongreleasename-rabbitmq-headless
-            - name: K8S_ADDRESS_TYPE
-              value: hostname
-            - name: RABBITMQ_FORCE_BOOT
-              value: "no"
-            - name: RABBITMQ_NODE_NAME
-              value: "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
-            - name: K8S_HOSTNAME_SUFFIX
-              value: ".$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
-            - name: RABBITMQ_MNESIA_DIR
-              value: "/bitnami/rabbitmq/mnesia/$(RABBITMQ_NODE_NAME)"
-            - name: RABBITMQ_LDAP_ENABLE
-              value: "no"
-            - name: RABBITMQ_LOGS
-              value: "-"
-            - name: RABBITMQ_ULIMIT_NOFILES
-              value: "65536"
-            - name: RABBITMQ_USE_LONGNAME
-              value: "true"
-            - name: RABBITMQ_ERL_COOKIE
-              valueFrom:
-                secretKeyRef:
-                  name: testwithveryveryverylongreleasename-rabbitmq
-                  key: rabbitmq-erlang-cookie
-            - name: RABBITMQ_LOAD_DEFINITIONS
-              value: "no"
-            - name: RABBITMQ_DEFINITIONS_FILE
-              value: "/app/load_definition.json"
-            - name: RABBITMQ_SECURE_PASSWORD
-              value: "yes"
-            - name: RABBITMQ_USERNAME
-              value: "geoserver"
-            - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: testwithveryveryverylongreleasename-rabbitmq
-                  key: rabbitmq-password
-            - name: RABBITMQ_PLUGINS
-              value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"
-          envFrom:
-          ports:
-            - name: amqp
-              containerPort: 5672
-            - name: dist
-              containerPort: 25672
-            - name: stats
-              containerPort: 15672
-            - name: epmd
-              containerPort: 4369
-          livenessProbe:
-            failureThreshold: 6
-            initialDelaySeconds: 120
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 20
-            exec:
-              command:
-                - /bin/bash
-                - -ec
-                - rabbitmq-diagnostics -q ping
-          readinessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 10
-            periodSeconds: 30
-            successThreshold: 1
-            timeoutSeconds: 20
-            exec:
-              command:
-                - /bin/bash
-                - -ec
-                - rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms
-          resources:
-            limits:
-              cpu: 2
-              memory: 2Gi
-            requests:
-              cpu: 0.1
-              memory: 512Mi
-          volumeMounts:
-            - name: configuration
-              mountPath: /bitnami/rabbitmq/conf
-            - name: data
-              mountPath: /bitnami/rabbitmq/mnesia
-      volumes:
-        - name: configuration
-          projected:
-            sources:
-              - secret:
-                  name: testwithveryveryverylongreleasename-rabbitmq-config
-        - name: data
-          emptyDir: {}
