@@ -77,6 +77,8 @@ spec:
               value: http://{{ include "geoserver.fullname" . }}-gwc:{{ .Values.geoserver.services.gwc.service.port }}
             - name: TARGETS_REST
               value: http://{{ include "geoserver.fullname" . }}-rest:{{ .Values.geoserver.services.rest.service.port }}
+            - name: TARGETS_WPS
+              value: http://{{ include "geoserver.fullname" . }}-wps:{{ .Values.geoserver.services.wps.service.port }}
             - name: TARGETS_WEBUI
               value: http://{{ include "geoserver.fullname" . }}-webui:{{ .Values.geoserver.services.webui.service.port }}
             - name: SPRING_PROFILES_ACTIVE
