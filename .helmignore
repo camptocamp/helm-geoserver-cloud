@@ -22,3 +22,16 @@
 .vscode/
 
 tests/
+ci/
+# And other stuff as well
+poetry.lock
+.editorconfig
+.github/
+.mypy_cache/
+.pre-commit-config.yaml
+.pre-commit-hooks.yaml
+.prettierignore
+.prospector.yaml
+.venv
+__pycache__/
+*/__pycache__/
