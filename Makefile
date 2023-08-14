@@ -41,4 +41,3 @@ example-datadir: example-common
 example-jdbc: example-common
 	${HELM} dependency update examples/jdbc
 	${HELM} upgrade --install gs-cloud-jdbc examples/jdbc
-

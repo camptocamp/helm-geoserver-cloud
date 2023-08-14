@@ -44,6 +44,13 @@ jobs:
       - run: pre-commit run --all-files
       - run: git diff && false
         if: failure()
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: Expected
+          path: tests/
+          if-no-files-found: ignore
+          retention-days: 5
 
       - name: Checks
         run: c2cciutils-checks

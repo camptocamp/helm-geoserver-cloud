@@ -16,7 +16,11 @@ repos:
       - id: debug-statements
       - id: check-toml
       - id: check-yaml
-        exclude: ^templates/.+\.yaml$
+        exclude: |-
+          (?x)^(
+            templates/.+\.yaml
+            |examples/.+/templates/.+\.yaml
+          )$
         args:
           - --allow-multiple-documents
       - id: check-json
@@ -33,7 +37,7 @@ repos:
       - id: codespell
         exclude: |-
           (?x)^(
-
+            tests/expected-.+\.yaml
           )$
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.7.1
@@ -44,6 +48,13 @@ repos:
           - prettier-plugin-sh@0.12.8 # npm
           - prettier-plugin-toml@0.3.1 # npm
           - '@prettier/plugin-xml@0.12.0' # npm
+        exclude: |-
+          (?x)^(
+            templates/.+\.yaml
+            |examples/README.md
+            |examples/.+/templates/.+\.yaml
+            |tests/expected-.+\.yaml
+          )$
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.2
     hooks:
@@ -68,3 +79,45 @@ repos:
     rev: v0.1.5
     hooks:
       - id: ripsecrets
+  - repo: https://github.com/camptocamp/helm-common
+    rev: 0.7.1
+    hooks:
+      - id: helm-template-gen
+        files: |-
+          (?x)(
+            ^templates/.*$
+            |^values\.yaml$
+            |^Chart\.yaml$
+            |^examples/common/*
+          )
+        args:
+          - --additional-template-directory=.
+          - gs-cloud-common
+          - examples/common
+          - tests/expected-common.yaml
+      - id: helm-template-gen
+        files: |-
+          (?x)(
+            ^templates/.*$
+            |^values\.yaml$
+            |^Chart\.yaml$
+            |^examples/datadir/*
+          )
+        args:
+          - --additional-template-directory=.
+          - gs-cloud-datadir
+          - examples/datadir
+          - tests/expected-datadir.yaml
+      - id: helm-template-gen
+        files: |-
+          (?x)(
+            ^templates/.*$
+            |^values\.yaml$
+            |^Chart\.yaml$
+            |^examples/jdbc/*
+          )
+        args:
+          - --additional-template-directory=.
+          - gs-cloud-jdbc
+          - examples/jdbc
+          - tests/expected-jdbc.yaml
