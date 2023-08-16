@@ -1,7 +1,7 @@
-nfsserver: "not-set"
+nfsserver: 'not-set'
 nfs:
   raster:
-    pvcname:  gs-cloud-raster-nfs-claim
+    pvcname: gs-cloud-raster-nfs-claim
     pvname: gs-cloud-raster-nfs
     path: /nfs/raster
     storage: 10Gi
@@ -15,7 +15,6 @@ nfs:
     pvname: gs-cloud-gwc-cache-nfs
     path: /nfs/tiles
     storage: 10Gi
-
 
 rabbitmq:
   enabled: true
@@ -31,7 +30,11 @@ rabbitmq:
     registry: docker.io
     repository: bitnami/rabbitmq
     tag: 3.9.13-debian-10-r14
+
   auth:
     username: geoserver
+    password: password
+    erlangCookie: cookie
+
   persistence:
     enabled: false

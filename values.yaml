@@ -2,7 +2,6 @@ tolerations: []
 podSecurityContext: {}
 securityContext: {}
 
-
 common-image-stuff: &common-image-stuff
   tag: '1.2.0'
 
@@ -15,8 +14,7 @@ service: &common-service-definition
       protocol: TCP
       targetPort: http
 
-volumes: &common-volumes
-  # this comes from the config initContainer
+volumes: &common-volumes # this comes from the config initContainer
   vol-local-gscloud:
     emptyDir: {}
   # /tmp as emptyDir, required if running with readOnlyRootFilesystem=true
@@ -28,7 +26,7 @@ volumeMounts: &common-volume-mounts
     name: vol-local-gscloud
   # /tmp as emptyDir, required if running with readOnlyRootFilesystem=true
   /tmp/:
-    name: "tmp-empty-dir"
+    name: 'tmp-empty-dir'
 
 ports: &common-ports
   http:
@@ -49,88 +47,88 @@ resources: &common-resources
 env: &common-env
   GEOSERVER_BASE_PATH:
     # NB: do not put a trailing '/' character
-    value: "/geoserver-cloud"
+    value: '/geoserver-cloud'
   SPRING_PROFILES_ACTIVE:
     # this must be explicitly overridden with either
     # "standalone,jdbcconfig,kube" or "standalone,datadir,kube"
     value: not-set
   GWC_ENABLED:
-    value: "true"
+    value: 'true'
   JAVA_OPTS_DEFAULT:
     value: '-DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80'
   JAVA_OPTS:
     order: 1
     value: '$(JAVA_OPTS_DEFAULT)'
   GEOTOOLS_HTTPCLIENT_PROXY_ENABLED:
-    value: "false"
+    value: 'false'
   APP_KUBERNETES_IO_INSTANCE:
-    type: "downwardAPI"
+    type: 'downwardAPI'
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/instance']"
   APP_KUBERNETES_IO_NAME:
-    type: "downwardAPI"
+    type: 'downwardAPI'
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/name']"
   APP_KUBERNETES_IO_COMPONENT:
-    type: "downwardAPI"
+    type: 'downwardAPI'
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/component']"
   SERVICE_GATEWAY_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_GATEWAY_NAME
   SERVICE_GWC_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_GWC_NAME
   SERVICE_REST_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_REST_NAME
   SERVICE_WCS_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_WCS_NAME
   SERVICE_WEBUI_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_WEBUI_NAME
   SERVICE_WFS_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_WFS_NAME
   SERVICE_WMS_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_WMS_NAME
   SERVICE_WPS_NAME:
-    type: "configMap"
+    type: 'configMap'
     name: self
     key: SERVICE_WPS_NAME
   TARGETS_WMS:
     order: 1
-    value: "http://$(SERVICE_WMS_NAME):8080"
+    value: 'http://$(SERVICE_WMS_NAME):8080'
   TARGETS_WFS:
     order: 1
-    value: "http://$(SERVICE_WFS_NAME):8080"
+    value: 'http://$(SERVICE_WFS_NAME):8080'
   TARGETS_WPS:
     order: 1
-    value: "http://$(SERVICE_WPS_NAME):8080"
+    value: 'http://$(SERVICE_WPS_NAME):8080'
   TARGETS_WCS:
     order: 1
-    value: "http://$(SERVICE_WCS_NAME):8080"
+    value: 'http://$(SERVICE_WCS_NAME):8080'
   TARGETS_GWC:
     order: 1
-    value: "http://$(SERVICE_GWC_NAME):8080"
+    value: 'http://$(SERVICE_GWC_NAME):8080'
   TARGETS_REST:
     order: 1
-    value: "http://$(SERVICE_REST_NAME):8080"
+    value: 'http://$(SERVICE_REST_NAME):8080'
   TARGETS_WEBUI:
     order: 1
-    value: "http://$(SERVICE_WEBUI_NAME):8080"
+    value: 'http://$(SERVICE_WEBUI_NAME):8080'
 
   # RABBITMQ_PASSWORD:
   #   type: secret
@@ -170,10 +168,11 @@ common-spring-container-stuff: &common-spring-container-stuff
 common-generic-stuff: &common-generic-stuff
   template: true
   replicaCount: 1
-  nameOverride: "gsc"
+  nameOverride: 'gsc'
   releaseTrunc: 45
   prefixTrunc: 51
-  initContainers: {}
+  initContainers:
+    {}
     #<<: *common-init-containers
   nodeSelector: {}
   affinity: {}

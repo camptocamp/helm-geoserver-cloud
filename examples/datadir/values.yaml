@@ -1,4 +1,3 @@
-
 additionalVolumes: &additional-volumes
   datadir:
     persistentVolumeClaim:
@@ -12,28 +11,29 @@ additionalVolumes: &additional-volumes
 
 additionalVolumeMounts: &additional-volume-mounts
   /opt/app/data_directory:
-    name: "datadir"
+    name: 'datadir'
   /mnt/cache:
-    name: "cache"
+    name: 'cache'
   /custom/geodata:
-    name: "geodata"
+    name: 'geodata'
     readOnly: true
 
 env: &env-override
   RABBITMQ_HOST:
-    value: "gs-cloud-common-rabbitmq"
+    value: 'gs-cloud-common-rabbitmq'
   RABBITMQ_USER:
-    value: "geoserver"
+    value: 'geoserver'
   RABBITMQ_PASSWORD:
     type: secret
-    name: "gs-cloud-common-rabbitmq"
-    key: "rabbitmq-password"
+    name: 'gs-cloud-common-rabbitmq'
+    key: 'rabbitmq-password'
   SPRING_PROFILES_ACTIVE:
     value: standalone,datadir
   GEOWEBCACHE_CACHE_DIR:
-    value: "/mnt/cache"
+    value: '/mnt/cache'
   JAVA_OPTS:
-    value: "$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml"
+    value: '$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml'
+    order: 1
 
 additional-stuff: &additional-stuff
   volumes:

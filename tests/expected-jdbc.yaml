@@ -131,7 +131,7 @@ data:
 kind: Secret
 type: Opaque
 metadata:
-  name: "gs-cloud-jdbc-db"
+  name: 'gs-cloud-jdbc-db'
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
 apiVersion: v1

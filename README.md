@@ -22,3 +22,12 @@ To develop in this chart, we recommend that you use `k3d` if you want to use you
 ### check that the configuration is available
 
 This repository provides a default configuration thanks to a git submodule : if you don't have performed a recursive clone of the repository, don't forget to do a `git submodule update` before installing the chart !
+
+## Contributing
+
+Install the pre-commit hooks:
+
+```bash
+pip install pre-commit
+pre-commit install --allow-missing-config
+```
