@@ -46,7 +46,7 @@ docker run --rm --name=local_db \
   --env=POSTGRES_USER=postgres \
   --env=POSTGRES_DB=postgres \
   --detach --volume ${pg_data_dir}:/var/lib/postgresql/data \
-  --publish=5432:5432 postgis/postgis:12-3.2-alpine
+  --publish=5432:5432 postgis/postgis:12-3.4-alpine
 ```
 
 NB: here we setup a temporary dir to host the PG data, but you can simply change the `pg_data_dir` variable to point to any local persistent folder on your machine to keep the data for the next time.
