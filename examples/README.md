@@ -90,7 +90,7 @@ $ sudo chown nobody:nogroup /nfs/{raster,datadir,tiles}
 $ sudo chmod 777 /nfs/{raster,datadir,tiles}
 $ echo '/nfs/datadir *(rw,sync,no_subtree_check)
 /nfs/tiles *(rw,sync,no_subtree_check)
-/nfs/raster *(rw,sync,no_subtree_check)' | sudo tee -a /etc/exports 
+/nfs/raster *(rw,sync,no_subtree_check)' | sudo tee -a /etc/exports
 $ sudo exportfs -a
 ```
 
