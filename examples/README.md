@@ -84,16 +84,14 @@ CREATE SCHEMA config;
 To use the datadir example and in general for the GWC tile cache, let's start an NFS server on the host.
 
 ```shell
-sudo apt install -y nfs-kernel-server nfs-common
-sudo mkdir -p /nfs/{raster,datadir,tiles}
-sudo chown nobody:nogroup /nfs/{raster,datadir,tiles}
-sudo chmod 777 /nfs/{raster,datadir,tiles}
-sudo cat >> /tmp/test << EOF
-/nfs/datadir *(rw,sync,no_subtree_check)
+$ sudo apt install -y nfs-kernel-server nfs-common
+$ sudo mkdir -p /nfs/{raster,datadir,tiles}
+$ sudo chown nobody:nogroup /nfs/{raster,datadir,tiles}
+$ sudo chmod 777 /nfs/{raster,datadir,tiles}
+$ echo '/nfs/datadir *(rw,sync,no_subtree_check)
 /nfs/tiles *(rw,sync,no_subtree_check)
-/nfs/raster *(rw,sync,no_subtree_check)
-EOF
-sudo exportfs -a
+/nfs/raster *(rw,sync,no_subtree_check)' | sudo tee -a /etc/exports 
+$ sudo exportfs -a
 ```
 
 ## Launch the examples
