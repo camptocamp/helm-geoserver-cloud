@@ -46,7 +46,7 @@ docker run --rm --name=local_db \
   --env=POSTGRES_USER=postgres \
   --env=POSTGRES_DB=postgres \
   --detach --volume ${pg_data_dir}:/var/lib/postgresql/data \
-  --publish=5432:5432 postgis/postgis:12-3.2-alpine
+  --publish=5432:5432 postgis/postgis:12-3.4-alpine
 ```
 
 NB: here we setup a temporary dir to host the PG data, but you can simply change the `pg_data_dir` variable to point to any local persistent folder on your machine to keep the data for the next time.
@@ -88,11 +88,9 @@ sudo apt install -y nfs-kernel-server nfs-common
 sudo mkdir -p /nfs/{raster,datadir,tiles}
 sudo chown nobody:nogroup /nfs/{raster,datadir,tiles}
 sudo chmod 777 /nfs/{raster,datadir,tiles}
-sudo cat >> /tmp/test << EOF
-/nfs/datadir *(rw,sync,no_subtree_check)
+echo '/nfs/datadir *(rw,sync,no_subtree_check)
 /nfs/tiles *(rw,sync,no_subtree_check)
-/nfs/raster *(rw,sync,no_subtree_check)
-EOF
+/nfs/raster *(rw,sync,no_subtree_check)' | sudo tee -a /etc/exports
 sudo exportfs -a
 ```
 
