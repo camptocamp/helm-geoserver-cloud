@@ -1,0 +1,24 @@
+name: Auto merge Dependabot updates
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  auto-merge:
+    name: Auto merge Dependabot updates
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |-
+            github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+            })
+    if: github.event.pull_request.user.login == 'renovate[bot]'

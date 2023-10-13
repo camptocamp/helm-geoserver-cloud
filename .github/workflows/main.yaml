@@ -88,9 +88,17 @@ jobs:
         run: c2cciutils-publish
         if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - name: Install octokit/action
-        run: npm install @octokit/action
-      - name: Run changelog
-        run: node .github/run-changelog.mjs
+      - name: Trigger changelog workflow
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/github-script@v6
+        with:
+          script: |-
+            if (process.env.GITHUB_REF_TYPE == 'tag') {
+                console.log('Trigger changelog');
+                await github.rest.repos.createDispatchEvent({
+                    owner: 'camptocamp',
+                    repo: 'helm-mutualize',
+                    event_type: 'changelog',
+                });
+            }
