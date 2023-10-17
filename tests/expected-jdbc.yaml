@@ -150,21 +150,21 @@ data:
   RELEASE_NAME: gs-cloud-jdbc
   RELEASE_NAMESPACE: default
   SERVICE_GATEWAY_NAME: gs-cloud-jdbc-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_GWC_NAME: gs-cloud-jdbc-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_REST_NAME: gs-cloud-jdbc-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_WCS_NAME: gs-cloud-jdbc-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_WEBUI_NAME: gs-cloud-jdbc-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_WFS_NAME: gs-cloud-jdbc-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_WMS_NAME: gs-cloud-jdbc-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
   SERVICE_WPS_NAME: gs-cloud-jdbc-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: 1.3.0
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: 1.3.1
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
@@ -373,7 +373,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.3.0"
+          image: "geoservercloud/geoserver-cloud-gateway:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -585,7 +585,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.3.0"
+          image: "geoservercloud/geoserver-cloud-gwc:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -797,7 +797,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.3.0"
+          image: "geoservercloud/geoserver-cloud-rest:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1009,7 +1009,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.3.0"
+          image: "geoservercloud/geoserver-cloud-wcs:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1221,7 +1221,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.3.0"
+          image: "geoservercloud/geoserver-cloud-webui:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1433,7 +1433,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.3.0"
+          image: "geoservercloud/geoserver-cloud-wfs:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1645,7 +1645,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.3.0"
+          image: "geoservercloud/geoserver-cloud-wms:1.3.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
