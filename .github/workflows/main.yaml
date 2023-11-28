@@ -13,8 +13,8 @@ env:
 
 jobs:
   main:
-    runs-on: ubuntu-22.04
     name: Continuous integration
+    runs-on: ubuntu-22.04
     timeout-minutes: 20
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
@@ -56,8 +56,11 @@ jobs:
           if-no-files-found: ignore
           retention-days: 5
 
-      - name: Checks
-        run: c2cciutils-checks
+      - name: Print environment information
+        run: c2cciutils-env
+
+        env:
+          GITHUB_EVENT: ${{ toJson(github) }}
 
       - name: Install helm
         uses: azure/setup-helm@v3

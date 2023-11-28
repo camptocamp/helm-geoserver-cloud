@@ -1,10 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/1.5.8/c2cciutils/schema.json
-
-checks:
-  prettier: False
-  black:
-    ignore_patterns_re:
-      - .*\.yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/c2cciutils/1.6.11/c2cciutils/schema.json
 
 publish:
   helm:
