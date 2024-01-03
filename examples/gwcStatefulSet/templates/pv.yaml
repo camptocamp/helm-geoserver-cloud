@@ -1,0 +1,39 @@
+# define a persistentVolume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gs-cloud-cache-stateful
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "local-storage"
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete
+  local:
+    path: /mnt/disks/ssd1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3d-k3d-cluster-1-server-0
+
+---
+# define a persistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gs-cloud-cache-stateful-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "local-storage"
+  volumeMode: Filesystem
+  volumeName: gs-cloud-cache-stateful
+  resources:
+    requests:
+      storage: 1Gi

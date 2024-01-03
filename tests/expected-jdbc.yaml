@@ -336,6 +336,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-gateway
@@ -548,6 +549,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-gwc
@@ -760,6 +762,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-rest
@@ -972,6 +975,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-wcs
@@ -1184,6 +1188,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-webui
@@ -1396,6 +1401,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-wfs
@@ -1608,6 +1614,7 @@ spec:
 ---
 # Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
+
 kind: Deployment
 metadata:
   name: gs-cloud-jdbc-gsc-wms

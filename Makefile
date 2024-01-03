@@ -5,9 +5,11 @@ LOCAL_IP ?= $(shell hostname -I | awk '{print $$1}')
 examples-clean:
 	rm -f examples/common/charts/*.tgz
 	rm -f examples/datadir/charts/*.tgz
+	rm -f examples/gwcStatefulSet/charts/*.tgz
 	rm -f examples/jdbc/charts/*.tgz
 	${HELM} uninstall gs-cloud-common || /bin/true
 	${HELM} uninstall gs-cloud-datadir || /bin/true
+	${HELM} uninstall gs-cloud-statefulset || /bin/true
 	${HELM} uninstall gs-cloud-jdbc || /bin/true
 
 examples/common/charts/postgresql-12.1.6.tgz:
@@ -36,6 +38,10 @@ example-datadir: example-common
 	${HELM} dependency update examples/datadir
 	${HELM} upgrade --install gs-cloud-datadir examples/datadir
 
+.PHONY: example-statefulset
+example-statefulset: example-common
+	${HELM} dependency update examples/gwcStatefulSet
+	${HELM} upgrade --install gs-cloud-statefulset examples/gwcStatefulSet
 
 .PHONY: example-jdbc
 example-jdbc: example-common
