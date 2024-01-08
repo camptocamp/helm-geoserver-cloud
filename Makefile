@@ -24,9 +24,11 @@ gen-expected: dependencies
 	${HELM} dependency update examples/common
 	${HELM} dependency update examples/datadir
 	${HELM} dependency update examples/jdbc
+	${HELM} dependency update examples/gwcStatefulSet
 	${HELM} template --namespace=default gs-cloud-common examples/common > tests/expected-common.yaml
 	${HELM} template --namespace=default gs-cloud-datadir examples/datadir > tests/expected-datadir.yaml
 	${HELM} template --namespace=default gs-cloud-jdbc examples/jdbc > tests/expected-jdbc.yaml
+	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet > tests/expected-statefulset.yaml
 	sed -i 's/[[:blank:]]\+$$//g'  tests/expected*.yaml
 
 .PHONY: example-common

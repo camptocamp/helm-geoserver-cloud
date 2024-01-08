@@ -324,7 +324,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-gateway
@@ -512,7 +511,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-gwc
@@ -700,7 +698,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-rest
@@ -888,7 +885,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-wcs
@@ -1076,7 +1072,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-webui
@@ -1264,7 +1259,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-wfs
@@ -1452,7 +1446,6 @@ spec:
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
-
 kind: Deployment
 metadata:
   name: gs-cloud-datadir-gsc-wms
