@@ -1,2 +1,2 @@
-c2cciutils[checks,publish]==1.6.11
+c2cciutils[checks,publish]==1.6.13
 pre-commit==3.6.0
