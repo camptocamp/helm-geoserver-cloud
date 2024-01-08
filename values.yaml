@@ -169,8 +169,6 @@ common-generic-stuff: &common-generic-stuff
   template: true
   replicaCount: 1
   nameOverride: 'gsc'
-  releaseTrunc: 45
-  prefixTrunc: 51
   initContainers:
     {}
     #<<: *common-init-containers

@@ -1,0 +1,116 @@
+additionalVolumes: &additional-volumes
+  datadir:
+    persistentVolumeClaim:
+      claimName: gs-cloud-datadir-nfs-claim
+  geodata:
+    configMap:
+      name: cm-jndi-geodata
+  cache:
+    emptyDir: {}
+
+additionalVolumeMounts: &additional-volume-mounts
+  /opt/app/data_directory:
+    name: 'datadir'
+  /custom/geodata:
+    name: 'geodata'
+    readOnly: true
+  /mnt/cache:
+    name: 'cache'
+
+env: &env-override
+  RABBITMQ_HOST:
+    value: 'gs-cloud-common-rabbitmq'
+  RABBITMQ_USER:
+    value: 'geoserver'
+  RABBITMQ_PASSWORD:
+    type: secret
+    name: 'gs-cloud-common-rabbitmq'
+    key: 'rabbitmq-password'
+  SPRING_PROFILES_ACTIVE:
+    value: standalone,datadir
+  GEOWEBCACHE_CACHE_DIR:
+    value: '/mnt/cache'
+  JAVA_OPTS:
+    value: '$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml'
+    order: 1
+
+additional-stuff: &additional-stuff
+  volumes:
+    <<: *additional-volumes
+  containers:
+    spring:
+      env:
+        <<: *env-override
+      volumeMounts:
+        <<: *additional-volume-mounts
+
+geoservercloud:
+  global:
+    profile: standalone,datadir
+    image:
+      pullPolicy: IfNotPresent
+  geoserver:
+    # podSecurityContext:
+    #   runAsUser: 1001
+    #   runAsGroup: 1001
+    #   fsGroup: 1001
+    ingress:
+      annotations:
+        my-annotation: 'coucou'
+      enabled: true
+      hostGroups:
+        host1:
+          tls:
+            enabled: false
+          hosts:
+            - gscloud.local
+    services:
+      gateway:
+        service:
+          annotations:
+            my-custom-annotation: 'hello'
+          labels:
+            one-custom-label: 'my-label'
+        ingress:
+          enabled: true
+        <<: *additional-stuff
+      webui:
+        <<: *additional-stuff
+      rest:
+        <<: *additional-stuff
+      wms:
+        replicaCount: 2
+        <<: *additional-stuff
+      wcs:
+        <<: *additional-stuff
+      wfs:
+        replicaCount: 2
+        <<: *additional-stuff
+      gwc:
+        replicaCount: 1
+        type: StatefulSet
+        persistentVolumeClaimRetentionPolicy:
+          whenDeleted: Retain
+          whenScaled: Delete
+        volumeClaimTemplates:
+          - metadata:
+              name: cache
+            spec:
+              accessModes: ['ReadWriteOnce']
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 1Gi
+        volumes:
+          <<: *additional-volumes
+          cache:
+            persistentVolumeClaim:
+              claimName: cache
+        containers:
+          spring:
+            env:
+              <<: *env-override
+            volumeMounts:
+              <<: *additional-volume-mounts
+              /mnt/cache:
+                name: 'cache'
