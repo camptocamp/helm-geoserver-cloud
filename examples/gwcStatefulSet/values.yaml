@@ -5,6 +5,8 @@ additionalVolumes: &additional-volumes
   geodata:
     configMap:
       name: cm-jndi-geodata
+  cache:
+    emptyDir: {}
 
 additionalVolumeMounts: &additional-volume-mounts
   /opt/app/data_directory:
@@ -12,6 +14,8 @@ additionalVolumeMounts: &additional-volume-mounts
   /custom/geodata:
     name: 'geodata'
     readOnly: true
+  /mnt/cache:
+    name: 'cache'
 
 env: &env-override
   RABBITMQ_HOST:
@@ -85,11 +89,23 @@ geoservercloud:
       gwc:
         replicaCount: 1
         type: StatefulSet
+        persistentVolumeClaimRetentionPolicy:
+          whenDeleted: Retain
+          whenScaled: Delete
+        volumeClaimTemplates:
+          - metadata:
+              name: cache
+            spec:
+              accessModes: ['ReadWriteOnce']
+              storageClassName: local-path
+              resources:
+                requests:
+                  storage: 1Gi
         volumes:
           <<: *additional-volumes
           cache:
             persistentVolumeClaim:
-              claimName: gs-cloud-cache-stateful-claim
+              claimName: cache
         containers:
           spring:
             env:
