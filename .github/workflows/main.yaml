@@ -48,7 +48,7 @@ jobs:
       - run: pre-commit run --all-files
       - run: git diff && false
         if: failure()
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: Expected
