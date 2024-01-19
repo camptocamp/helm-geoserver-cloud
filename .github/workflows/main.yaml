@@ -49,16 +49,15 @@ jobs:
       - run: git diff && false
         if: failure()
       - uses: actions/upload-artifact@v4
-        if: failure()
         with:
           name: Expected
           path: tests/
           if-no-files-found: ignore
           retention-days: 5
+        if: failure()
 
       - name: Print environment information
         run: c2cciutils-env
-
         env:
           GITHUB_EVENT: ${{ toJson(github) }}
 
@@ -92,16 +91,17 @@ jobs:
         if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Trigger changelog workflow
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: actions/github-script@v7
+        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
         with:
           script: |-
             if (process.env.GITHUB_REF_TYPE == 'tag') {
                 console.log('Trigger changelog');
                 await github.rest.repos.createDispatchEvent({
                     owner: 'camptocamp',
-                    repo: 'helm-mutualize',
+                    repo: 'helm-geoserver-cloud',
                     event_type: 'changelog',
                 });
             }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
