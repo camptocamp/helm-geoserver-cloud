@@ -92,7 +92,6 @@ jobs:
 
       - name: Trigger changelog workflow
         uses: actions/github-script@v7
-        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
         with:
           script: |-
             if (process.env.GITHUB_REF_TYPE == 'tag') {
@@ -105,3 +104,4 @@ jobs:
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
