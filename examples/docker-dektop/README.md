@@ -5,15 +5,15 @@ This example is tested on docker desktop v4.26.1.
 Once docker desktop is installed, enable kubernetes extension in the settings.Ensure both docker engine & kubernetes are green before proceeding.
 ![Kubernetes extension](image.png)
 
-### Install kubectl & helm
+## Install kubectl & helm
 
-#### Install NGINX ingress controller
+## Install NGINX ingress controller
 ```helm upgrade --install ingress-nginx ingress-nginx \
   --repo https://kubernetes.github.io/ingress-nginx \
   --namespace ingress-nginx --create-namespace
 ```
 
-##### Navigate to docker-desktop/datadir and run helm install
+## Navigate to docker-desktop/datadir and run helm install
  ```helm upgrade --install --values=.\values.yaml ogsdocker .
  ```
  This will install ingress, postgres & geoserver cloud.
