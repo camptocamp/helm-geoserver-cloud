@@ -1,0 +1,142 @@
+postgresql:
+  auth:
+    enablePostgresUser: true
+    postgresPassword: "admin123"
+      
+  primary:
+    initdb:
+      scripts:
+        init.sql: |
+          CREATE DATABASE ogscloud;
+          CREATE ROLE admin WITH LOGIN PASSWORD 'pass@1234';
+          ALTER DATABASE ogscloud OWNER TO admin;
+          \c ogscloud
+          CREATE EXTENSION postgis;
+          CREATE SCHEMA data;
+          CREATE SCHEMA config;
+
+
+rabbitmq:
+  enabled: true
+  resources:
+    limits:
+      cpu: 2
+      memory: 512Mi
+    requests:
+      cpu: 0.1
+      memory: 512Mi
+
+  auth:
+    username: geoserver
+    erlangCookie: cookie
+
+  persistence:
+    enabled: false
+
+additionalVolumes: &additional-volumes
+  datadir:
+    persistentVolumeClaim:
+      claimName: gs-cloud-datadir-nfs-claim
+  cache:
+    persistentVolumeClaim:
+      claimName: gs-cloud-gwc-cache-nfs-claim
+  geodata:
+    configMap:
+      name: cm-jndi-geodata
+  
+
+additionalVolumeMounts: &additional-volume-mounts
+  /opt/app/data_directory:
+    name: 'datadir'
+  /mnt/cache:
+    name: 'cache'
+  /custom/geodata:
+    name: 'geodata'
+    readOnly: true
+
+env: &env-override
+  GEOSERVER_BASE_PATH:
+    # NB: do not put a trailing '/' character
+    value: '/geoserver-cloud'
+  RABBITMQ_HOST:
+    value: 'ogsv1-rabbitmq'
+  RABBITMQ_USER:
+    value: 'geoserver'
+  RABBITMQ_PASSWORD:
+    type: secret
+    name: 'ogsv1-rabbitmq'
+    key: 'rabbitmq-password'
+  SPRING_PROFILES_ACTIVE:
+    value: standalone,datadir
+  GEOWEBCACHE_CACHE_DIR:
+    value: '/mnt/cache'
+  SPRING_DATASOURCES_JNDI-NAME:
+
+  JAVA_OPTS:
+    value: '$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml'
+    order: 1
+
+
+resources: &common-resources
+  requests:
+    memory: 512Mi
+    cpu: 0.1
+  limits:
+    memory: 2Gi
+    cpu: 1.0
+
+additional-stuff: &additional-stuff
+  resources:
+    <<: *common-resources
+  volumes:
+    <<: *additional-volumes
+  containers:
+    spring:
+      env:
+        <<: *env-override
+      volumeMounts:
+        <<: *additional-volume-mounts
+
+geoservercloud:
+  global:
+    profile: standalone,datadir
+    image:
+      pullPolicy: IfNotPresent
+  geoserver: 
+    ingress:
+      annotations:
+        my-annotation: 'coucou'
+      enabled: true
+      hostGroups:
+        host1:
+          tls:
+            enabled: false
+          hosts:
+            - gscloud.local   
+    services:
+      gateway:
+        ingress:
+          enabled: true
+          path: /geoserver-cloud/
+        <<: *additional-stuff
+      webui:
+        enabled: true
+        <<: *additional-stuff
+      rest:
+        enabled: false
+        <<: *additional-stuff
+      wms:
+        enabled: false
+        replicaCount: 1
+        <<: *additional-stuff
+      wcs:
+        enabled: false
+        <<: *additional-stuff
+      wfs:
+        enabled: false
+        replicaCount: 1
+        <<: *additional-stuff
+      gwc:
+        enabled: false
+        replicaCount: 1
+        <<: *additional-stuff

@@ -1,0 +1,16 @@
+apiVersion: v2
+appVersion: '1.0'
+description: Example for geoserver-cloud with datadir
+name: gs-cloud-datadir
+version: 0.1.0
+dependencies:
+  - name: geoservercloud
+    repository: https://camptocamp.github.io/helm-geoserver-cloud
+    version: 0.7.1
+  - name: rabbitmq
+    version: 11.3.0
+    repository: 'https://charts.bitnami.com/bitnami'
+    condition: rabbitmq.enabled
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 13.0.0
