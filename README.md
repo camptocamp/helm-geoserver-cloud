@@ -17,11 +17,8 @@ See the value file for configuration options. A good starting points are the [Ex
 
 ## Developing on geoserver-cloud code using this chart
 
-To develop in this chart, we recommend that you use `k3d` if you want to use your machine. Please follow the following steps to ensure that you have all the requirements for development:
-
-### check that the configuration is available
-
-This repository provides a default configuration thanks to a git submodule : if you don't have performed a recursive clone of the repository, don't forget to do a `git submodule update` before installing the chart !
+To develop in this chart, we recommend that you use `k3d` if you want to use your machine.
+Also, depending on the use case, you will need a database or a shared folder which will be used by the pods. At any case, start following the [Examples](examples/README.md) !
 
 ## Contributing
 
