@@ -1,8 +1,8 @@
 postgresql:
   auth:
     enablePostgresUser: true
-    postgresPassword: "admin123"
-      
+    postgresPassword: 'admin123'
+
   primary:
     initdb:
       scripts:
@@ -14,7 +14,6 @@ postgresql:
           CREATE EXTENSION postgis;
           CREATE SCHEMA data;
           CREATE SCHEMA config;
-
 
 rabbitmq:
   enabled: true
@@ -43,7 +42,6 @@ additionalVolumes: &additional-volumes
   geodata:
     configMap:
       name: cm-jndi-geodata
-  
 
 additionalVolumeMounts: &additional-volume-mounts
   /opt/app/data_directory:
@@ -76,7 +74,6 @@ env: &env-override
     value: '$(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml'
     order: 1
 
-
 resources: &common-resources
   requests:
     memory: 512Mi
@@ -102,7 +99,7 @@ geoservercloud:
     profile: standalone,datadir
     image:
       pullPolicy: IfNotPresent
-  geoserver: 
+  geoserver:
     ingress:
       annotations:
         kubernetes.io/ingress.class: nginx
@@ -112,7 +109,7 @@ geoservercloud:
           tls:
             enabled: false
           hosts:
-            - gscloud.local   
+            - gscloud.local
     services:
       gateway:
         ingress:
