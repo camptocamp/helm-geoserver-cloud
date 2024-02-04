@@ -103,6 +103,7 @@ geoservercloud:
     ingress:
       annotations:
         kubernetes.io/ingress.class: nginx
+        kubernetes.io/rewrite-target: /$1/web
       enabled: true
       hostGroups:
         host1:
