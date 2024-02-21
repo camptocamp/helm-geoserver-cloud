@@ -166,6 +166,8 @@ common-spring-container-stuff: &common-spring-container-stuff
     periodSeconds: 5
 
 common-generic-stuff: &common-generic-stuff
+  releaseTrunc: 45
+  prefixTrunc: 51
   template: true
   replicaCount: 1
   nameOverride: 'gsc'
@@ -177,8 +179,6 @@ common-generic-stuff: &common-generic-stuff
 
 geoserver:
   metadata: true
-  releaseTrunc: 45
-  prefixTrunc: 51
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false

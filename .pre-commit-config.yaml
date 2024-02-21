@@ -124,6 +124,19 @@ repos:
           - gs-cloud-jdbc
           - examples/jdbc
           - tests/expected-jdbc.yaml
+      - id: helm-template-gen
+        files: |-
+          (?x)(
+            ^templates/.*$
+            |^values\.yaml$
+            |^Chart\.yaml$
+            |^examples/gwcStatefulSet/*
+          )
+        args:
+          - --additional-template-directory=.
+          - gs-cloud-statefulset
+          - examples/gwcStatefulSet
+          - tests/expected-statefulset.yaml
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 0.1.0
     hooks:
