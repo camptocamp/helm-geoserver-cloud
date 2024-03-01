@@ -62,7 +62,7 @@ jobs:
           GITHUB_EVENT: ${{ toJson(github) }}
 
       - name: Install helm
-        uses: azure/setup-helm@v3
+        uses: azure/setup-helm@v4
         with:
           version: ${{ matrix.helm }}
       - run: helm dependency update .
