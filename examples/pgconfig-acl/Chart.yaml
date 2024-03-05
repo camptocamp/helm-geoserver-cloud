@@ -1,0 +1,15 @@
+apiVersion: v2
+appVersion: '1.0'
+description: Example for geoserver-cloud with pgconfig
+name: gs-cloud-pgconfig
+version: 0.1.0
+dependencies:
+  - name: geoservercloud
+    repository: file://../../
+    version: 0.1.0
+  # Postgres dependency used for pgconfig database and geoserver-acl database
+  # Note: bitnami postgres chart is updated at initialization to add Postgis extension
+  - name: 'postgresql'
+    version: 14.0.0
+    repository: 'https://charts.bitnami.com/bitnami'
+    condition: postgresql.enabled

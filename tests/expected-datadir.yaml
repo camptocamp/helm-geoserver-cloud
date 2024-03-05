@@ -134,22 +134,24 @@ data:
   CHART_NAME: geoserver
   RELEASE_NAME: gs-cloud-datadir
   RELEASE_NAMESPACE: default
+  SERVICE_ACL_NAME: gs-cloud-datadir-gsc-acl
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0-M2"
   SERVICE_GATEWAY_NAME: gs-cloud-datadir-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_GWC_NAME: gs-cloud-datadir-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_REST_NAME: gs-cloud-datadir-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WCS_NAME: gs-cloud-datadir-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WEBUI_NAME: gs-cloud-datadir-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WFS_NAME: gs-cloud-datadir-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WMS_NAME: gs-cloud-datadir-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WPS_NAME: gs-cloud-datadir-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.6.1"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
 ---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
@@ -361,7 +363,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.6.1"
+          image: "geoservercloud/geoserver-cloud-gateway:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -395,6 +397,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -437,6 +444,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
@@ -548,7 +557,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.6.1"
+          image: "geoservercloud/geoserver-cloud-gwc:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -582,6 +591,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -624,6 +638,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
@@ -735,7 +751,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.6.1"
+          image: "geoservercloud/geoserver-cloud-rest:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -769,6 +785,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -811,6 +832,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
@@ -922,7 +945,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.6.1"
+          image: "geoservercloud/geoserver-cloud-wcs:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -956,6 +979,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -998,6 +1026,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
@@ -1109,7 +1139,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.6.1"
+          image: "geoservercloud/geoserver-cloud-webui:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1143,6 +1173,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1185,6 +1220,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
@@ -1296,7 +1333,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.6.1"
+          image: "geoservercloud/geoserver-cloud-wfs:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1330,6 +1367,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1372,6 +1414,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"
@@ -1483,7 +1527,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.6.1"
+          image: "geoservercloud/geoserver-cloud-wms:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "APP_KUBERNETES_IO_COMPONENT"
@@ -1517,6 +1561,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-datadir-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1559,6 +1608,8 @@ spec:
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_GWC"

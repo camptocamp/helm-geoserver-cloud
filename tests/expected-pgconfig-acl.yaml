@@ -1,184 +1,385 @@
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/primary/networkpolicy.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: gs-cloud-pgconfig-acl-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/component: primary
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    # Allow dns resolution
+    - ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # Allow outbound connections to read-replicas
+    - ports:
+        - port: 5432
+        - port: 5432
+      to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+              app.kubernetes.io/name: postgresql
+              app.kubernetes.io/component: read
+  ingress:
+    - ports:
+        - port: 5432
+---
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/read/networkpolicy.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: gs-cloud-pgconfig-acl-postgresql-read
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/component: read
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: read
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    # Allow dns resolution
+    - ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # Allow outbound connections to primary
+    - ports:
+        - port: 5432
+        - port: 5432
+      to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+              app.kubernetes.io/name: postgresql
+              app.kubernetes.io/component: primary
+  ingress:
+    - ports:
+        - port: 5432
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-gateway
+  name: gs-cloud-pgconfig-acl-gsc-acl
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/component: acl
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gsc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+      app.kubernetes.io/component: acl
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gs-cloud-pgconfig-acl-gsc-gateway
+  labels:
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gateway
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: gateway
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-gwc
+  name: gs-cloud-pgconfig-acl-gsc-gwc
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gwc
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: gwc
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-rest
+  name: gs-cloud-pgconfig-acl-gsc-rest
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: rest
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: rest
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-wcs
+  name: gs-cloud-pgconfig-acl-gsc-wcs
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wcs
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: wcs
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-webui
+  name: gs-cloud-pgconfig-acl-gsc-webui
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: webui
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: webui
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-wfs
+  name: gs-cloud-pgconfig-acl-gsc-wfs
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wfs
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: wfs
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: gs-cloud-jdbc-gsc-wms
+  name: gs-cloud-pgconfig-acl-gsc-wms
   labels:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wms
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: wms
 ---
-# Source: gs-cloud-jdbc/templates/secrets_db.yaml
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/serviceaccount.yaml
 apiVersion: v1
-data:
-  database: b2dzY2xvdWQ=
-  hostname: MTcyLjE3LjAuMQ==
-  username: dXNlcm5hbWU=
-  password: cGFzc3dvcmQ=
-  port: NTQzMg==
-  schema: Y29uZmln
-
-kind: Secret
-type: Opaque
+kind: ServiceAccount
 metadata:
-  name: 'gs-cloud-jdbc-db'
+  name: gs-cloud-pgconfig-acl-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+automountServiceAccountToken: false
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gs-cloud-pgconfig-acl-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+type: Opaque
+data:
+  postgres-password: "ZzMwczNydjNy"
+  # We don't auto-generate LDAP password when it's not provided as we do for other passwords
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gs-cloud-jdbc-geoserver
+  name: gs-cloud-pgconfig-ac-geoserver
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: geoserver
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: main
 data:
   CHART_NAME: geoserver
-  RELEASE_NAME: gs-cloud-jdbc
+  RELEASE_NAME: gs-cloud-pgconfig-acl
   RELEASE_NAMESPACE: default
-  SERVICE_ACL_NAME: gs-cloud-jdbc-gsc-acl
+  SERVICE_ACL_NAME: gs-cloud-pgconfig-acl-gsc-acl
   SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0-M2"
-  SERVICE_GATEWAY_NAME: gs-cloud-jdbc-gsc-gateway
+  SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-acl-gsc-gateway
   SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_GWC_NAME: gs-cloud-jdbc-gsc-gwc
+  SERVICE_GWC_NAME: gs-cloud-pgconfig-acl-gsc-gwc
   SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_REST_NAME: gs-cloud-jdbc-gsc-rest
+  SERVICE_REST_NAME: gs-cloud-pgconfig-acl-gsc-rest
   SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_WCS_NAME: gs-cloud-jdbc-gsc-wcs
+  SERVICE_WCS_NAME: gs-cloud-pgconfig-acl-gsc-wcs
   SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_WEBUI_NAME: gs-cloud-jdbc-gsc-webui
+  SERVICE_WEBUI_NAME: gs-cloud-pgconfig-acl-gsc-webui
   SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_WFS_NAME: gs-cloud-jdbc-gsc-wfs
+  SERVICE_WFS_NAME: gs-cloud-pgconfig-acl-gsc-wfs
   SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_WMS_NAME: gs-cloud-jdbc-gsc-wms
+  SERVICE_WMS_NAME: gs-cloud-pgconfig-acl-gsc-wms
   SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
-  SERVICE_WPS_NAME: gs-cloud-jdbc-gsc-wps
+  SERVICE_WPS_NAME: gs-cloud-pgconfig-acl-gsc-wps
   SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/templates/geoserver-acl-cm.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    creationTimestamp: null
+    name: geoserver-acl-cm
+data:
+    acl-jndi.yml: |-
+        jndi:
+          datasources:
+            acl:
+              enabled: true
+              schema: acl
+              wait-for-it: true
+              wait-timeout: 10
+              url: jdbc:postgresql://gs-cloud-pgconfig-acl-postgresql-hl:5432/postgres
+              username: postgres
+              password: ${pg.password}
+              maximum-pool-size: 10
+              minimum-idle: 2
+              connection-timeout: 250
+              idle-timeout: 60000
+---
+# Source: gs-cloud-pgconfig/templates/geoserver-pgconfig-cm.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    creationTimestamp: null
+    name: geoserver-pgconfig-cm
+data:
+    pgconfig-jndi.yml: |-
+        jndi:
+          datasources:
+            pgconfig:
+              enabled: true
+              schema: pgconfig
+              wait-for-it: true
+              wait-timeout: 10
+              url: jdbc:postgresql://gs-cloud-pgconfig-acl-postgresql-hl:5432/postgres
+              username: postgres
+              password: ${pg.password}
+              maximum-pool-size: 10
+              minimum-idle: 2
+              connection-timeout: 250
+              idle-timeout: 60000
+---
+# Source: gs-cloud-pgconfig/templates/install-postgis-cm.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: install-postgis-configmap
+data:
+    install-postgis.sh: |
+        #!/bin/bash
+        set -e
+        echo "Creating PostGIS extension..."
+        PGPASSWORD=$(echo $POSTGRES_PASSWORD) psql -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS postgis;"
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-gateway
+  name: gs-cloud-pgconfig-acl-gsc-acl
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/component: acl
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/component: acl
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gs-cloud-pgconfig-acl-gsc-gateway
+  labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gateway
 spec:
   type: ClusterIP
@@ -189,20 +390,20 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gateway
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-gwc
+  name: gs-cloud-pgconfig-acl-gsc-gwc
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gwc
 spec:
   type: ClusterIP
@@ -213,20 +414,20 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gwc
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-rest
+  name: gs-cloud-pgconfig-acl-gsc-rest
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: rest
 spec:
   type: ClusterIP
@@ -237,20 +438,20 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: rest
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-wcs
+  name: gs-cloud-pgconfig-acl-gsc-wcs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wcs
 spec:
   type: ClusterIP
@@ -261,20 +462,20 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wcs
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-webui
+  name: gs-cloud-pgconfig-acl-gsc-webui
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: webui
 spec:
   type: ClusterIP
@@ -285,20 +486,20 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: webui
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-wfs
+  name: gs-cloud-pgconfig-acl-gsc-wfs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wfs
 spec:
   type: ClusterIP
@@ -309,20 +510,20 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wfs
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/service.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: gs-cloud-jdbc-gsc-wms
+  name: gs-cloud-pgconfig-acl-gsc-wms
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wms
 spec:
   type: ClusterIP
@@ -333,20 +534,176 @@ spec:
       targetPort: http
   selector:
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wms
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gs-cloud-pgconfig-acl-postgresql-hl
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/component: primary
+  annotations:
+    # Use this annotation in addition to the actual publishNotReadyAddresses
+    # field below because the annotation will stop being respected soon but the
+    # field is broken in some versions of Kubernetes:
+    # https://github.com/kubernetes/kubernetes/issues/58662
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gs-cloud-pgconfig-acl-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/component: primary
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+      nodePort: null
+  selector:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-gateway
+  name: gs-cloud-pgconfig-acl-gsc-acl
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/component: acl
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gsc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+      app.kubernetes.io/component: acl
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gsc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+        app.kubernetes.io/component: acl
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      affinity:
+        null
+      containers:
+        - name: spring
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "geoservercloud/geoserver-acl:2.0-M2"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "ACL_DB_JNDINAME"
+              value: java:comp/env/jdbc/acl
+            - name: "MANAGEMENT_SERVER_PORT"
+              value: "8081"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/geoserver-acl-custom/acl-jndi.yml
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 4
+              memory: 4Gi
+            requests:
+              cpu: 0.1
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /etc/geoserver-acl-custom
+              name: geoserver-acl-config
+            - mountPath: /etc/localconfig
+              name: vol-local-gscloud
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
+          ports:
+            - name: health
+              containerPort: 8081
+              hostIP: 127.0.0.1
+            - name: http
+              containerPort: 8080
+              hostIP: 127.0.0.1
+
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /acl/actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /acl/actuator/health/readiness
+              port: health
+            periodSeconds: 5
+      volumes:
+        - name: geoserver-acl-config
+          configMap:
+            name: geoserver-acl-cm
+        - name: tmp-empty-dir
+          emptyDir: {}
+        - name: vol-local-gscloud
+          emptyDir: {}
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gs-cloud-pgconfig-acl-gsc-gateway
+  labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gateway
 spec:
   replicas: 1
@@ -356,13 +713,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: gateway
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: gateway
     spec:
       serviceAccountName: default
@@ -400,36 +757,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -442,54 +771,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -513,13 +844,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -547,41 +879,43 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-gwc
+  name: gs-cloud-pgconfig-acl-gsc-gwc
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gwc
 spec:
-  replicas: 2
   revisionHistoryLimit: 3
   strategy:
     type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: gwc
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: gwc
     spec:
       serviceAccountName: default
@@ -619,36 +953,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -661,54 +967,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -732,13 +1040,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -766,25 +1075,28 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-rest
+  name: gs-cloud-pgconfig-acl-gsc-rest
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: rest
 spec:
   replicas: 1
@@ -794,13 +1106,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: rest
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: rest
     spec:
       serviceAccountName: default
@@ -838,36 +1150,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -880,54 +1164,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -951,13 +1237,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -985,25 +1272,28 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-wcs
+  name: gs-cloud-pgconfig-acl-gsc-wcs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wcs
 spec:
   replicas: 1
@@ -1013,13 +1303,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: wcs
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wcs
     spec:
       serviceAccountName: default
@@ -1057,36 +1347,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1099,54 +1361,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1170,13 +1434,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1204,25 +1469,28 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-webui
+  name: gs-cloud-pgconfig-acl-gsc-webui
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: webui
 spec:
   replicas: 1
@@ -1232,13 +1500,13 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: webui
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: webui
     spec:
       serviceAccountName: default
@@ -1276,36 +1544,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1318,54 +1558,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1389,13 +1631,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1423,41 +1666,44 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-wfs
+  name: gs-cloud-pgconfig-acl-gsc-wfs
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wfs
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 3
   strategy:
     type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: wfs
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wfs
     spec:
       serviceAccountName: default
@@ -1495,36 +1741,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1537,54 +1755,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1608,13 +1828,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1642,41 +1863,44 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gs-cloud-jdbc-gsc-wms
+  name: gs-cloud-pgconfig-acl-gsc-wms
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wms
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 3
   strategy:
     type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: gsc
-      app.kubernetes.io/instance: gs-cloud-jdbc
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
       app.kubernetes.io/component: wms
   template:
     metadata:
       labels:
         app.kubernetes.io/name: gsc
-        app.kubernetes.io/instance: gs-cloud-jdbc
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wms
     spec:
       serviceAccountName: default
@@ -1714,36 +1938,8 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
-            - name: "JDBCCONFIG_DATABASE"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "database"
-            - name: "JDBCCONFIG_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "hostname"
-            - name: "JDBCCONFIG_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "password"
-            - name: "JDBCCONFIG_PORT"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "port"
-            - name: "JDBCCONFIG_SCHEMA"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "schema"
-            - name: "JDBCCONFIG_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: "gs-cloud-jdbc-db"
-                  key: "username"
+            - name: "PG_PASSWORD"
+              value: g30s3rv3r
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1756,54 +1952,56 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-jdbc-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver
                   key: "SERVICE_WPS_NAME"
+            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
+              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
-              value: standalone,jdbcconfig
+              value: standalone,pgconfig,acl
             - name: "ACL_URL"
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
-              value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
+              value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1827,13 +2025,14 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /custom/geodata
-              name: geodata
-              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1861,25 +2060,200 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: gs-cloud-gwc-cache-nfs-claim
-        - name: geodata
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geoserver-pgconfig-config
           configMap:
-            name: cm-jndi-geodata
+            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-jdbc/charts/geoservercloud/charts/geoserver/templates/ingress.yaml
+# Source: gs-cloud-pgconfig/charts/postgresql/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gs-cloud-pgconfig-acl-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.1.0
+    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/component: primary
+spec:
+  replicas: 1
+  serviceName: gs-cloud-pgconfig-acl-postgresql-hl
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  template:
+    metadata:
+      name: gs-cloud-pgconfig-acl-postgresql
+      labels:
+        app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/version: 16.1.0
+        helm.sh/chart: postgresql-14.0.0
+        app.kubernetes.io/component: primary
+    spec:
+      serviceAccountName: gs-cloud-pgconfig-acl-postgresql
+
+      automountServiceAccountToken: false
+      affinity:
+        podAffinity:
+
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/component: primary
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      hostNetwork: false
+      hostIPC: false
+      containers:
+        - name: postgresql
+          image: docker.io/bitnami/postgresql:16.1.0-debian-11-r25
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1001
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            # Authentication
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gs-cloud-pgconfig-acl-postgresql
+                  key: postgres-password
+            # Replication
+            # Initdb
+            # Standby
+            # LDAP
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            # TLS
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            # Audit
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            # Others
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: custom-init-scripts
+              mountPath: /docker-entrypoint-initdb.d/
+            - name: dshm
+              mountPath: /dev/shm
+            - name: data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: custom-init-scripts
+          configMap:
+            name: install-postgis-configmap
+        - name: dshm
+          emptyDir:
+            medium: Memory
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: gs-cloud-jdbc-geoserver-host1
+  name: gs-cloud-pgconfig-ac-geoserver-host1
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: geoserver
-    app.kubernetes.io/instance: gs-cloud-jdbc
+    app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: main
 spec:
 # Add tls only if ingress.tls.enabled is set to true and the other fields are complete.
@@ -1891,10 +2265,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: gs-cloud-jdbc-gsc-gateway
+                name: gs-cloud-pgconfig-acl-gsc-gateway
                 port:
                   number: 8080
----
-# Source: gs-cloud-jdbc/templates/secrets_db.yaml
-# NB: this suppose that a postgresql container is running
-# on the host and that its gateway is 172.17.0.1

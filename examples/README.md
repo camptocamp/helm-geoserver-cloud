@@ -98,6 +98,18 @@ sudo exportfs -a
 
 Using the `Makefile` located at the root of the repository, you can run both examples, but you should run only one at a time.
 
+First please ensure that you executed:
+
+```shell
+make dependencies
+```
+
+Once done, then you will be able to execute the different examples.
+
+NB:
+- In root project folder, you will find that a charts/ folder was created along with the Chart.lock file.
+- If you miss this step, then gscloud containers won't be created.
+
 To run the `datadir` example:
 
 ```shell
@@ -108,6 +120,12 @@ To run the `jdbcconfig` example:
 
 ```shell
 make example-jdbc
+```
+
+To run the `pgconfig` example:
+
+```shell
+make example-pgconfig
 ```
 
 To stop anything and cleanup:

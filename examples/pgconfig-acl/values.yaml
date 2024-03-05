@@ -1,0 +1,119 @@
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        # this should be replaced by your existing secret
+        # existingSecret: your-secret-name
+        postgresPassword: &postgresPassword g30s3rv3r
+  primary:
+    initdb:
+      # install postgis extension (used by geoserver-acl)
+      scriptsConfigMap: install-postgis-configmap
+
+additionalVolumes: &additional-volumes
+  datadir:
+    persistentVolumeClaim:
+      claimName: gs-cloud-datadir-nfs-claim
+  cache:
+    persistentVolumeClaim:
+      claimName: gs-cloud-gwc-cache-nfs-claim
+  # configmap for pgconfig JNDI configuration
+  geoserver-pgconfig-config:
+    configMap:
+      name: geoserver-pgconfig-cm
+
+additionalVolumeMounts: &additional-volume-mounts
+  /opt/app/data_directory:
+    name: 'datadir'
+  /mnt/cache:
+    name: 'cache'
+  /etc/gscloud-custom:
+    name: 'geoserver-pgconfig-config'
+
+env: &env-override
+  PG_PASSWORD:
+    value: *postgresPassword
+  RABBITMQ_HOST:
+    value: 'gs-cloud-common-rabbitmq'
+  RABBITMQ_USER:
+    value: 'geoserver'
+  RABBITMQ_PASSWORD:
+    type: secret
+    name: 'gs-cloud-common-rabbitmq'
+    key: 'rabbitmq-password'
+  SPRING_PROFILES_ACTIVE:
+    value: standalone,pgconfig,acl
+  SPRING_CONFIG_ADDITIONAL_LOCATION:
+    value: 'optional:file:/etc/gscloud-custom/pgconfig-jndi.yml'
+  GEOWEBCACHE_CACHE_DIR:
+    value: '/mnt/cache'
+  JAVA_OPTS:
+    value: '$(JAVA_OPTS_DEFAULT) -XshowSettings:system'
+
+additional-stuff: &additional-stuff
+  volumes:
+    <<: *additional-volumes
+  containers:
+    spring:
+      env:
+        <<: *env-override
+      volumeMounts:
+        <<: *additional-volume-mounts
+
+geoservercloud:
+  global:
+    profile: standalone,pgconfig,acl
+    image:
+      pullPolicy: IfNotPresent
+  geoserver:
+    ingress:
+      enabled: true
+      hostGroups:
+        host1:
+          tls:
+            enabled: false
+          hosts:
+            - gscloud.local
+    services:
+      gateway:
+        ingress:
+          enabled: true
+        <<: *additional-stuff
+      webui:
+        <<: *additional-stuff
+      rest:
+        replicaCount: 1
+        <<: *additional-stuff
+      wms:
+        replicaCount: 1
+        <<: *additional-stuff
+      wcs:
+        replicaCount: 1
+        <<: *additional-stuff
+      wfs:
+        replicaCount: 1
+        <<: *additional-stuff
+      gwc:
+        replicaCount: 0
+        <<: *additional-stuff
+      acl:
+        enabled: true
+        replicaCount: 1
+        volumes:
+          # configmap for Geoserver ACL JNDI configuration
+          geoserver-acl-config:
+            configMap:
+              name: geoserver-acl-cm
+        containers:
+          spring:
+            env:
+              PG_PASSWORD:
+                value: *postgresPassword
+              ACL_DB_JNDINAME:
+                value: 'java:comp/env/jdbc/acl'
+              SPRING_CONFIG_ADDITIONAL_LOCATION:
+                value: 'optional:file:/etc/geoserver-acl-custom/acl-jndi.yml'
+            volumeMounts:
+              /etc/geoserver-acl-custom:
+                name: 'geoserver-acl-config'

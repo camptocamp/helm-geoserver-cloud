@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    creationTimestamp: null
+    name: geoserver-acl-cm
+data:
+    acl-jndi.yml: |-
+        jndi:
+          datasources:
+            acl:
+              enabled: true
+              schema: acl
+              wait-for-it: true
+              wait-timeout: 10
+              url: jdbc:postgresql://{{ .Release.Name }}-postgresql-hl:5432/postgres
+              username: postgres
+              password: ${pg.password}
+              maximum-pool-size: 10
+              minimum-idle: 2
+              connection-timeout: 250
+              idle-timeout: 60000

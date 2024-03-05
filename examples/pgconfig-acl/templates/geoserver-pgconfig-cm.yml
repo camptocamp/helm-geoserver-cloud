@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    creationTimestamp: null
+    name: geoserver-pgconfig-cm
+data:
+    pgconfig-jndi.yml: |-
+        jndi:
+          datasources:
+            pgconfig:
+              enabled: true
+              schema: pgconfig
+              wait-for-it: true
+              wait-timeout: 10
+              url: jdbc:postgresql://{{ .Release.Name }}-postgresql-hl:5432/postgres
+              username: postgres
+              password: ${pg.password}
+              maximum-pool-size: 10
+              minimum-idle: 2
+              connection-timeout: 250
+              idle-timeout: 60000
