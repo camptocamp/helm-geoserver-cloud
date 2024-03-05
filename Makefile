@@ -7,10 +7,12 @@ examples-clean:
 	rm -f examples/datadir/charts/*.tgz
 	rm -f examples/gwcStatefulSet/charts/*.tgz
 	rm -f examples/jdbc/charts/*.tgz
+	rm -f examples/pgconfig/charts/*.tgz
 	${HELM} uninstall gs-cloud-common || /bin/true
 	${HELM} uninstall gs-cloud-datadir || /bin/true
 	${HELM} uninstall gs-cloud-statefulset || /bin/true
 	${HELM} uninstall gs-cloud-jdbc || /bin/true
+	${HELM} uninstall gs-cloud-pgconfig || /bin/true
 
 examples/common/charts/postgresql-12.1.6.tgz:
 	${HELM} dependency update examples/common
@@ -24,10 +26,12 @@ gen-expected: dependencies
 	${HELM} dependency update examples/common
 	${HELM} dependency update examples/datadir
 	${HELM} dependency update examples/jdbc
+	${HELM} dependency update examples/pgconfig
 	${HELM} dependency update examples/gwcStatefulSet
 	${HELM} template --namespace=default gs-cloud-common examples/common > tests/expected-common.yaml
 	${HELM} template --namespace=default gs-cloud-datadir examples/datadir > tests/expected-datadir.yaml
 	${HELM} template --namespace=default gs-cloud-jdbc examples/jdbc > tests/expected-jdbc.yaml
+	${HELM} template --namespace=default gs-cloud-pgconfig examples/pgconfig > tests/expected-pgconfig.yaml
 	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet > tests/expected-statefulset.yaml
 	sed -i 's/[[:blank:]]\+$$//g'  tests/expected*.yaml
 
@@ -49,3 +53,8 @@ example-statefulset: example-common
 example-jdbc: example-common
 	${HELM} dependency update examples/jdbc
 	${HELM} upgrade --install gs-cloud-jdbc examples/jdbc
+
+.PHONY: example-pgconfig
+example-pgconfig: example-common
+	${HELM} dependency update examples/pgconfig
+	${HELM} upgrade --install gs-cloud-pgconfig examples/pgconfig

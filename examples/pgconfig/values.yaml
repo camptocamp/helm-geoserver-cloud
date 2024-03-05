@@ -1,0 +1,98 @@
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        postgresPassword: g30s3rv3r
+
+additionalVolumes: &additional-volumes
+  datadir:
+    persistentVolumeClaim:
+      claimName: gs-cloud-datadir-nfs-claim
+  cache:
+    persistentVolumeClaim:
+      claimName: gs-cloud-gwc-cache-nfs-claim
+  geodata:
+    configMap:
+      name: cm-jndi-geodata
+  gs-cloud-optionals:
+    configMap:
+      name: geoserver-datasources-env
+
+additionalVolumeMounts: &additional-volume-mounts
+  /opt/app/data_directory:
+    name: 'datadir'
+  /mnt/cache:
+    name: 'cache'
+  /custom/geodata:
+    name: 'geodata'
+    readOnly: true
+  /etc/gscloud-custom:
+    name: 'gs-cloud-optionals'
+
+env: &env-override
+  RABBITMQ_HOST:
+    value: 'gs-cloud-common-rabbitmq'
+  RABBITMQ_USER:
+    value: 'geoserver'
+  RABBITMQ_PASSWORD:
+    type: secret
+    name: 'gs-cloud-common-rabbitmq'
+    key: 'rabbitmq-password'
+  SPRING_PROFILES_ACTIVE:
+    value: standalone,pgconfig
+  SPRING_CONFIG_ADDITIONAL_LOCATION:
+    value: 'optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml'
+  GEOWEBCACHE_CACHE_DIR:
+    value: '/mnt/cache'
+  WEBUI_WCS_ENABLED:
+    value: 'false'
+  WEBUI_WMS_ENABLED:
+    value: 'true'
+  JAVA_OPTS:
+    value: '$(JAVA_OPTS_DEFAULT) -XshowSettings:system'
+
+additional-stuff: &additional-stuff
+  volumes:
+    <<: *additional-volumes
+  containers:
+    spring:
+      env:
+        <<: *env-override
+      volumeMounts:
+        <<: *additional-volume-mounts
+
+geoservercloud:
+  global:
+    profile: standalone,pgconfig
+    image:
+      pullPolicy: IfNotPresent
+  geoserver:
+    ingress:
+      enabled: true
+      hostGroups:
+        host1:
+          tls:
+            enabled: false
+          hosts:
+            - gscloud.local
+    services:
+      gateway:
+        ingress:
+          enabled: true
+        <<: *additional-stuff
+      webui:
+        <<: *additional-stuff
+      rest:
+        <<: *additional-stuff
+      wms:
+        replicaCount: 2
+        <<: *additional-stuff
+      wcs:
+        <<: *additional-stuff
+      wfs:
+        replicaCount: 2
+        <<: *additional-stuff
+      gwc:
+        replicaCount: 0
+        <<: *additional-stuff

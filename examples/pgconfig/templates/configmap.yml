@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    creationTimestamp: null
+    name: geoserver-datasources-env
+data:
+    values.yml: |-
+        backend.pgconfig: true
+        pgconfig.jndi-name: java:comp/env/jdbc/pgconfig
+        pgconfig.schema: public
+        gwc.enabled: false
+        logging.level.org.springframework.retry.support: info
+    jndi.yml: |-
+        jndi:
+          datasources:
+            pgconfig:
+              enabled: true
+              schema: public
+              wait-for-it: true
+              wait-timeout: 10
+              url: jdbc:postgresql://{{ .Release.Name }}-postgresql-hl:5432/postgres
+              username: postgres
+              password:  g30s3rv3r
+              maximum-pool-size: 10
+              minimum-idle: 2
+              connection-timeout: 250
+              idle-timeout: 60000
