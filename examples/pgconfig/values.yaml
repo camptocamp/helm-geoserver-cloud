@@ -47,6 +47,12 @@ env: &env-override
     value: '/mnt/cache'
   JAVA_OPTS:
     value: '$(JAVA_OPTS_DEFAULT) -XshowSettings:system'
+  # FIXME: this should be setup as proper secrets
+  ACL_USERNAME:
+    value: 'admin'
+  # FIXME: this should be setup as proper secrets
+  ACL_PASSWORD:
+    value: 's3cr3t'
 
 additional-stuff: &additional-stuff
   volumes:
@@ -92,3 +98,29 @@ geoservercloud:
       gwc:
         replicaCount: 0
         <<: *additional-stuff
+      acl:
+        enabled: true
+        replicaCount: 1
+        volumes:
+          <<: *additional-volumes
+        containers:
+          spring:
+            env:
+              PG_HOST:
+                value: 172.17.0.1
+              PG_PORT:
+                value: '5432'
+              PG_DB:
+                value: acl
+              PG_USERNAME:
+                value: username
+              PG_PASSWORD:
+                value: password
+              PG_SCHEMA:
+                value: acl
+              ACL_ADMIN_PASSWORD:
+                value: 's3cr3t'
+              ACL_ADMIN_USERNAME:
+                value: 'admin'
+            volumeMounts:
+              <<: *additional-volume-mounts

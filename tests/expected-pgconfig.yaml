@@ -89,6 +89,23 @@ spec:
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
+  name: gs-cloud-pgconfig-gsc-acl
+  labels:
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig
+    app.kubernetes.io/component: acl
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gsc
+      app.kubernetes.io/instance: gs-cloud-pgconfig
+      app.kubernetes.io/component: acl
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
   name: gs-cloud-pgconfig-gsc-gateway
   labels:
     app.kubernetes.io/name: gsc
@@ -251,22 +268,24 @@ data:
   CHART_NAME: geoserver
   RELEASE_NAME: gs-cloud-pgconfig
   RELEASE_NAMESPACE: default
+  SERVICE_ACL_NAME: gs-cloud-pgconfig-gsc-acl
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0-M2"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_REST_NAME: gs-cloud-pgconfig-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WCS_NAME: gs-cloud-pgconfig-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WEBUI_NAME: gs-cloud-pgconfig-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WFS_NAME: gs-cloud-pgconfig-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WMS_NAME: gs-cloud-pgconfig-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_WPS_NAME: gs-cloud-pgconfig-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
 ---
 # Source: gs-cloud-pgconfig/templates/configmap.yml
 apiVersion: v1
@@ -275,18 +294,12 @@ metadata:
     creationTimestamp: null
     name: geoserver-datasources-env
 data:
-    values.yml: |-
-        backend.pgconfig: true
-        pgconfig.jndi-name: java:comp/env/jdbc/pgconfig
-        pgconfig.schema: public
-        gwc.enabled: false
-        logging.level.org.springframework.retry.support: info
     jndi.yml: |-
         jndi:
           datasources:
             pgconfig:
               enabled: true
-              schema: public
+              schema: pgconfig
               wait-for-it: true
               wait-timeout: 10
               url: jdbc:postgresql://gs-cloud-pgconfig-postgresql-hl:5432/postgres
@@ -296,6 +309,30 @@ data:
               minimum-idle: 2
               connection-timeout: 250
               idle-timeout: 60000
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gs-cloud-pgconfig-gsc-acl
+  labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig
+    app.kubernetes.io/component: acl
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig
+    app.kubernetes.io/component: acl
 ---
 # Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
@@ -530,6 +567,127 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: gs-cloud-pgconfig-gsc-acl
+  labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: gsc
+    app.kubernetes.io/instance: gs-cloud-pgconfig
+    app.kubernetes.io/component: acl
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gsc
+      app.kubernetes.io/instance: gs-cloud-pgconfig
+      app.kubernetes.io/component: acl
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gsc
+        app.kubernetes.io/instance: gs-cloud-pgconfig
+        app.kubernetes.io/component: acl
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      affinity:
+        null
+      containers:
+        - name: spring
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: "geoservercloud/geoserver-acl:2.0-M2"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: "ACL_ADMIN_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_ADMIN_USERNAME"
+              value: admin
+            - name: "MANAGEMENT_SERVER_PORT"
+              value: "8081"
+            - name: "PG_DB"
+              value: acl
+            - name: "PG_HOST"
+              value: 172.17.0.1
+            - name: "PG_PASSWORD"
+              value: password
+            - name: "PG_PORT"
+              value: "5432"
+            - name: "PG_SCHEMA"
+              value: acl
+            - name: "PG_USERNAME"
+              value: username
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            limits:
+              cpu: 4
+              memory: 4Gi
+            requests:
+              cpu: 0.1
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /custom/geodata
+              name: geodata
+              readOnly: true
+            - mountPath: /etc/gscloud-custom
+              name: gs-cloud-optionals
+            - mountPath: /etc/localconfig
+              name: vol-local-gscloud
+            - mountPath: /mnt/cache
+              name: cache
+            - mountPath: /opt/app/data_directory
+              name: datadir
+            - mountPath: /tmp/
+              name: tmp-empty-dir
+
+          ports:
+            - name: health
+              containerPort: 8081
+              hostIP: 127.0.0.1
+            - name: http
+              containerPort: 8080
+              hostIP: 127.0.0.1
+
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /acl/actuator/health/liveness
+              port: health
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /acl/actuator/health/readiness
+              port: health
+            periodSeconds: 5
+      volumes:
+        - name: cache
+          persistentVolumeClaim:
+            claimName: gs-cloud-gwc-cache-nfs-claim
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: gs-cloud-datadir-nfs-claim
+        - name: geodata
+          configMap:
+            name: cm-jndi-geodata
+        - name: gs-cloud-optionals
+          configMap:
+            name: geoserver-datasources-env
+        - name: tmp-empty-dir
+          emptyDir: {}
+        - name: vol-local-gscloud
+          emptyDir: {}
+---
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: gs-cloud-pgconfig-gsc-gateway
   labels:
     helm.sh/chart: geoserver
@@ -565,9 +723,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-gateway:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -599,6 +761,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -643,10 +810,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
@@ -762,9 +927,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-gwc:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -796,6 +965,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -840,10 +1014,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
@@ -960,9 +1132,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-rest:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -994,6 +1170,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1038,10 +1219,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
@@ -1158,9 +1337,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-wcs:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1192,6 +1375,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1236,10 +1424,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
@@ -1356,9 +1542,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-webui:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1390,6 +1580,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1434,10 +1629,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
@@ -1554,9 +1747,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-wfs:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1588,6 +1785,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1632,10 +1834,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"
@@ -1752,9 +1952,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.7-RC"
+          image: "geoservercloud/geoserver-cloud-wms:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_PASSWORD"
+              value: s3cr3t
+            - name: "ACL_USERNAME"
+              value: admin
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1786,6 +1990,11 @@ spec:
                   key: "rabbitmq-password"
             - name: "RABBITMQ_USER"
               value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-geoserver
+                  key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
@@ -1830,10 +2039,8 @@ spec:
               value: optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig
-            - name: "WEBUI_WCS_ENABLED"
-              value: "false"
-            - name: "WEBUI_WMS_ENABLED"
-              value: "true"
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_GWC"

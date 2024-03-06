@@ -14,7 +14,7 @@ examples-clean:
 	${HELM} uninstall gs-cloud-jdbc || /bin/true
 	${HELM} uninstall gs-cloud-pgconfig || /bin/true
 
-examples/common/charts/postgresql-12.1.6.tgz:
+examples/common/charts/postgresql-14.0.0.tgz:
 	${HELM} dependency update examples/common
 
 .PHONY: dependencies
@@ -36,7 +36,7 @@ gen-expected: dependencies
 	sed -i 's/[[:blank:]]\+$$//g'  tests/expected*.yaml
 
 .PHONY: example-common
-example-common: examples/common/charts/postgresql-12.1.6.tgz
+example-common: examples/common/charts/postgresql-14.0.0.tgz dependencies
 	${HELM} upgrade --install --set-json 'nfsserver="${LOCAL_IP}"' gs-cloud-common examples/common
 
 .PHONY: example-datadir
