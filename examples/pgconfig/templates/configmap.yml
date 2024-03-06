@@ -4,18 +4,12 @@ metadata:
     creationTimestamp: null
     name: geoserver-datasources-env
 data:
-    values.yml: |-
-        backend.pgconfig: true
-        pgconfig.jndi-name: java:comp/env/jdbc/pgconfig
-        pgconfig.schema: public
-        gwc.enabled: false
-        logging.level.org.springframework.retry.support: info
     jndi.yml: |-
         jndi:
           datasources:
             pgconfig:
               enabled: true
-              schema: public
+              schema: pgconfig
               wait-for-it: true
               wait-timeout: 10
               url: jdbc:postgresql://{{ .Release.Name }}-postgresql-hl:5432/postgres

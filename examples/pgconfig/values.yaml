@@ -45,10 +45,6 @@ env: &env-override
     value: 'optional:file:/etc/gscloud-custom/jndi.yml,optional:file:/etc/gscloud-custom/values.yml,optional:file:/custom/geodata/jndi.yml'
   GEOWEBCACHE_CACHE_DIR:
     value: '/mnt/cache'
-  WEBUI_WCS_ENABLED:
-    value: 'false'
-  WEBUI_WMS_ENABLED:
-    value: 'true'
   JAVA_OPTS:
     value: '$(JAVA_OPTS_DEFAULT) -XshowSettings:system'
 
