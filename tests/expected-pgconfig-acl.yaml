@@ -269,7 +269,7 @@ data:
   RELEASE_NAME: gs-cloud-pgconfig-acl
   RELEASE_NAMESPACE: default
   SERVICE_ACL_NAME: gs-cloud-pgconfig-acl-gsc-acl
-  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0-M2"
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-acl-gsc-gateway
   SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC2"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-acl-gsc-gwc
@@ -637,17 +637,116 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-acl:2.0-M2"
+          image: "geoservercloud/geoserver-acl:2.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_DB_JNDINAME"
               value: java:comp/env/jdbc/acl
-            - name: "MANAGEMENT_SERVER_PORT"
-              value: "8081"
+            - name: "APP_KUBERNETES_IO_COMPONENT"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/component']
+            - name: "APP_KUBERNETES_IO_INSTANCE"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/instance']
+            - name: "APP_KUBERNETES_IO_NAME"
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app.kubernetes.io/name']
+            - name: "GEOSERVER_BASE_PATH"
+              value: /geoserver-cloud
+            - name: "GEOSERVER_BUS_ENABLED"
+              value: "true"
+            - name: "GEOTOOLS_HTTPCLIENT_PROXY_ENABLED"
+              value: "false"
+            - name: "GWC_ENABLED"
+              value: "true"
+            - name: "JAVA_OPTS_DEFAULT"
+              value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "RABBITMQ_HOST"
+              value: gs-cloud-common-rabbitmq
+            - name: "RABBITMQ_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-common-rabbitmq"
+                  key: "rabbitmq-password"
+            - name: "RABBITMQ_PORT"
+              value: "5672"
+            - name: "RABBITMQ_USER"
+              value: geoserver
+            - name: "SERVICE_ACL_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_ACL_NAME"
+            - name: "SERVICE_GATEWAY_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_GATEWAY_NAME"
+            - name: "SERVICE_GWC_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_GWC_NAME"
+            - name: "SERVICE_REST_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_REST_NAME"
+            - name: "SERVICE_WCS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_WCS_NAME"
+            - name: "SERVICE_WEBUI_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_WEBUI_NAME"
+            - name: "SERVICE_WFS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_WFS_NAME"
+            - name: "SERVICE_WMS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_WMS_NAME"
+            - name: "SERVICE_WPS_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: gs-cloud-pgconfig-ac-geoserver
+                  key: "SERVICE_WPS_NAME"
             - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
               value: optional:file:/etc/geoserver-acl-custom/acl-jndi.yml
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: not-set
+            - name: "ACL_URL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+            - name: "JAVA_OPTS"
+              value: $(JAVA_OPTS_DEFAULT)
+            - name: "TARGETS_GWC"
+              value: http://$(SERVICE_GWC_NAME):8080
+            - name: "TARGETS_REST"
+              value: http://$(SERVICE_REST_NAME):8080
+            - name: "TARGETS_WCS"
+              value: http://$(SERVICE_WCS_NAME):8080
+            - name: "TARGETS_WEBUI"
+              value: http://$(SERVICE_WEBUI_NAME):8080
+            - name: "TARGETS_WFS"
+              value: http://$(SERVICE_WFS_NAME):8080
+            - name: "TARGETS_WMS"
+              value: http://$(SERVICE_WMS_NAME):8080
+            - name: "TARGETS_WPS"
+              value: http://$(SERVICE_WPS_NAME):8080
           terminationMessagePolicy: FallbackToLogsOnError
           resources:
             limits:
@@ -758,7 +857,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -954,7 +1056,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1151,7 +1256,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1348,7 +1456,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1545,7 +1656,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1742,7 +1856,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"
@@ -1939,7 +2056,10 @@ spec:
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
             - name: "PG_PASSWORD"
-              value: g30s3rv3r
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
             - name: "RABBITMQ_HOST"
               value: gs-cloud-common-rabbitmq
             - name: "RABBITMQ_PASSWORD"

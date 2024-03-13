@@ -376,9 +376,6 @@ geoserver:
       containers:
         spring:
           <<: *common-spring-container-stuff
-          env:
-            MANAGEMENT_SERVER_PORT:
-              value: '8081'
           livenessProbe:
             httpGet:
               path: /acl/actuator/health/liveness
@@ -392,6 +389,6 @@ geoserver:
               port: health
             periodSeconds: 5
           image:
-            tag: '2.0-M2'
+            tag: '2.0'
             repository: geoservercloud/geoserver-acl
             sha: ''
