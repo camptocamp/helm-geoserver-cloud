@@ -280,7 +280,8 @@ data:
     acl-password: czNjcjN0 # s3cr3t
     acl-db-username: cG9zdGdyZXM= # postgres
     acl-db-password: ZzMwczNydjNy # g30s3rv3r
-    acl-users-password: e25vb3B9czNjcjN0 # {noop}s3cr3t
+    acl-users-admin-password: e25vb3B9czNjcjN0 # {noop}s3cr3t
+    acl-users-geoserver-password: e25vb3B9czNjcjN0 # {noop}s3cr3t
 ---
 # Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
 apiVersion: v1
@@ -675,12 +676,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: "gs-cloud-pgconfig-acl-acl-config"
-                  key: "acl-users-password"
+                  key: "acl-users-admin-password"
             - name: "ACL_USERS_GEOSERVER_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: "gs-cloud-pgconfig-acl-acl-config"
-                  key: "acl-users-password"
+                  key: "acl-users-geoserver-password"
             - name: "GEOSERVER_BUS_ENABLED"
               value: "true"
             - name: "PG_DB"
