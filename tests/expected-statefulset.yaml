@@ -366,6 +366,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-gateway:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -559,6 +561,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-rest:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -752,6 +756,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-wcs:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -945,6 +951,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-webui:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1138,6 +1146,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-wfs:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1331,6 +1341,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-wms:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:
@@ -1534,6 +1546,8 @@ spec:
           image: "geoservercloud/geoserver-cloud-gwc:1.7-RC2"
           imagePullPolicy: IfNotPresent
           env:
+            - name: "ACL_USERNAME"
+              value: geoserver
             - name: "APP_KUBERNETES_IO_COMPONENT"
               valueFrom:
                 fieldRef:

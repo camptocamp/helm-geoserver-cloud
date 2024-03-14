@@ -136,6 +136,8 @@ env: &common-env
   ACL_URL:
     order: 1
     value: 'http://$(SERVICE_ACL_NAME):8080/acl/api'
+  ACL_USERNAME:
+    value: 'geoserver'
 
 common-spring-container-stuff: &common-spring-container-stuff
   resources:
@@ -376,6 +378,19 @@ geoserver:
       containers:
         spring:
           <<: *common-spring-container-stuff
+          env:
+            GEOSERVER_BUS_ENABLED:
+              value: 'true'
+            PG_HOST:
+              value: 'acldb'
+            PG_PORT:
+              value: '5432'
+            PG_DB:
+              value: 'acl'
+            PG_SCHEMA:
+              value: 'acl'
+            PG_USERNAME:
+              value: 'acl'
           livenessProbe:
             httpGet:
               path: /acl/actuator/health/liveness

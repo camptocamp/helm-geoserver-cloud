@@ -52,6 +52,14 @@ env: &env-override
     value: '/mnt/cache'
   JAVA_OPTS:
     value: '$(JAVA_OPTS_DEFAULT) -XshowSettings:system'
+  ACL_USERNAME:
+    type: secret
+    name: 'gs-cloud-pgconfig-acl-acl-config'
+    key: 'acl-username'
+  ACL_PASSWORD:
+    type: secret
+    name: 'gs-cloud-pgconfig-acl-acl-config'
+    key: 'acl-password'
 
 additional-stuff: &additional-stuff
   volumes:
@@ -100,16 +108,12 @@ geoservercloud:
         replicaCount: 0
         <<: *additional-stuff
       wps:
+        enabled: true
         replicaCount: 1
         <<: *additional-stuff
       acl:
         enabled: true
         replicaCount: 1
-        volumes:
-          # configmap for Geoserver ACL JNDI configuration
-          geoserver-acl-config:
-            configMap:
-              name: geoserver-acl-cm
         containers:
           spring:
             env:
@@ -125,14 +129,30 @@ geoservercloud:
                 type: secret
                 name: 'gs-cloud-common-rabbitmq'
                 key: 'rabbitmq-password'
+              # these username and password should
+              # match those defined for postgres chart
+              # (or share single existing secret)
+              PG_USERNAME:
+                type: secret
+                name: 'gs-cloud-pgconfig-acl-acl-config'
+                key: 'acl-db-username'
               PG_PASSWORD:
                 type: secret
-                name: 'gs-cloud-pgconfig-acl-postgresql'
-                key: 'postgres-password'
-              ACL_DB_JNDINAME:
-                value: 'java:comp/env/jdbc/acl'
-              SPRING_CONFIG_ADDITIONAL_LOCATION:
-                value: 'optional:file:/etc/geoserver-acl-custom/acl-jndi.yml'
-            volumeMounts:
-              /etc/geoserver-acl-custom:
-                name: 'geoserver-acl-config'
+                name: 'gs-cloud-pgconfig-acl-acl-config'
+                key: 'acl-db-password'
+              PG_HOST:
+                value: 'gs-cloud-pgconfig-acl-postgresql-hl'
+              PG_PORT:
+                value: '5432'
+              PG_DB:
+                value: 'postgres'
+              PG_SCHEMA:
+                value: 'acl'
+              ACL_USERS_ADMIN_PASSWORD:
+                type: secret
+                name: 'gs-cloud-pgconfig-acl-acl-config'
+                key: 'acl-users-admin-password'
+              ACL_USERS_GEOSERVER_PASSWORD:
+                type: secret
+                name: 'gs-cloud-pgconfig-acl-acl-config'
+                key: 'acl-users-geoserver-password'
