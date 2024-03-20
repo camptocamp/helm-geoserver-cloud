@@ -133,6 +133,9 @@ env: &common-env
   TARGETS_WEBUI:
     order: 1
     value: 'http://$(SERVICE_WEBUI_NAME):8080'
+  TARGETS_ACL:
+    order: 1
+    value: 'http://$(SERVICE_ACL_NAME):8080/acl/api'
   ACL_URL:
     order: 1
     value: 'http://$(SERVICE_ACL_NAME):8080/acl/api'
@@ -209,7 +212,7 @@ geoserver:
       ingress:
         # NB: if .Values.gscloud.ingress.enabled=true put true here as well
         enabled: false
-        path: /geoserver-cloud/
+        path: /
       <<: *common-generic-stuff
       service:
         <<: *common-service-definition

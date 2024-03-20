@@ -894,6 +894,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1103,6 +1105,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1313,6 +1317,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1523,6 +1529,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1733,6 +1741,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1943,6 +1953,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -2153,6 +2165,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -2363,6 +2377,8 @@ spec:
               value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
+            - name: "TARGETS_ACL"
+              value: http://$(SERVICE_ACL_NAME):8080/acl/api
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -2622,7 +2638,7 @@ spec:
     - host: "gscloud.local"
       http:
         paths:
-          - path: "/geoserver-cloud/"
+          - path: "/"
             pathType: Prefix
             backend:
               service:
