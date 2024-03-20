@@ -212,7 +212,7 @@ geoserver:
       ingress:
         # NB: if .Values.gscloud.ingress.enabled=true put true here as well
         enabled: false
-        path: /geoserver-cloud/
+        path: /
       <<: *common-generic-stuff
       service:
         <<: *common-service-definition

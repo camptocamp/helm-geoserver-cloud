@@ -2638,14 +2638,7 @@ spec:
     - host: "gscloud.local"
       http:
         paths:
-          - path: "/acl/"
-            pathType: Prefix
-            backend:
-              service:
-                name: gs-cloud-pgconfig-acl-gsc-acl
-                port:
-                  number: 8080
-          - path: "/geoserver-cloud/"
+          - path: "/"
             pathType: Prefix
             backend:
               service:

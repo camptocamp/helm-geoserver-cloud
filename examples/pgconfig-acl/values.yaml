@@ -113,9 +113,6 @@ geoservercloud:
         <<: *additional-stuff
       acl:
         enabled: true
-        ingress:
-          enabled: true
-          path: /acl/
         replicaCount: 1
         containers:
           spring:

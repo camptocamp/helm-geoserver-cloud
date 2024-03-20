@@ -1915,7 +1915,7 @@ spec:
     - host: "gscloud.local"
       http:
         paths:
-          - path: "/geoserver-cloud/"
+          - path: "/"
             pathType: Prefix
             backend:
               service:
