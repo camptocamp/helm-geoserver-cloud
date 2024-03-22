@@ -3,7 +3,7 @@ podSecurityContext: {}
 securityContext: {}
 
 common-image-stuff: &common-image-stuff
-  tag: '1.7-RC3'
+  tag: '1.7'
 
 service: &common-service-definition
   type: ClusterIP
@@ -212,7 +212,7 @@ geoserver:
       ingress:
         # NB: if .Values.gscloud.ingress.enabled=true put true here as well
         enabled: false
-        path: /
+        path: /geoserver-cloud/
       <<: *common-generic-stuff
       service:
         <<: *common-service-definition
