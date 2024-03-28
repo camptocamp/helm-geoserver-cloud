@@ -3,7 +3,7 @@ podSecurityContext: {}
 securityContext: {}
 
 common-image-stuff: &common-image-stuff
-  tag: '1.7'
+  tag: '1.7.1'
 
 service: &common-service-definition
   type: ClusterIP
@@ -135,7 +135,7 @@ env: &common-env
     value: 'http://$(SERVICE_WEBUI_NAME):8080'
   TARGETS_ACL:
     order: 1
-    value: 'http://$(SERVICE_ACL_NAME):8080/acl/api'
+    value: 'http://$(SERVICE_ACL_NAME):8080'
   ACL_URL:
     order: 1
     value: 'http://$(SERVICE_ACL_NAME):8080/acl/api'
@@ -394,19 +394,7 @@ geoserver:
               value: 'acl'
             PG_USERNAME:
               value: 'acl'
-          livenessProbe:
-            httpGet:
-              path: /acl/actuator/health/liveness
-              port: health
-            periodSeconds: 10
-            failureThreshold: 10
-            initialDelaySeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /acl/actuator/health/readiness
-              port: health
-            periodSeconds: 5
           image:
-            tag: '2.0.1'
+            tag: '2.1.1'
             repository: geoservercloud/geoserver-acl
             sha: ''

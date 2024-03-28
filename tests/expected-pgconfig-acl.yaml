@@ -300,23 +300,23 @@ data:
   RELEASE_NAME: gs-cloud-pgconfig-acl
   RELEASE_NAMESPACE: default
   SERVICE_ACL_NAME: gs-cloud-pgconfig-acl-gsc-acl
-  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0.1"
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.1.1"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-acl-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-acl-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_REST_NAME: gs-cloud-pgconfig-acl-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WCS_NAME: gs-cloud-pgconfig-acl-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WEBUI_NAME: gs-cloud-pgconfig-acl-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WFS_NAME: gs-cloud-pgconfig-acl-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WMS_NAME: gs-cloud-pgconfig-acl-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WPS_NAME: gs-cloud-pgconfig-acl-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
 ---
 # Source: gs-cloud-pgconfig/templates/geoserver-pgconfig-cm.yml
 apiVersion: v1
@@ -669,7 +669,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-acl:2.0.1"
+          image: "geoservercloud/geoserver-acl:2.1.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERS_ADMIN_PASSWORD"
@@ -735,18 +735,6 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
-          livenessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /acl/actuator/health/liveness
-              port: health
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /acl/actuator/health/readiness
-              port: health
-            periodSeconds: 5
       volumes:
         - name: tmp-empty-dir
           emptyDir: {}
@@ -792,7 +780,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.7"
+          image: "geoservercloud/geoserver-cloud-gateway:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -895,7 +883,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1003,7 +991,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.7"
+          image: "geoservercloud/geoserver-cloud-gwc:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1106,7 +1094,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1215,7 +1203,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.7"
+          image: "geoservercloud/geoserver-cloud-rest:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1318,7 +1306,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1427,7 +1415,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.7"
+          image: "geoservercloud/geoserver-cloud-wcs:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1530,7 +1518,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1639,7 +1627,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.7"
+          image: "geoservercloud/geoserver-cloud-webui:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1742,7 +1730,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1851,7 +1839,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.7"
+          image: "geoservercloud/geoserver-cloud-wfs:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1954,7 +1942,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -2063,7 +2051,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.7"
+          image: "geoservercloud/geoserver-cloud-wms:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2166,7 +2154,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -2275,7 +2263,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wps:1.7"
+          image: "geoservercloud/geoserver-cloud-wps:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2378,7 +2366,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -XshowSettings:system
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
