@@ -135,23 +135,23 @@ data:
   RELEASE_NAME: gs-cloud-statefulset
   RELEASE_NAMESPACE: default
   SERVICE_ACL_NAME: gs-cloud-statefulset-gsc-acl
-  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.0.1"
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.1.1"
   SERVICE_GATEWAY_NAME: gs-cloud-statefulset-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_GWC_NAME: gs-cloud-statefulset-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_REST_NAME: gs-cloud-statefulset-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WCS_NAME: gs-cloud-statefulset-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WEBUI_NAME: gs-cloud-statefulset-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WFS_NAME: gs-cloud-statefulset-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WMS_NAME: gs-cloud-statefulset-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_WPS_NAME: gs-cloud-statefulset-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7-RC3"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
 ---
 # Source: gs-cloud-statefulset/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
@@ -363,7 +363,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-gateway:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -451,7 +451,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -560,7 +560,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-rest:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -648,7 +648,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -757,7 +757,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-wcs:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -845,7 +845,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -954,7 +954,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-webui:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1042,7 +1042,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1151,7 +1151,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-wfs:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1239,7 +1239,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1348,7 +1348,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-wms:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1436,7 +1436,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1555,7 +1555,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.7-RC3"
+          image: "geoservercloud/geoserver-cloud-gwc:1.7.1"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1643,7 +1643,7 @@ spec:
             - name: "JAVA_OPTS"
               value: $(JAVA_OPTS_DEFAULT) -Dspring.config.additional-location=optional:file:/custom/geodata/jndi.yml
             - name: "TARGETS_ACL"
-              value: http://$(SERVICE_ACL_NAME):8080/acl/api
+              value: http://$(SERVICE_ACL_NAME):8080
             - name: "TARGETS_GWC"
               value: http://$(SERVICE_GWC_NAME):8080
             - name: "TARGETS_REST"
@@ -1734,7 +1734,7 @@ spec:
     - host: "gscloud.local"
       http:
         paths:
-          - path: "/"
+          - path: "/geoserver-cloud/"
             pathType: Prefix
             backend:
               service:
