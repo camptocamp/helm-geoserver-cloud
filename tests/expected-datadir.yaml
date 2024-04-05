@@ -135,7 +135,7 @@ data:
   RELEASE_NAME: gs-cloud-datadir
   RELEASE_NAMESPACE: default
   SERVICE_ACL_NAME: gs-cloud-datadir-gsc-acl
-  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.1.1"
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.1.2"
   SERVICE_GATEWAY_NAME: gs-cloud-datadir-gsc-gateway
   SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.7.1"
   SERVICE_GWC_NAME: gs-cloud-datadir-gsc-gwc
