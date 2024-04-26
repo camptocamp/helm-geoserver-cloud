@@ -158,7 +158,7 @@ geoserver-spring-livenessProbe: &geoserver-spring-livenessProbe
     port: health
   periodSeconds: 10
   failureThreshold: 10
-  initialDelaySeconds: 30
+  initialDelaySeconds: 60
 geoserver-spring-readinessProbe: &geoserver-spring-readinessProbe
   httpGet:
     path: /actuator/health/readiness

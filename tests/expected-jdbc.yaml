@@ -540,7 +540,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -763,7 +763,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -986,7 +986,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -1209,7 +1209,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -1432,7 +1432,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -1655,7 +1655,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
@@ -1878,7 +1878,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: health
-            initialDelaySeconds: 30
+            initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
