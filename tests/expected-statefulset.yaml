@@ -5,6 +5,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-gateway
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: gateway
@@ -22,6 +25,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-gwc
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: gwc
@@ -39,6 +45,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-rest
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: rest
@@ -56,6 +65,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-wcs
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: wcs
@@ -73,6 +85,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-webui
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: webui
@@ -90,6 +105,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-wfs
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: wfs
@@ -107,6 +125,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-statefulset-gsc-wms
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-statefulset
     app.kubernetes.io/component: wms
@@ -118,11 +139,11 @@ spec:
       app.kubernetes.io/instance: gs-cloud-statefulset
       app.kubernetes.io/component: wms
 ---
-# Source: gs-cloud-statefulset/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
+# Source: gs-cloud-statefulset/charts/geoservercloud/charts/geoserver/templates/cm_metadata.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gs-cloud-statefulset-geoserver
+  name: gs-cloud-statefulset-geoserver-metadata
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
@@ -356,8 +377,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -402,47 +421,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -553,8 +572,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -599,47 +616,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -750,8 +767,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -796,47 +811,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -947,8 +962,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -993,47 +1006,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -1144,8 +1157,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -1190,47 +1201,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -1341,8 +1352,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -1387,47 +1396,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -1506,7 +1515,7 @@ spec:
         - name: vol-local-gscloud
           emptyDir: {}
 ---
-# Source: gs-cloud-statefulset/charts/geoservercloud/charts/geoserver/templates/deployment.yaml
+# Source: gs-cloud-statefulset/charts/geoservercloud/charts/geoserver/templates/statefulset.yaml
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -1548,8 +1557,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -1594,47 +1601,47 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-statefulset-geoserver
+                  name: gs-cloud-statefulset-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,datadir
@@ -1725,7 +1732,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-statefulset
-    app.kubernetes.io/component: main
+    app.kubernetes.io/component: host1
   annotations:
     my-annotation: coucou
 spec:

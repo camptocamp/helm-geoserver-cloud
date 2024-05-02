@@ -62,55 +62,55 @@ env: &common-env
   GEOTOOLS_HTTPCLIENT_PROXY_ENABLED:
     value: 'false'
   APP_KUBERNETES_IO_INSTANCE:
-    type: 'downwardAPI'
+    type: 'valueFrom'
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/instance']"
   APP_KUBERNETES_IO_NAME:
-    type: 'downwardAPI'
+    type: 'valueFrom'
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/name']"
   APP_KUBERNETES_IO_COMPONENT:
-    type: 'downwardAPI'
+    type: 'valueFrom'
     valueFrom:
       fieldRef:
         fieldPath: "metadata.labels['app.kubernetes.io/component']"
   SERVICE_GATEWAY_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_GATEWAY_NAME
   SERVICE_GWC_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_GWC_NAME
   SERVICE_REST_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_REST_NAME
   SERVICE_WCS_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_WCS_NAME
   SERVICE_WEBUI_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_WEBUI_NAME
   SERVICE_WFS_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_WFS_NAME
   SERVICE_WMS_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_WMS_NAME
   SERVICE_WPS_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_WPS_NAME
   SERVICE_ACL_NAME:
     type: 'configMap'
-    name: self
+    name: self-metadata
     key: SERVICE_ACL_NAME
   TARGETS_WMS:
     order: 1
@@ -178,7 +178,8 @@ common-generic-stuff: &common-generic-stuff
   affinity: {}
 
 geoserver:
-  metadata: true
+  metadata:
+    enabled: true
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
