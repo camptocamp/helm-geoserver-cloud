@@ -18,18 +18,12 @@ additionalVolumes: &additional-volumes
   cache:
     persistentVolumeClaim:
       claimName: gs-cloud-gwc-cache-nfs-claim
-  # configmap for pgconfig JNDI configuration
-  geoserver-pgconfig-config:
-    configMap:
-      name: geoserver-pgconfig-cm
 
 additionalVolumeMounts: &additional-volume-mounts
   /opt/app/data_directory:
     name: 'datadir'
   /mnt/cache:
     name: 'cache'
-  /etc/gscloud-custom:
-    name: 'geoserver-pgconfig-config'
 
 env: &env-override
   PG_PASSWORD:
@@ -46,8 +40,6 @@ env: &env-override
     key: 'rabbitmq-password'
   SPRING_PROFILES_ACTIVE:
     value: standalone,pgconfig,acl
-  SPRING_CONFIG_ADDITIONAL_LOCATION:
-    value: 'optional:file:/etc/gscloud-custom/pgconfig-jndi.yml'
   GEOWEBCACHE_CACHE_DIR:
     value: '/mnt/cache'
   JAVA_OPTS:
@@ -60,6 +52,22 @@ env: &env-override
     type: secret
     name: 'gs-cloud-pgconfig-acl-acl-config'
     key: 'acl-password'
+  PGCONFIG_HOST:
+    value: gs-cloud-pgconfig-acl-postgresql-hl
+  PGCONFIG_PORT:
+    value: '5432'
+  PGCONFIG_DATABASE:
+    value: postgres
+  PGCONFIG_SCHEMA:
+    value: pgconfig
+  PGCONFIG_USERNAME:
+    value: postgres
+  PGCONFIG_PASSWORD:
+    type: secret
+    name: 'gs-cloud-pgconfig-acl-postgresql'
+    key: 'postgres-password'
+  PGCONFIG_MAXCONNECTIONS:
+    value: '10'
 
 additional-stuff: &additional-stuff
   volumes:
