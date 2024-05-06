@@ -90,6 +90,19 @@ entries:
     version: 0.0.6
   geoservercloud:
   - apiVersion: v2
+    created: "2024-05-06T21:04:49.242642913Z"
+    dependencies:
+    - alias: geoserver
+      name: custom-pod
+      repository: https://camptocamp.github.io/helm-custom-pod/
+      version: 2.0.2
+    description: A Helm chart for Geoserver-cloud
+    digest: 51c0c156010c3d8425fcc5f5b975fc5eab8054e9f756bed05049ff166b0da21a
+    name: geoservercloud
+    urls:
+    - https://github.com/camptocamp/helm-geoserver-cloud/releases/download/2.0.1/geoservercloud-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v2
     created: "2024-05-03T07:34:00.231404972Z"
     dependencies:
     - alias: geoserver
@@ -1272,4 +1285,4 @@ entries:
     urls:
     - https://github.com/camptocamp/helm-geoserver-cloud/releases/download/0.0.7/geoservercloud-0.0.7.tgz
     version: 0.0.7
-generated: "2024-05-03T07:34:00.231730448Z"
+generated: "2024-05-06T21:04:49.242873964Z"
