@@ -91,6 +91,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-acl
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: acl
@@ -108,6 +111,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-gateway
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gateway
@@ -125,6 +131,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-gwc
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: gwc
@@ -142,6 +151,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-rest
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: rest
@@ -159,6 +171,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-wcs
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wcs
@@ -176,6 +191,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-webui
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: webui
@@ -193,6 +211,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-wfs
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wfs
@@ -210,6 +231,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-wms
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wms
@@ -227,6 +251,9 @@ kind: PodDisruptionBudget
 metadata:
   name: gs-cloud-pgconfig-acl-gsc-wps
   labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: gsc
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
     app.kubernetes.io/component: wps
@@ -283,11 +310,11 @@ data:
     acl-users-admin-password: e25vb3B9czNjcjN0 # {noop}s3cr3t
     acl-users-geoserver-password: e25vb3B9czNjcjN0 # {noop}s3cr3t
 ---
-# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/configmap.yaml
+# Source: gs-cloud-pgconfig/charts/geoservercloud/charts/geoserver/templates/cm_metadata.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: gs-cloud-pgconfig-ac-geoserver
+  name: gs-cloud-pgconfig-ac-geoserver-metadata
   labels:
     helm.sh/chart: geoserver
     app.kubernetes.io/version: "1.0"
@@ -302,44 +329,21 @@ data:
   SERVICE_ACL_NAME: gs-cloud-pgconfig-acl-gsc-acl
   SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.2.0"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-acl-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-acl-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_REST_NAME: gs-cloud-pgconfig-acl-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_WCS_NAME: gs-cloud-pgconfig-acl-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_WEBUI_NAME: gs-cloud-pgconfig-acl-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_WFS_NAME: gs-cloud-pgconfig-acl-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_WMS_NAME: gs-cloud-pgconfig-acl-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
   SERVICE_WPS_NAME: gs-cloud-pgconfig-acl-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.8.1"
----
-# Source: gs-cloud-pgconfig/templates/geoserver-pgconfig-cm.yml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-    creationTimestamp: null
-    name: geoserver-pgconfig-cm
-data:
-    pgconfig-jndi.yml: |-
-        jndi:
-          datasources:
-            pgconfig:
-              enabled: true
-              schema: pgconfig
-              wait-for-it: true
-              wait-timeout: 10
-              url: jdbc:postgresql://gs-cloud-pgconfig-acl-postgresql-hl:5432/postgres
-              username: postgres
-              password: ${pg.password}
-              maximum-pool-size: 10
-              minimum-idle: 2
-              connection-timeout: 250
-              idle-timeout: 60000
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.8.2"
 ---
 # Source: gs-cloud-pgconfig/templates/install-postgis-cm.yml
 apiVersion: v1
@@ -662,8 +666,6 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
@@ -773,14 +775,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.8.1"
+          image: "geoservercloud/geoserver-cloud-gateway:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -815,6 +815,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -832,50 +849,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -907,8 +922,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -945,9 +958,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -984,14 +994,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.8.1"
+          image: "geoservercloud/geoserver-cloud-gwc:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1026,6 +1034,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -1043,50 +1068,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -1118,8 +1141,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -1156,9 +1177,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1196,14 +1214,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.8.1"
+          image: "geoservercloud/geoserver-cloud-rest:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1238,6 +1254,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -1255,50 +1288,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -1330,8 +1361,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -1368,9 +1397,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1408,14 +1434,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.8.1"
+          image: "geoservercloud/geoserver-cloud-wcs:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1450,6 +1474,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -1467,50 +1508,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -1542,8 +1581,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -1580,9 +1617,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1620,14 +1654,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.8.1"
+          image: "geoservercloud/geoserver-cloud-webui:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1662,6 +1694,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -1679,50 +1728,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -1754,8 +1801,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -1792,9 +1837,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1832,14 +1874,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.8.1"
+          image: "geoservercloud/geoserver-cloud-wfs:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1874,6 +1914,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -1891,50 +1948,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -1966,8 +2021,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -2004,9 +2057,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2044,14 +2094,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.8.1"
+          image: "geoservercloud/geoserver-cloud-wms:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2086,6 +2134,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -2103,50 +2168,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -2178,8 +2241,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -2216,9 +2277,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2256,14 +2314,12 @@ spec:
       serviceAccountName: default
       securityContext:
         {}
-      affinity:
-        null
       containers:
         - name: spring
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wps:1.8.1"
+          image: "geoservercloud/geoserver-cloud-wps:1.8.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2298,6 +2354,23 @@ spec:
               value: "true"
             - name: "JAVA_OPTS_DEFAULT"
               value: -DALLOW_ENV_PARAMETRIZATION=true -XX:MaxRAMPercentage=80 -XX:InitialRAMPercentage=80
+            - name: "PGCONFIG_DATABASE"
+              value: postgres
+            - name: "PGCONFIG_HOST"
+              value: gs-cloud-pgconfig-acl-postgresql-hl
+            - name: "PGCONFIG_MAXCONNECTIONS"
+              value: "10"
+            - name: "PGCONFIG_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: "gs-cloud-pgconfig-acl-postgresql"
+                  key: "postgres-password"
+            - name: "PGCONFIG_PORT"
+              value: "5432"
+            - name: "PGCONFIG_SCHEMA"
+              value: pgconfig
+            - name: "PGCONFIG_USERNAME"
+              value: postgres
             - name: "PG_PASSWORD"
               valueFrom:
                 secretKeyRef:
@@ -2315,50 +2388,48 @@ spec:
             - name: "SERVICE_ACL_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_ACL_NAME"
             - name: "SERVICE_GATEWAY_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GATEWAY_NAME"
             - name: "SERVICE_GWC_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_GWC_NAME"
             - name: "SERVICE_REST_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_REST_NAME"
             - name: "SERVICE_WCS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WCS_NAME"
             - name: "SERVICE_WEBUI_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WEBUI_NAME"
             - name: "SERVICE_WFS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WFS_NAME"
             - name: "SERVICE_WMS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WMS_NAME"
             - name: "SERVICE_WPS_NAME"
               valueFrom:
                 configMapKeyRef:
-                  name: gs-cloud-pgconfig-ac-geoserver
+                  name: gs-cloud-pgconfig-ac-geoserver-metadata
                   key: "SERVICE_WPS_NAME"
-            - name: "SPRING_CONFIG_ADDITIONAL_LOCATION"
-              value: optional:file:/etc/gscloud-custom/pgconfig-jndi.yml
             - name: "SPRING_PROFILES_ACTIVE"
               value: standalone,pgconfig,acl
             - name: "ACL_URL"
@@ -2390,8 +2461,6 @@ spec:
               cpu: 0.1
               memory: 512Mi
           volumeMounts:
-            - mountPath: /etc/gscloud-custom
-              name: geoserver-pgconfig-config
             - mountPath: /etc/localconfig
               name: vol-local-gscloud
             - mountPath: /mnt/cache
@@ -2428,9 +2497,6 @@ spec:
         - name: datadir
           persistentVolumeClaim:
             claimName: gs-cloud-datadir-nfs-claim
-        - name: geoserver-pgconfig-config
-          configMap:
-            name: geoserver-pgconfig-cm
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2619,7 +2685,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: geoserver
     app.kubernetes.io/instance: gs-cloud-pgconfig-acl
-    app.kubernetes.io/component: main
+    app.kubernetes.io/component: host1
 spec:
 # Add tls only if ingress.tls.enabled is set to true and the other fields are complete.
   rules:
