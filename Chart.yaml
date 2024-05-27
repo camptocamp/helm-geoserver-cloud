@@ -6,4 +6,4 @@ dependencies:
   - name: custom-pod
     repository: https://camptocamp.github.io/helm-custom-pod/
     alias: geoserver
-    version: 2.0.2
+    version: 2.1.0
