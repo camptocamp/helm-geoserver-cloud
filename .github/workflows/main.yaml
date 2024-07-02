@@ -61,6 +61,8 @@ jobs:
           if-no-files-found: ignore
           retention-days: 5
         if: failure()
+      - run: git reset --hard
+        if: failure()
 
       - name: Print environment information
         run: c2cciutils-env
