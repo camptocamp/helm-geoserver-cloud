@@ -386,6 +386,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: gateway
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -566,6 +567,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -607,6 +609,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: gwc
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -787,6 +790,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -828,6 +832,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: rest
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1008,6 +1013,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1049,6 +1055,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wcs
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1229,6 +1236,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1270,6 +1278,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: webui
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1450,6 +1459,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1491,6 +1501,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wfs
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1671,6 +1682,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1712,6 +1724,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-jdbc
         app.kubernetes.io/component: wms
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1892,6 +1905,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
