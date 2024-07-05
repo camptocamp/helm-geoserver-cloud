@@ -329,21 +329,21 @@ data:
   SERVICE_ACL_NAME: gs-cloud-pgconfig-acl-gsc-acl
   SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.2.0"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-acl-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-acl-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_REST_NAME: gs-cloud-pgconfig-acl-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_WCS_NAME: gs-cloud-pgconfig-acl-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_WEBUI_NAME: gs-cloud-pgconfig-acl-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_WFS_NAME: gs-cloud-pgconfig-acl-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_WMS_NAME: gs-cloud-pgconfig-acl-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
   SERVICE_WPS_NAME: gs-cloud-pgconfig-acl-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.8.5"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.8.7"
 ---
 # Source: gs-cloud-pgconfig/templates/install-postgis-cm.yml
 apiVersion: v1
@@ -663,6 +663,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: acl
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -737,6 +738,7 @@ spec:
               containerPort: 8080
               hostIP: 127.0.0.1
 
+
       volumes:
         - name: tmp-empty-dir
           emptyDir: {}
@@ -772,6 +774,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: gateway
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -780,7 +783,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.8.5"
+          image: "geoservercloud/geoserver-cloud-gateway:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -951,6 +954,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -991,6 +995,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: gwc
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -999,7 +1004,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.8.5"
+          image: "geoservercloud/geoserver-cloud-gwc:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1170,6 +1175,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1211,6 +1217,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: rest
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1219,7 +1226,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.8.5"
+          image: "geoservercloud/geoserver-cloud-rest:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1390,6 +1397,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1431,6 +1439,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wcs
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1439,7 +1448,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.8.5"
+          image: "geoservercloud/geoserver-cloud-wcs:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1610,6 +1619,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1651,6 +1661,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: webui
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1659,7 +1670,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.8.5"
+          image: "geoservercloud/geoserver-cloud-webui:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1830,6 +1841,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -1871,6 +1883,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wfs
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -1879,7 +1892,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.8.5"
+          image: "geoservercloud/geoserver-cloud-wfs:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2050,6 +2063,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -2091,6 +2105,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wms
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -2099,7 +2114,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.8.5"
+          image: "geoservercloud/geoserver-cloud-wms:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2270,6 +2285,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
@@ -2311,6 +2327,7 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-acl
         app.kubernetes.io/component: wps
     spec:
+
       serviceAccountName: default
       securityContext:
         {}
@@ -2319,7 +2336,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wps:1.8.5"
+          image: "geoservercloud/geoserver-cloud-wps:1.8.7"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2490,6 +2507,7 @@ spec:
               path: /actuator/health/readiness
               port: health
             periodSeconds: 5
+
       volumes:
         - name: cache
           persistentVolumeClaim:
