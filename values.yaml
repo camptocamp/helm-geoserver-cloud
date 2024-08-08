@@ -210,6 +210,8 @@ geoserver:
   services:
     gateway:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         # NB: if .Values.gscloud.ingress.enabled=true put true here as well
         enabled: false
@@ -232,6 +234,8 @@ geoserver:
             sha: ''
     webui:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -252,6 +256,8 @@ geoserver:
             sha: ''
     rest:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -272,6 +278,8 @@ geoserver:
             sha: ''
     wfs:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -292,6 +300,8 @@ geoserver:
             sha: ''
     wms:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -312,6 +322,8 @@ geoserver:
             sha: ''
     wcs:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -332,6 +344,8 @@ geoserver:
             sha: ''
     wps:
       enabled: false
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -352,6 +366,8 @@ geoserver:
             sha: ''
     gwc:
       enabled: true
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
@@ -372,6 +388,8 @@ geoserver:
             sha: ''
     acl:
       enabled: false
+      pdb:
+        enabled: false
       ingress:
         enabled: false
       <<: *common-generic-stuff
