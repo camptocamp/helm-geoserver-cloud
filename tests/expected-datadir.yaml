@@ -139,6 +139,22 @@ spec:
       app.kubernetes.io/instance: gs-cloud-datadir
       app.kubernetes.io/component: wms
 ---
+# Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/secret-docker-registry.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gs-cloud-datadir-geoserver-dockerregistry
+  labels:
+    helm.sh/chart: geoserver
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: geoserver
+    app.kubernetes.io/instance: gs-cloud-datadir
+    app.kubernetes.io/component: dockerregistry
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: ewogICJhdXRocyI6IHsKICAgICJmaXgtZW5kLWNvbW1hIjogeyJhdXRoIjogIiJ9CiAgfQp9
+---
 # Source: gs-cloud-datadir/charts/geoservercloud/charts/geoserver/templates/cm_metadata.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -374,7 +390,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: gateway
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
@@ -572,7 +589,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: gwc
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
@@ -770,7 +788,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: rest
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
@@ -968,7 +987,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: wcs
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
@@ -1166,7 +1186,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: webui
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
@@ -1364,7 +1385,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: wfs
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
@@ -1562,7 +1584,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-datadir
         app.kubernetes.io/component: wms
     spec:
-
+      imagePullSecrets:
+        - name: gs-cloud-datadir-geoserver-dockerregistry
       serviceAccountName: default
       securityContext:
         {}
