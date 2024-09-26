@@ -391,7 +391,7 @@ spec:
         app.kubernetes.io/component: gateway
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -554,7 +554,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -590,7 +590,7 @@ spec:
         app.kubernetes.io/component: gwc
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -753,7 +753,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -789,7 +789,7 @@ spec:
         app.kubernetes.io/component: rest
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -952,7 +952,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -988,7 +988,7 @@ spec:
         app.kubernetes.io/component: wcs
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -1151,7 +1151,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1187,7 +1187,7 @@ spec:
         app.kubernetes.io/component: webui
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -1350,7 +1350,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1386,7 +1386,7 @@ spec:
         app.kubernetes.io/component: wfs
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -1549,7 +1549,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1585,7 +1585,7 @@ spec:
         app.kubernetes.io/component: wms
     spec:
       imagePullSecrets:
-        - name: gs-cloud-datadir-geoserver-dockerregistry
+        - name: gs-cloud-datadir-geoserver-docker-registry
       serviceAccountName: default
       securityContext:
         {}
@@ -1748,7 +1748,7 @@ spec:
             claimName: gs-cloud-datadir-nfs-claim
         - name: geodata
           configMap:
-            name: cm-jndi-geodata
+            name: "cm-jndi-geodata"
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
