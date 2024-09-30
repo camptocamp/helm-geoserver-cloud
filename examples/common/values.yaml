@@ -1,4 +1,5 @@
 nfsserver: 'not-set'
+nfsenabled: true
 nfs:
   raster:
     pvcname: gs-cloud-raster-nfs-claim

@@ -94,6 +94,30 @@ jobs:
       - run: helm template --namespace=default gs-cloud-jdbc examples/jdbc > tests/actual-jdbc.yaml
       - run: diff -Naur --ignore-trailing-space tests/expected-jdbc.yaml tests/actual-jdbc.yaml
 
+      - name: Setup k3s/k3d
+        run: c2cciutils-k8s-install
+
+      - name: Install prometheus CRD
+        run: |
+          curl https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/jsonnet/prometheus-operator/podmonitors-crd.json --output /tmp/podmonitors-crd.json
+          kubectl apply -f /tmp/podmonitors-crd.json
+      - name: Install external-secret CRD
+        run: |
+          curl https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml --output /tmp/external-secrets-crd.yaml
+          kubectl apply -f /tmp/external-secrets-crd.yaml
+      - name: Apply
+        run: make example-pgconfig-acl
+
+      - name: Wait that the application is ready
+        run: c2cciutils-k8s-wait
+
+      - name: Print the application status and logs
+        run: c2cciutils-k8s-logs
+        if: always()
+
+      - name: Uninstall the application
+        run: make examples-clean
+
       - name: Publish
         run: c2cciutils-publish
         if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'

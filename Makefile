@@ -53,7 +53,12 @@ example-jdbc: example-common
 	${HELM} dependency update examples/jdbc
 	${HELM} upgrade --install gs-cloud-jdbc examples/jdbc
 
+.PHONY: example-common-no-nfs
+example-common-no-nfs: dependencies
+	${HELM} dependency update examples/common
+	${HELM} upgrade --install --set-json 'nfsenabled=false' gs-cloud-common examples/common
+
 .PHONY: example-pgconfig-acl
-example-pgconfig-acl: example-common
+example-pgconfig-acl: example-common-no-nfs
 	${HELM} dependency update examples/pgconfig-acl
 	${HELM} upgrade --install gs-cloud-pgconfig-acl examples/pgconfig-acl

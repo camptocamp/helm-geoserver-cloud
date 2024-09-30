@@ -12,16 +12,10 @@ postgresql:
       scriptsConfigMap: install-postgis-configmap
 
 additionalVolumes: &additional-volumes
-  datadir:
-    persistentVolumeClaim:
-      claimName: gs-cloud-datadir-nfs-claim
   cache:
-    persistentVolumeClaim:
-      claimName: gs-cloud-gwc-cache-nfs-claim
+    emptyDir: {}
 
 additionalVolumeMounts: &additional-volume-mounts
-  /opt/app/data_directory:
-    name: 'datadir'
   /mnt/cache:
     name: 'cache'
 
