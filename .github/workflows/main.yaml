@@ -108,6 +108,16 @@ jobs:
       - name: Apply
         run: make example-pgconfig-acl
 
+      - name: Wait that the application is ready
+        run: c2cciutils-k8s-wait
+
+      - name: Print the application status and logs
+        run: c2cciutils-k8s-logs
+        if: always()
+
+      - name: Uninstall the application
+        run: make examples-clean
+
       - name: Publish
         run: c2cciutils-publish
         if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
