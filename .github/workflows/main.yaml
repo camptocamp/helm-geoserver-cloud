@@ -105,6 +105,8 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml --output /tmp/external-secrets-crd.yaml
           kubectl apply -f /tmp/external-secrets-crd.yaml
+      - name: Apply
+        run: make example-pgconfig-acl
 
       - name: Publish
         run: c2cciutils-publish
