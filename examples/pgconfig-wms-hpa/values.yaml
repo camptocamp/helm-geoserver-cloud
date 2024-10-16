@@ -15,6 +15,19 @@ additionalVolumeMounts: &additional-volume-mounts
   /mnt/cache:
     name: 'cache'
 
+# intentionally under-dimension it so it stresses out more easily
+resources: &common-resources
+  requests:
+    memory: 512Mi
+    cpu: 0.1
+  limits:
+    memory: 1Gi
+    cpu: 2.0
+
+common-spring-container-stuff: &common-spring-container-stuff
+  resources:
+    <<: *common-resources
+
 env: &env-override
   PG_PASSWORD:
     type: secret
@@ -56,6 +69,7 @@ additional-stuff: &additional-stuff
     <<: *additional-volumes
   containers:
     spring:
+      <<: *common-spring-container-stuff
       env:
         <<: *env-override
       volumeMounts:
@@ -83,18 +97,18 @@ geoservercloud:
       webui:
         <<: *additional-stuff
       wms:
-        replicaCount: 2
+        replicaCount: 1
         hpa:
           enabled: true
-          minReplicas: 2
-          maxReplicas: 100
+          minReplicas: 1
+          maxReplicas: 16
           metrics:
             - type: Resource
               resource:
                 name: cpu
                 target:
                   type: Utilization
-                  averageUtilization: 50
+                  averageUtilization: 70
         <<: *additional-stuff
       rest:
         replicaCount: 1
