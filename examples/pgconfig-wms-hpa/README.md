@@ -65,7 +65,6 @@ kubectl get ingress --no-headers gs-cloud-pgconfig-wm-geoserver-host1 | \
 awk '{printf("%s\t%s\n", $4, $3)}' | sudo tee -a /etc/hosts
 ```
 
-
 ### 4. Initialize the catalog:
 
 Run the following command to create a test layer:
@@ -73,6 +72,7 @@ Run the following command to create a test layer:
 ```shell
 /examples/pgconfig-wms-hpa/init-catalog.sh
 ```
+
 Should output:
 
 ```shell
@@ -123,9 +123,11 @@ gs-cloud-pgconfig-wms-hpa-gsc-wms   Deployment/gs-cloud-pgconfig-wms-hpa-gsc-wms
 
 > [!NOTE]
 > The `stress-server.sh` script uses Apache Benchmark (`ab` command). If you don't have it, install it with
+>
 > ```shell
 > sudo apt-get install apache2-utils
 > ```
+>
 > or with your Operating System's package manager.
 
 In a new terminal window, run the stress test script. It'll run for 60 seconds making 100 concurrent WMS requests to the cluster:
