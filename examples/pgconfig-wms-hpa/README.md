@@ -70,7 +70,7 @@ awk '{printf("%s\t%s\n", $4, $3)}' | sudo tee -a /etc/hosts
 Run the following command to create a test layer:
 
 ```shell
-/examples/pgconfig-wms-hpa/init-catalog.sh
+./examples/pgconfig-wms-hpa/init-catalog.sh
 ```
 
 Should output:
