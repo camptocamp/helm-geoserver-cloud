@@ -8,11 +8,13 @@ examples-clean:
 	rm -f examples/gwcStatefulSet/charts/*.tgz
 	rm -f examples/jdbc/charts/*.tgz
 	rm -f examples/pgconfig-acl/charts/*.tgz
+	rm -f examples/pgconfig-wms-hpa/charts/*.tgz
 	${HELM} uninstall gs-cloud-common || /bin/true
 	${HELM} uninstall gs-cloud-datadir || /bin/true
 	${HELM} uninstall gs-cloud-statefulset || /bin/true
 	${HELM} uninstall gs-cloud-jdbc || /bin/true
 	${HELM} uninstall gs-cloud-pgconfig-acl || /bin/true
+	${HELM} uninstall gs-cloud-pgconfig-wms-hpa || /bin/true
 
 
 .PHONY: dependencies
@@ -26,11 +28,13 @@ gen-expected: dependencies
 	${HELM} dependency update examples/jdbc
 	${HELM} dependency update examples/pgconfig-acl
 	${HELM} dependency update examples/gwcStatefulSet
+	${HELM} dependency update examples/pgconfig-wms-hpa
 	${HELM} template --namespace=default gs-cloud-common examples/common > tests/expected-common.yaml
 	${HELM} template --namespace=default gs-cloud-datadir examples/datadir > tests/expected-datadir.yaml
 	${HELM} template --namespace=default gs-cloud-jdbc examples/jdbc > tests/expected-jdbc.yaml
 	${HELM} template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl > tests/expected-pgconfig-acl.yaml
 	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet > tests/expected-statefulset.yaml
+	${HELM} template --namespace=default gs-cloud-pgconfig-wms-hpa examples/pgconfig-wms-hpa > tests/expected-pgconfig-wms-hpa.yaml
 	sed -i 's/[[:blank:]]\+$$//g'  tests/expected*.yaml
 
 .PHONY: example-common
@@ -62,3 +66,8 @@ example-common-no-nfs: dependencies
 example-pgconfig-acl: example-common-no-nfs
 	${HELM} dependency update examples/pgconfig-acl
 	${HELM} upgrade --install gs-cloud-pgconfig-acl examples/pgconfig-acl
+
+.PHONY: example-pgconfig-wms-hpa
+example-pgconfig-wms-hpa: example-common-no-nfs
+	${HELM} dependency update examples/pgconfig-wms-hpa
+	${HELM} upgrade --install gs-cloud-pgconfig-wms-hpa examples/pgconfig-wms-hpa

@@ -1,0 +1,15 @@
+apiVersion: v2
+appVersion: '1.0'
+description: Basic example with Horizontal Pod Autoscaling applied to WMS instances in geoserver-cloud using pgconfig as catalog persistence component
+name: gs-cloud-hpa
+version: 0.1.0
+dependencies:
+  - name: geoservercloud
+    repository: file://../../
+    version: 0.1.0
+  # Postgres dependency used for pgconfig database
+  # Note: bitnami postgres chart is updated at initialization to add Postgis extension
+  - name: 'postgresql'
+    version: 14.0.0
+    repository: 'https://charts.bitnami.com/bitnami'
+    condition: postgresql.enabled
