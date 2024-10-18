@@ -9,12 +9,12 @@ examples-clean:
 	rm -f examples/jdbc/charts/*.tgz
 	rm -f examples/pgconfig-acl/charts/*.tgz
 	rm -f examples/pgconfig-wms-hpa/charts/*.tgz
-	${HELM} uninstall gs-cloud-common || /bin/true
-	${HELM} uninstall gs-cloud-datadir || /bin/true
-	${HELM} uninstall gs-cloud-statefulset || /bin/true
-	${HELM} uninstall gs-cloud-jdbc || /bin/true
-	${HELM} uninstall gs-cloud-pgconfig-acl || /bin/true
-	${HELM} uninstall gs-cloud-pgconfig-wms-hpa || /bin/true
+	${HELM} uninstall gs-cloud-common || true
+	${HELM} uninstall gs-cloud-datadir || true
+	${HELM} uninstall gs-cloud-statefulset || true
+	${HELM} uninstall gs-cloud-jdbc || true
+	${HELM} uninstall gs-cloud-pgconfig-acl || true
+	${HELM} uninstall gs-cloud-pgconfig-wms-hpa || true
 
 
 .PHONY: dependencies
