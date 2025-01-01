@@ -1966,6 +1966,48 @@ spec:
                 name: gs-cloud-jdbc-gsc-gateway
                 port:
                   number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-jdbc-gsc-gwc
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-jdbc-gsc-rest
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-jdbc-gsc-wcs
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-jdbc-gsc-webui
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-jdbc-gsc-wfs
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-jdbc-gsc-wms
+                port:
+                  number: 8080
 ---
 # Source: gs-cloud-jdbc/templates/secrets_db.yaml
 # NB: this suppose that a postgresql container is running
