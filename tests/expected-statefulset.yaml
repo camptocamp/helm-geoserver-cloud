@@ -1785,3 +1785,45 @@ spec:
                 name: gs-cloud-statefulset-gsc-gateway
                 port:
                   number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-statefulset-gsc-gwc
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-statefulset-gsc-rest
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-statefulset-gsc-wcs
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-statefulset-gsc-webui
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-statefulset-gsc-wfs
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-statefulset-gsc-wms
+                port:
+                  number: 8080
