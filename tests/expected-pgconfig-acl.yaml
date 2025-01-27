@@ -345,21 +345,21 @@ data:
   SERVICE_ACL_NAME: gs-cloud-pgconfig-acl-gsc-acl
   SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.3.1"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-acl-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-acl-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_REST_NAME: gs-cloud-pgconfig-acl-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_WCS_NAME: gs-cloud-pgconfig-acl-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_WEBUI_NAME: gs-cloud-pgconfig-acl-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_WFS_NAME: gs-cloud-pgconfig-acl-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_WMS_NAME: gs-cloud-pgconfig-acl-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
   SERVICE_WPS_NAME: gs-cloud-pgconfig-acl-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.9.1"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "1.9.2"
 ---
 # Source: gs-cloud-pgconfig/templates/install-postgis-cm.yml
 apiVersion: v1
@@ -801,7 +801,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:1.9.1"
+          image: "geoservercloud/geoserver-cloud-gateway:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1022,7 +1022,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:1.9.1"
+          image: "geoservercloud/geoserver-cloud-gwc:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1244,7 +1244,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:1.9.1"
+          image: "geoservercloud/geoserver-cloud-rest:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1466,7 +1466,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:1.9.1"
+          image: "geoservercloud/geoserver-cloud-wcs:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1688,7 +1688,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:1.9.1"
+          image: "geoservercloud/geoserver-cloud-webui:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -1910,7 +1910,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:1.9.1"
+          image: "geoservercloud/geoserver-cloud-wfs:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2132,7 +2132,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:1.9.1"
+          image: "geoservercloud/geoserver-cloud-wms:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
@@ -2354,7 +2354,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wps:1.9.1"
+          image: "geoservercloud/geoserver-cloud-wps:1.9.2"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_PASSWORD"
