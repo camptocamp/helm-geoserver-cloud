@@ -1781,3 +1781,45 @@ spec:
                 name: gs-cloud-datadir-gsc-gateway
                 port:
                   number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-datadir-gsc-gwc
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-datadir-gsc-rest
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-datadir-gsc-wcs
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-datadir-gsc-webui
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-datadir-gsc-wfs
+                port:
+                  number: 8080
+          - path: ""
+            pathType: Prefix
+            backend:
+              service:
+                name: gs-cloud-datadir-gsc-wms
+                port:
+                  number: 8080
