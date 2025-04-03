@@ -12,4 +12,5 @@
   kubernetes: {
     fileMatch: ['templates/.+\\.yaml$', 'tests/.*expected\\.yaml$'],
   },
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
 }
