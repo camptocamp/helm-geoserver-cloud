@@ -25,6 +25,7 @@ repos:
     rev: 1.4.0
     hooks:
       - id: copyright
+      - id: canonicalize
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
