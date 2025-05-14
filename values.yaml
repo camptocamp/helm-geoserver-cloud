@@ -3,7 +3,7 @@ podSecurityContext: {}
 securityContext: {}
 
 common-image-stuff: &common-image-stuff
-  tag: '2.27.0.0'
+  tag: '2.27.1.0'
 
 service: &common-service-definition
   type: ClusterIP
