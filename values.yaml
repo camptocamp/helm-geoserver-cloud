@@ -171,8 +171,7 @@ common-generic-stuff: &common-generic-stuff
   template: true
   replicaCount: 1
   nameOverride: 'gsc'
-  initContainers:
-    {}
+  initContainers: {}
     #<<: *common-init-containers
   nodeSelector: {}
   affinity: {}
