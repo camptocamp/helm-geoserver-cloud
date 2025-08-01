@@ -106,7 +106,7 @@ jobs:
       - name: Install external-secret CRD
         run: |
           curl https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml --output /tmp/external-secrets-crd.yaml
-          kubectl apply -f /tmp/external-secrets-crd.yaml
+          kubectl apply --server-side -f /tmp/external-secrets-crd.yaml
       - name: Apply
         run: make example-pgconfig-acl
 
