@@ -5,6 +5,6 @@ name: examples-common
 version: 0.1.0
 dependencies:
   - name: 'rabbitmq'
-    version: 15.0.0
-    repository: 'https://charts.bitnami.com/bitnami'
+    version: 14.4.0
+    repository: 'oci://registry-1.docker.io/bitnamichartslegacy'
     condition: rabbitmq.enabled

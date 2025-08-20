@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
     app.kubernetes.io/component: primary
 spec:
   podSelector:
@@ -22,65 +22,7 @@ spec:
     - Ingress
     - Egress
   egress:
-    # Allow dns resolution
-    - ports:
-        - port: 53
-          protocol: UDP
-        - port: 53
-          protocol: TCP
-    # Allow outbound connections to read-replicas
-    - ports:
-        - port: 5432
-        - port: 5432
-      to:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
-              app.kubernetes.io/name: postgresql
-              app.kubernetes.io/component: read
-  ingress:
-    - ports:
-        - port: 5432
----
-# Source: gs-cloud-hpa/charts/postgresql/templates/read/networkpolicy.yaml
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: gs-cloud-pgconfig-wms-hpa-postgresql-read
-  namespace: "default"
-  labels:
-    app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
-    app.kubernetes.io/component: read
-spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
-      app.kubernetes.io/name: postgresql
-      app.kubernetes.io/component: read
-  policyTypes:
-    - Ingress
-    - Egress
-  egress:
-    # Allow dns resolution
-    - ports:
-        - port: 53
-          protocol: UDP
-        - port: 53
-          protocol: TCP
-    # Allow outbound connections to primary
-    - ports:
-        - port: 5432
-        - port: 5432
-      to:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
-              app.kubernetes.io/name: postgresql
-              app.kubernetes.io/component: primary
+    - {}
   ingress:
     - ports:
         - port: 5432
@@ -165,6 +107,27 @@ spec:
       app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
       app.kubernetes.io/component: wms
 ---
+# Source: gs-cloud-hpa/charts/postgresql/templates/primary/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: gs-cloud-pgconfig-wms-hpa-postgresql
+  namespace: "default"
+  labels:
+    app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
+    app.kubernetes.io/component: primary
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+---
 # Source: gs-cloud-hpa/charts/postgresql/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -175,8 +138,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
 automountServiceAccountToken: false
 ---
 # Source: gs-cloud-hpa/charts/geoservercloud/charts/geoserver/templates/secret-docker-registry.yaml
@@ -205,8 +168,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
 type: Opaque
 data:
   postgres-password: "ZzMwczNydjNy"
@@ -353,8 +316,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
     app.kubernetes.io/component: primary
   annotations:
     # Use this annotation in addition to the actual publishNotReadyAddresses
@@ -388,8 +351,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
     app.kubernetes.io/component: primary
 spec:
   type: ClusterIP
@@ -1277,8 +1240,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: postgresql
-    app.kubernetes.io/version: 16.1.0
-    helm.sh/chart: postgresql-14.0.0
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.2
     app.kubernetes.io/component: primary
 spec:
   replicas: 1
@@ -1298,8 +1261,8 @@ spec:
         app.kubernetes.io/instance: gs-cloud-pgconfig-wms-hpa
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: postgresql
-        app.kubernetes.io/version: 16.1.0
-        helm.sh/chart: postgresql-14.0.0
+        app.kubernetes.io/version: 16.3.0
+        helm.sh/chart: postgresql-15.5.2
         app.kubernetes.io/component: primary
     spec:
       serviceAccountName: gs-cloud-pgconfig-wms-hpa-postgresql
@@ -1329,7 +1292,7 @@ spec:
       hostIPC: false
       containers:
         - name: postgresql
-          image: docker.io/bitnami/postgresql:16.1.0-debian-11-r25
+          image: docker.io/bitnami/postgresql:16.3.0-debian-12-r12
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -1337,9 +1300,11 @@ spec:
               drop:
               - ALL
             privileged: false
-            readOnlyRootFilesystem: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
             runAsNonRoot: true
             runAsUser: 1001
+            seLinuxOptions: {}
             seccompProfile:
               type: RuntimeDefault
           env:
@@ -1409,16 +1374,31 @@ spec:
                   exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
                   [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
           resources:
-            limits: {}
+            limits:
+              cpu: 150m
+              ephemeral-storage: 1024Mi
+              memory: 192Mi
             requests:
-              cpu: 250m
-              memory: 256Mi
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
           volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/conf
+              subPath: app-conf-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/tmp
+              subPath: app-tmp-dir
             - name: dshm
               mountPath: /dev/shm
             - name: data
               mountPath: /bitnami/postgresql
       volumes:
+        - name: empty-dir
+          emptyDir: {}
         - name: dshm
           emptyDir:
             medium: Memory
