@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 spec:
   podSelector:
     matchLabels:
@@ -40,8 +40,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 spec:
   maxUnavailable: 1
   selector:
@@ -59,8 +59,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 automountServiceAccountToken: false
 secrets:
   - name: gs-cloud-common-rabbitmq
@@ -75,8 +75,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 type: Opaque
 data:
   rabbitmq.conf: |-
@@ -92,8 +92,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 type: Opaque
 data:
   rabbitmq-password: "cGFzc3dvcmQ="
@@ -233,8 +233,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 rules:
   - apiGroups: [""]
     resources: ["endpoints"]
@@ -253,8 +253,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 subjects:
   - kind: ServiceAccount
     name: gs-cloud-common-rabbitmq
@@ -273,8 +273,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 spec:
   clusterIP: None
   ports:
@@ -305,8 +305,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 spec:
   type: ClusterIP
   sessionAffinity: None
@@ -341,8 +341,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.0.1
+    helm.sh/chart: rabbitmq-15.0.0
 spec:
   serviceName: gs-cloud-common-rabbitmq-headless
   podManagementPolicy: OrderedReady
@@ -359,11 +359,11 @@ spec:
         app.kubernetes.io/instance: gs-cloud-common
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: rabbitmq
-        app.kubernetes.io/version: 3.13.3
-        helm.sh/chart: rabbitmq-14.4.0
+        app.kubernetes.io/version: 4.0.1
+        helm.sh/chart: rabbitmq-15.0.0
       annotations:
-        checksum/config: dc2ffcb05ca03d3ac938981f8cf4412703659c5c67e1b5a2741b7a0ab5635516
-        checksum/secret: 3b866ae5b56a4782f5dd218147dc0bec4e49856146edb179417ee788790b6789
+        checksum/config: cb61d3af1f48141dc299c311c69022509cc8c4c2313e88bacc1b10e945e14a67
+        checksum/secret: 0feb5caccd2971c284deef97470aaec89af3e7fac2c502b494e91fc1bdd53d21
     spec:
 
       serviceAccountName: gs-cloud-common-rabbitmq
@@ -391,7 +391,7 @@ spec:
       enableServiceLinks: true
       initContainers:
         - name: prepare-plugins-dir
-          image: docker.io/bitnami/rabbitmq:3.13.3-debian-12-r0
+          image: docker.io/bitnami/rabbitmq:4.0.1-debian-12-r0
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:
@@ -429,7 +429,7 @@ spec:
               mountPath: /emptydir
       containers:
         - name: rabbitmq
-          image: docker.io/bitnami/rabbitmq:3.13.3-debian-12-r0
+          image: docker.io/bitnami/rabbitmq:4.0.1-debian-12-r0
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -480,7 +480,7 @@ spec:
             - name: RABBITMQ_LOGS
               value: "-"
             - name: RABBITMQ_ULIMIT_NOFILES
-              value: "65536"
+              value: "65535"
             - name: RABBITMQ_USE_LONGNAME
               value: "true"
             - name: RABBITMQ_ERL_COOKIE
