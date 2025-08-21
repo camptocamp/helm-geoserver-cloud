@@ -10,7 +10,7 @@
     'github>camptocamp/gs-renovate-config-preset:own.json5#1.4.2',
   ],
   kubernetes: {
-    fileMatch: ['templates/.+\\.yaml$', 'tests/.*expected\\.yaml$'],
+    managerFilePatterns: ['/templates/.+\\.yaml$/', '/tests/.*expected\\.yaml$/'],
   },
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
 }
