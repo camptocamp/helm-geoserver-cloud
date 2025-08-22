@@ -10,6 +10,6 @@ dependencies:
   # Postgres dependency used for pgconfig database and geoserver-acl database
   # Note: bitnami postgres chart is updated at initialization to add Postgis extension
   - name: 'postgresql'
-    version: 14.0.0
-    repository: 'https://charts.bitnami.com/bitnami'
+    version: 15.5.2
+    repository: 'oci://registry-1.docker.io/bitnamichartslegacy'
     condition: postgresql.enabled

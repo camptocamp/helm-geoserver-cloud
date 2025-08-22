@@ -6,4 +6,4 @@ dependencies:
   - name: application
     repository: https://camptocamp.github.io/helm-application/
     alias: geoserver
-    version: 2.15.0
+    version: 2.16.0
