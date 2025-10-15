@@ -1,5 +1,8 @@
 postgresql:
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
   global:
     postgresql:
       auth:

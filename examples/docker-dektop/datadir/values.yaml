@@ -2,7 +2,9 @@ postgresql:
   auth:
     enablePostgresUser: true
     postgresPassword: 'admin123'
-
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
   primary:
     initdb:
       scripts:
@@ -17,6 +19,9 @@ postgresql:
 
 rabbitmq:
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/rabbitmq
   resources:
     limits:
       cpu: 2

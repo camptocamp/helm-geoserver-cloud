@@ -173,4 +173,5 @@ and now you should be able to access the webui on http://gscloud.local/geoserver
 
 | Repository                         | Name       | Version |
 | ---------------------------------- | ---------- | ------- |
-| https://charts.bitnami.com/bitnami | rabbitmq   | 11.3.0  |
+| oci://ghcr.io/georchestra/bitnami-helm-charts | rabbitmq   | 14.4.0  |
+| oci://ghcr.io/georchestra/bitnami-helm-charts | postgresql   | 15.5.2  |
