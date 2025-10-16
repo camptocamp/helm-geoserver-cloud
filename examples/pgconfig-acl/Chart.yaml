@@ -11,5 +11,5 @@ dependencies:
   # Note: bitnami postgres chart is updated at initialization to add Postgis extension
   - name: 'postgresql'
     version: 15.5.2
-    repository: 'oci://registry-1.docker.io/bitnamichartslegacy'
+    repository: 'oci://ghcr.io/georchestra/bitnami-helm-charts'
     condition: postgresql.enabled

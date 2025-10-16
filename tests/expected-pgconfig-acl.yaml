@@ -910,8 +910,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -939,9 +937,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1131,8 +1126,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1160,9 +1153,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1353,8 +1343,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1382,9 +1370,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1575,8 +1560,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1604,9 +1587,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -1797,8 +1777,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -1826,9 +1804,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2019,8 +1994,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -2048,9 +2021,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2241,8 +2211,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -2270,9 +2238,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2463,8 +2428,6 @@ spec:
               name: vol-local-gscloud
             - mountPath: /mnt/cache
               name: cache
-            - mountPath: /opt/app/data_directory
-              name: datadir
             - mountPath: /tmp/
               name: tmp-empty-dir
 
@@ -2492,9 +2455,6 @@ spec:
       volumes:
         - name: cache
           emptyDir: {}
-        - name: datadir
-          persistentVolumeClaim:
-            claimName: gs-cloud-datadir-nfs-claim
         - name: tmp-empty-dir
           emptyDir: {}
         - name: vol-local-gscloud
@@ -2562,7 +2522,7 @@ spec:
       hostIPC: false
       containers:
         - name: postgresql
-          image: docker.io/bitnami/postgresql:16.3.0-debian-12-r12
+          image: docker.io/bitnamilegacy/postgresql:16.3.0-debian-12-r12
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -2642,7 +2602,6 @@ spec:
                 - -e
                 - |
                   exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
-                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
           resources:
             limits:
               cpu: 150m

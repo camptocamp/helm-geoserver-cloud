@@ -1,5 +1,9 @@
 postgresql:
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
+    #image: 16.3.0-debian-12-r12
   global:
     postgresql:
       auth:

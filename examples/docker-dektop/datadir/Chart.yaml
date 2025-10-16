@@ -8,9 +8,9 @@ dependencies:
     repository: https://camptocamp.github.io/helm-geoserver-cloud
     version: 0.7.1
   - name: rabbitmq
-    version: 11.3.0
-    repository: 'https://charts.bitnami.com/bitnami'
+    version: 14.4.0
+    repository: 'oci://ghcr.io/georchestra/bitnami-helm-charts'
     condition: rabbitmq.enabled
   - name: postgresql
-    repository: https://charts.bitnami.com/bitnami
-    version: 13.0.0
+    repository: 'oci://ghcr.io/georchestra/bitnami-helm-charts'
+    version: 15.5.2
