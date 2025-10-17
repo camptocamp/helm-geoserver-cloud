@@ -172,23 +172,23 @@ data:
   RELEASE_NAME: gs-cloud-statefulset
   RELEASE_NAMESPACE: default
   SERVICE_ACL_NAME: gs-cloud-statefulset-gsc-acl
-  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.3.2"
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.4.0"
   SERVICE_GATEWAY_NAME: gs-cloud-statefulset-gsc-gateway
-  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_GWC_NAME: gs-cloud-statefulset-gsc-gwc
-  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_GWC_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_REST_NAME: gs-cloud-statefulset-gsc-rest
-  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_REST_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_WCS_NAME: gs-cloud-statefulset-gsc-wcs
-  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_WCS_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_WEBUI_NAME: gs-cloud-statefulset-gsc-webui
-  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_WEBUI_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_WFS_NAME: gs-cloud-statefulset-gsc-wfs
-  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_WFS_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_WMS_NAME: gs-cloud-statefulset-gsc-wms
-  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_WMS_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
   SERVICE_WPS_NAME: gs-cloud-statefulset-gsc-wps
-  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "2.27.2.0"
+  SERVICE_WPS_CONTAINER_SPRING_IMAGE_TAG: "2.28.0.0"
 ---
 # Source: gs-cloud-statefulset/charts/geoservercloud/charts/geoserver/templates/service.yaml
 apiVersion: v1
@@ -400,7 +400,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gateway:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-gateway:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -598,7 +598,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-rest:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-rest:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -796,7 +796,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wcs:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-wcs:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -994,7 +994,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-webui:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-webui:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1192,7 +1192,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wfs:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-wfs:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1390,7 +1390,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-wms:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-wms:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
@@ -1598,7 +1598,7 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: "geoservercloud/geoserver-cloud-gwc:2.27.2.0"
+          image: "geoservercloud/geoserver-cloud-gwc:2.28.0.0"
           imagePullPolicy: IfNotPresent
           env:
             - name: "ACL_USERNAME"
