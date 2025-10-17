@@ -395,6 +395,6 @@ geoserver:
             PG_USERNAME:
               value: 'acl'
           image:
-            tag: '2.3.2'
+            tag: '2.4.0'
             repository: geoservercloud/geoserver-acl
             sha: ''
