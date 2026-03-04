@@ -120,7 +120,7 @@ jobs:
       - name: Uninstall the application
         run: make examples-clean
 
-      - name: Delete existing release for current tag
+      - name: Check if release already exists for current tag
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -134,15 +134,12 @@ jobs:
                 tag,
               });
 
-              core.info(`Deleting existing release ${release.id} for tag ${tag}`);
-              await github.rest.repos.deleteRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: release.id,
-              });
+              core.info(`Release ${release.id} already exists for tag ${tag}; skipping publish`);
+              core.exportVariable('RELEASE_EXISTS', 'true');
             } catch (error) {
               if (error.status === 404) {
                 core.info(`No existing release found for tag ${tag}`);
+                core.exportVariable('RELEASE_EXISTS', 'false');
                 return;
               }
               throw error;
@@ -152,7 +149,7 @@ jobs:
         run: tag-publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
+        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS' && (github.ref_type != 'tag' || env.RELEASE_EXISTS != 'true')
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch; git diff --color; git reset --hard || true
         if: failure()
       - uses: actions/upload-artifact@v4
