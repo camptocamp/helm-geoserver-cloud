@@ -120,6 +120,34 @@ jobs:
       - name: Uninstall the application
         run: make examples-clean
 
+      - name: Delete existing release for current tag
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |-
+            const tag = process.env.GITHUB_REF_NAME;
+
+            try {
+              const {data: release} = await github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag,
+              });
+
+              core.info(`Deleting existing release ${release.id} for tag ${tag}`);
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: release.id,
+              });
+            } catch (error) {
+              if (error.status === 404) {
+                core.info(`No existing release found for tag ${tag}`);
+                return;
+              }
+              throw error;
+            }
+        if: github.ref_type == 'tag' && matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
       - name: Publish
         run: tag-publish
         env:
