@@ -1,6 +1,6 @@
 # Examples
 
-To run these examples, you will install a local k8s on your machine, also a PG database and an NFS mount.
+To run these examples, you will install a local k8s on your machine (using either k3d or kind), also a PG database and an NFS mount.
 
 ## Setup a local K3D cluster
 
@@ -34,6 +34,110 @@ k3d registry create registry.localhost --port 5000
 k3d cluster create k3d-cluster-1 --k3s-arg '--kubelet-arg=eviction-soft-grace-period=imagefs.available=60s,nodefs.available=60s@all'  --k3s-arg '--kubelet-arg=eviction-hard=imagefs.available<10Mi,nodefs.available<10Mi@all' --k3s-arg '--kubelet-arg=eviction-minimum-reclaim=imagefs.available=10Mi,nodefs.available=10Mi@all'  -p "8085:80@loadbalancer"
 ```
 
+## Setup a local Kind cluster
+
+As an alternative to k3d, you can use [kind](https://kind.sigs.k8s.io/) (Kubernetes IN Docker).
+
+### install kind
+
+On Linux:
+
+```bash
+# For AMD64 / x86_64
+[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-linux-amd64
+# For ARM64
+[ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.25.0/kind-linux-arm64
+chmod +x ./kind
+sudo mv ./kind /usr/local/bin/kind
+```
+
+On macOS:
+
+```bash
+brew install kind
+```
+
+Or follow the [official documentation](https://kind.sigs.k8s.io/docs/user/quick-start/#installation).
+
+### create a cluster on your machine
+
+kind requires a configuration file for port mappings. Create a file called `kind-config.yaml`:
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+```
+
+Then create the cluster:
+
+```bash
+kind create cluster --name kind-cluster-1 --config kind-config.yaml
+```
+
+### install the NGINX ingress controller for kind
+
+kind requires installing an ingress controller manually:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+# Wait for the ingress controller to be ready
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
+
+# Make nginx the default ingress class
+kubectl patch ingressclass nginx -p '{"metadata":{"annotations":{"ingressclass.kubernetes.io/is-default-class":"true"}}}'
+```
+
+### setup a local registry for kind (optional)
+
+If you need to push local images to the cluster:
+
+```bash
+# Create the registry container
+docker run -d --restart=always -p 5000:5000 --name kind-registry registry:2
+
+# Connect the registry to the kind network
+docker network connect kind kind-registry
+
+# Document the local registry
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-registry-hosting
+  namespace: kube-public
+data:
+  localRegistryHosting.v1: |
+    host: "localhost:5000"
+    help: "https://kind.sigs.k8s.io/docs/user/local-registry/"
+EOF
+```
+
+### delete the kind cluster
+
+Once you're done testing, delete the cluster:
+
+```bash
+kind delete cluster --name kind-cluster-1
+```
 
 ## Setup the example database
 
@@ -125,7 +229,7 @@ make example-jdbc
 To run the `pgconfig` example:
 
 ```shell
-make example-pgconfig
+make example-pgconfig-acl
 ```
 
 To stop anything and cleanup:
