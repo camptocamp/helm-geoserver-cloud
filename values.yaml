@@ -50,7 +50,7 @@ env: &common-env
     value: '/geoserver-cloud'
   SPRING_PROFILES_ACTIVE:
     # this must be explicitly overridden with either
-    # "standalone,jdbcconfig,kube" or "standalone,datadir,kube"
+    # "standalone,pgconfig,kube" or "standalone,datadir,kube"
     value: not-set
   GWC_ENABLED:
     value: 'true'

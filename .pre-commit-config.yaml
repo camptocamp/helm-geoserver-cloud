@@ -109,13 +109,13 @@ repos:
             ^templates/.*$
             |^values\.yaml$
             |^Chart\.yaml$
-            |^examples/jdbc/*
+            |^examples/pgconfig-acl/*
           )
         args:
           - --additional-template-directory=.
-          - gs-cloud-jdbc
-          - examples/jdbc
-          - tests/expected-jdbc.yaml
+          - gs-cloud-pgconfig-acl
+          - examples/pgconfig-acl
+          - tests/expected-pgconfig-acl.yaml
       - id: helm-template-gen
         files: |-
           (?x)(

@@ -91,10 +91,10 @@ jobs:
       - run: helm template --namespace=default gs-cloud-datadir examples/datadir > tests/actual-datadir.yaml
       - run: diff -Naur --ignore-trailing-space tests/expected-datadir.yaml tests/actual-datadir.yaml
 
-      - run: helm dependency update examples/jdbc
-      - run: helm lint examples/jdbc
-      - run: helm template --namespace=default gs-cloud-jdbc examples/jdbc > tests/actual-jdbc.yaml
-      - run: diff -Naur --ignore-trailing-space tests/expected-jdbc.yaml tests/actual-jdbc.yaml
+      - run: helm dependency update examples/pgconfig-acl
+      - run: helm lint examples/pgconfig-acl
+      - run: helm template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl > tests/actual-pgconfig-acl.yaml
+      - run: diff -Naur --ignore-trailing-space tests/expected-pgconfig-acl.yaml tests/actual-pgconfig-acl.yaml
 
       - name: Setup k3s/k3d
         run: c2cciutils-k8s-install

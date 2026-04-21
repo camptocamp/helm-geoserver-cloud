@@ -220,12 +220,6 @@ To run the `datadir` example:
 make example-datadir
 ```
 
-To run the `jdbcconfig` example:
-
-```shell
-make example-jdbc
-```
-
 To run the `pgconfig` example:
 
 ```shell
