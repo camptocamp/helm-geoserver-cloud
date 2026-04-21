@@ -409,6 +409,7 @@ spec:
             runAsGroup: 1001
             runAsNonRoot: true
             runAsUser: 1001
+            seLinuxOptions: null
             seccompProfile:
               type: RuntimeDefault
           command:
@@ -440,6 +441,7 @@ spec:
             runAsGroup: 1001
             runAsNonRoot: true
             runAsUser: 1001
+            seLinuxOptions: null
             seccompProfile:
               type: RuntimeDefault
           lifecycle:
