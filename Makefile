@@ -25,13 +25,11 @@ dependencies:
 gen-expected: dependencies
 	${HELM} dependency update examples/common
 	${HELM} dependency update examples/datadir
-	${HELM} dependency update examples/jdbc
 	${HELM} dependency update examples/pgconfig-acl
 	${HELM} dependency update examples/gwcStatefulSet
 	${HELM} dependency update examples/pgconfig-wms-hpa
 	${HELM} template --namespace=default gs-cloud-common examples/common > tests/expected-common.yaml
 	${HELM} template --namespace=default gs-cloud-datadir examples/datadir > tests/expected-datadir.yaml
-	${HELM} template --namespace=default gs-cloud-jdbc examples/jdbc > tests/expected-jdbc.yaml
 	${HELM} template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl > tests/expected-pgconfig-acl.yaml
 	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet > tests/expected-statefulset.yaml
 	${HELM} template --namespace=default gs-cloud-pgconfig-wms-hpa examples/pgconfig-wms-hpa > tests/expected-pgconfig-wms-hpa.yaml

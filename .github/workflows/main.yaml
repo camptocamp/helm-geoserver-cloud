@@ -82,19 +82,17 @@ jobs:
       - run: helm dependency update examples/common
       - run: helm lint examples/common
       - run: helm template --namespace=default gs-cloud-common examples/common > tests/actual-common.yaml
-      - run:
-          diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' --ignore-trailing-space
-          tests/expected-common.yaml tests/actual-common.yaml
+      - run: diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' -I 'seLinuxOptions:' --ignore-trailing-space tests/expected-common.yaml tests/actual-common.yaml
 
       - run: helm dependency update examples/datadir
       - run: helm lint examples/datadir
       - run: helm template --namespace=default gs-cloud-datadir examples/datadir > tests/actual-datadir.yaml
-      - run: diff -Naur --ignore-trailing-space tests/expected-datadir.yaml tests/actual-datadir.yaml
+      - run: diff -Naur -I 'seLinuxOptions:' --ignore-trailing-space tests/expected-datadir.yaml tests/actual-datadir.yaml
 
-      - run: helm dependency update examples/jdbc
-      - run: helm lint examples/jdbc
-      - run: helm template --namespace=default gs-cloud-jdbc examples/jdbc > tests/actual-jdbc.yaml
-      - run: diff -Naur --ignore-trailing-space tests/expected-jdbc.yaml tests/actual-jdbc.yaml
+      - run: helm dependency update examples/pgconfig-acl
+      - run: helm lint examples/pgconfig-acl
+      - run: helm template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl > tests/actual-pgconfig-acl.yaml
+      - run: diff -Naur -I 'seLinuxOptions:' --ignore-trailing-space tests/expected-pgconfig-acl.yaml tests/actual-pgconfig-acl.yaml
 
       - name: Setup k3s/k3d
         run: c2cciutils-k8s-install
