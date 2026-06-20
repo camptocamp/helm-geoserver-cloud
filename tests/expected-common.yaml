@@ -9,8 +9,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 spec:
   podSelector:
     matchLabels:
@@ -40,8 +40,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 spec:
   maxUnavailable: 1
   selector:
@@ -59,8 +59,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 automountServiceAccountToken: false
 secrets:
   - name: gs-cloud-common-rabbitmq
@@ -75,12 +75,12 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 type: Opaque
 data:
   rabbitmq.conf: |-
-    IyMgVXNlcm5hbWUgYW5kIHBhc3N3b3JkCmRlZmF1bHRfdXNlciA9IGdlb3NlcnZlcgojIyBDbHVzdGVyaW5nCiMjCmNsdXN0ZXJfbmFtZSA9IGdzLWNsb3VkLWNvbW1vbi1yYWJiaXRtcQpjbHVzdGVyX2Zvcm1hdGlvbi5wZWVyX2Rpc2NvdmVyeV9iYWNrZW5kICA9IHJhYmJpdF9wZWVyX2Rpc2NvdmVyeV9rOHMKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmhvc3QgPSBrdWJlcm5ldGVzLmRlZmF1bHQKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmFkZHJlc3NfdHlwZSA9IGhvc3RuYW1lCmNsdXN0ZXJfZm9ybWF0aW9uLms4cy5zZXJ2aWNlX25hbWUgPSBncy1jbG91ZC1jb21tb24tcmFiYml0bXEtaGVhZGxlc3MKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmhvc3RuYW1lX3N1ZmZpeCA9IC5ncy1jbG91ZC1jb21tb24tcmFiYml0bXEtaGVhZGxlc3MuZGVmYXVsdC5zdmMuY2x1c3Rlci5sb2NhbApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAuaW50ZXJ2YWwgPSAxMApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAub25seV9sb2dfd2FybmluZyA9IHRydWUKY2x1c3Rlcl9wYXJ0aXRpb25faGFuZGxpbmcgPSBhdXRvaGVhbAoKIyBxdWV1ZSBtYXN0ZXIgbG9jYXRvcgpxdWV1ZV9tYXN0ZXJfbG9jYXRvciA9IG1pbi1tYXN0ZXJzCiMgZW5hYmxlIGxvb3BiYWNrIHVzZXIKbG9vcGJhY2tfdXNlcnMuZ2Vvc2VydmVyID0gZmFsc2UKI2RlZmF1bHRfdmhvc3QgPSBkZWZhdWx0LXZob3N0CiNkaXNrX2ZyZWVfbGltaXQuYWJzb2x1dGUgPSA1ME1CCiMjIFByb21ldGhldXMgbWV0cmljcwojIwpwcm9tZXRoZXVzLnRjcC5wb3J0ID0gOTQxOQ==
+    IyMgVXNlcm5hbWUgYW5kIHBhc3N3b3JkCmRlZmF1bHRfdXNlciA9IGdlb3NlcnZlcgojIyBDbHVzdGVyaW5nCiMjCmNsdXN0ZXJfbmFtZSA9IGdzLWNsb3VkLWNvbW1vbi1yYWJiaXRtcQpjbHVzdGVyX2Zvcm1hdGlvbi5wZWVyX2Rpc2NvdmVyeV9iYWNrZW5kICA9IHJhYmJpdF9wZWVyX2Rpc2NvdmVyeV9rOHMKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmhvc3QgPSBrdWJlcm5ldGVzLmRlZmF1bHQKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmFkZHJlc3NfdHlwZSA9IGhvc3RuYW1lCmNsdXN0ZXJfZm9ybWF0aW9uLms4cy5zZXJ2aWNlX25hbWUgPSBncy1jbG91ZC1jb21tb24tcmFiYml0bXEtaGVhZGxlc3MKY2x1c3Rlcl9mb3JtYXRpb24uazhzLmhvc3RuYW1lX3N1ZmZpeCA9IC5ncy1jbG91ZC1jb21tb24tcmFiYml0bXEtaGVhZGxlc3MuZGVmYXVsdC5zdmMuY2x1c3Rlci5sb2NhbApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAuaW50ZXJ2YWwgPSAxMApjbHVzdGVyX2Zvcm1hdGlvbi5ub2RlX2NsZWFudXAub25seV9sb2dfd2FybmluZyA9IHRydWUKY2x1c3Rlcl9wYXJ0aXRpb25faGFuZGxpbmcgPSBhdXRvaGVhbAoKIyBxdWV1ZSBsZWFkZXIgbG9jYXRvcgpxdWV1ZV9sZWFkZXJfbG9jYXRvciA9IGJhbGFuY2VkCiMgZW5hYmxlIGxvb3BiYWNrIHVzZXIKbG9vcGJhY2tfdXNlcnMuZ2Vvc2VydmVyID0gZmFsc2UKI2RlZmF1bHRfdmhvc3QgPSBkZWZhdWx0LXZob3N0CiNkaXNrX2ZyZWVfbGltaXQuYWJzb2x1dGUgPSA1ME1CCiMjIFByb21ldGhldXMgbWV0cmljcwojIwpwcm9tZXRoZXVzLnRjcC5wb3J0ID0gOTQxOQojIyBUQ1AgTGlzdGVuIE9wdGlvbnMKIyMKdGNwX2xpc3Rlbl9vcHRpb25zLmJhY2tsb2cgPSAxMjgKdGNwX2xpc3Rlbl9vcHRpb25zLm5vZGVsYXkgPSB0cnVlCnRjcF9saXN0ZW5fb3B0aW9ucy5saW5nZXIub24gICAgICA9IHRydWUKdGNwX2xpc3Rlbl9vcHRpb25zLmxpbmdlci50aW1lb3V0ID0gMAp0Y3BfbGlzdGVuX29wdGlvbnMua2VlcGFsaXZlID0gZmFsc2U=
 ---
 # Source: examples-common/charts/rabbitmq/templates/secrets.yaml
 apiVersion: v1
@@ -92,8 +92,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 type: Opaque
 data:
   rabbitmq-password: "cGFzc3dvcmQ="
@@ -233,8 +233,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 rules:
   - apiGroups: [""]
     resources: ["endpoints"]
@@ -253,8 +253,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 subjects:
   - kind: ServiceAccount
     name: gs-cloud-common-rabbitmq
@@ -273,8 +273,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 spec:
   clusterIP: None
   ports:
@@ -305,8 +305,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 spec:
   type: ClusterIP
   sessionAffinity: None
@@ -341,8 +341,8 @@ metadata:
     app.kubernetes.io/instance: gs-cloud-common
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/version: 3.13.3
-    helm.sh/chart: rabbitmq-14.4.0
+    app.kubernetes.io/version: 4.1.3
+    helm.sh/chart: rabbitmq-16.0.14
 spec:
   serviceName: gs-cloud-common-rabbitmq-headless
   podManagementPolicy: OrderedReady
@@ -359,11 +359,11 @@ spec:
         app.kubernetes.io/instance: gs-cloud-common
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: rabbitmq
-        app.kubernetes.io/version: 3.13.3
-        helm.sh/chart: rabbitmq-14.4.0
+        app.kubernetes.io/version: 4.1.3
+        helm.sh/chart: rabbitmq-16.0.14
       annotations:
-        checksum/config: dc2ffcb05ca03d3ac938981f8cf4412703659c5c67e1b5a2741b7a0ab5635516
-        checksum/secret: 3b866ae5b56a4782f5dd218147dc0bec4e49856146edb179417ee788790b6789
+        checksum/config: d69c405e9e3cf4785a9b4bbbf6bbc0a53b8cdba6ac821d8e5c448fd68160e28d
+        checksum/secret: d1bf74702210892491b8bfff82665cdd40d7a920d607ff2c51f269f4b37e0e3b
     spec:
 
       serviceAccountName: gs-cloud-common-rabbitmq
@@ -391,7 +391,7 @@ spec:
       enableServiceLinks: true
       initContainers:
         - name: prepare-plugins-dir
-          image: docker.io/bitnamilegacy/rabbitmq:3.13.3-debian-12-r0
+          image: docker.io/bitnamilegacy/rabbitmq:4.1.3-debian-12-r1
           imagePullPolicy: "IfNotPresent"
           resources:
             limits:
@@ -409,7 +409,7 @@ spec:
             runAsGroup: 1001
             runAsNonRoot: true
             runAsUser: 1001
-            seLinuxOptions: null
+            seLinuxOptions: {}
             seccompProfile:
               type: RuntimeDefault
           command:
@@ -430,7 +430,7 @@ spec:
               mountPath: /emptydir
       containers:
         - name: rabbitmq
-          image: docker.io/bitnamilegacy/rabbitmq:3.13.3-debian-12-r0
+          image: docker.io/bitnamilegacy/rabbitmq:4.1.3-debian-12-r1
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
@@ -441,7 +441,7 @@ spec:
             runAsGroup: 1001
             runAsNonRoot: true
             runAsUser: 1001
-            seLinuxOptions: null
+            seLinuxOptions: {}
             seccompProfile:
               type: RuntimeDefault
           lifecycle:
@@ -475,6 +475,8 @@ spec:
               value: "no"
             - name: RABBITMQ_NODE_NAME
               value: "rabbit@$(MY_POD_NAME).gs-cloud-common-rabbitmq-headless.$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: RABBITMQ_UPDATE_PASSWORD
+              value: "no"
             - name: RABBITMQ_MNESIA_DIR
               value: "/opt/bitnami/rabbitmq/.rabbitmq/mnesia/$(RABBITMQ_NODE_NAME)"
             - name: RABBITMQ_LDAP_ENABLE
@@ -482,14 +484,11 @@ spec:
             - name: RABBITMQ_LOGS
               value: "-"
             - name: RABBITMQ_ULIMIT_NOFILES
-              value: "65536"
+              value: "65535"
             - name: RABBITMQ_USE_LONGNAME
               value: "true"
-            - name: RABBITMQ_ERL_COOKIE
-              valueFrom:
-                secretKeyRef:
-                  name: gs-cloud-common-rabbitmq
-                  key: rabbitmq-erlang-cookie
+            - name: RABBITMQ_ERL_COOKIE_FILE
+              value: /opt/bitnami/rabbitmq/secrets/rabbitmq-erlang-cookie
             - name: RABBITMQ_LOAD_DEFINITIONS
               value: "no"
             - name: RABBITMQ_DEFINITIONS_FILE
@@ -498,11 +497,8 @@ spec:
               value: "yes"
             - name: RABBITMQ_USERNAME
               value: "geoserver"
-            - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: gs-cloud-common-rabbitmq
-                  key: rabbitmq-password
+            - name: RABBITMQ_PASSWORD_FILE
+              value: /opt/bitnami/rabbitmq/secrets/rabbitmq-password
             - name: RABBITMQ_PLUGINS
               value: "rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap"
           envFrom:
@@ -525,9 +521,9 @@ spec:
             timeoutSeconds: 20
             exec:
               command:
-                - sh
+                - /bin/bash
                 - -ec
-                - curl -f --user geoserver:$RABBITMQ_PASSWORD 127.0.0.1:15672/api/health/checks/virtual-hosts
+                - curl -f --user geoserver:$(< $RABBITMQ_PASSWORD_FILE) 127.0.0.1:15672/api/health/checks/virtual-hosts
           readinessProbe:
             failureThreshold: 3
             initialDelaySeconds: 10
@@ -536,9 +532,9 @@ spec:
             timeoutSeconds: 20
             exec:
               command:
-                - sh
+                - /bin/bash
                 - -ec
-                - curl -f --user geoserver:$RABBITMQ_PASSWORD 127.0.0.1:15672/api/health/checks/local-alarms
+                - curl -f --user geoserver:$(< $RABBITMQ_PASSWORD_FILE) 127.0.0.1:15672/api/health/checks/local-alarms
           resources:
             limits:
               cpu: 2
@@ -569,6 +565,8 @@ spec:
               subPath: app-plugins-dir
             - name: data
               mountPath: /opt/bitnami/rabbitmq/.rabbitmq/mnesia
+            - name: rabbitmq-secrets
+              mountPath: /opt/bitnami/rabbitmq/secrets
       volumes:
         - name: empty-dir
           emptyDir: {}
@@ -577,5 +575,12 @@ spec:
             sources:
               - secret:
                   name: gs-cloud-common-rabbitmq-config
+        - name: rabbitmq-secrets
+          projected:
+            sources:
+              - secret:
+                  name: gs-cloud-common-rabbitmq
+              - secret:
+                  name: gs-cloud-common-rabbitmq
         - name: data
           emptyDir: {}

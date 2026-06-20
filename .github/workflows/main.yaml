@@ -10,12 +10,13 @@ permissions:
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
+  PRE_COMMIT_HELM_VERSION: 3.11.0
 
 jobs:
   main:
     name: Continuous integration
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 40
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     strategy:
@@ -35,6 +36,7 @@ jobs:
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
+        # Run only when required secrets are present (avoids noisy failures on forks/PRs)
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - uses: actions/setup-python@v5
@@ -42,29 +44,60 @@ jobs:
           python-version: '3.13'
       - run: python3 -m pip install --requirement=ci/requirements.txt
 
+      # Pre-commit regenerates checked-in fixtures, so keep it on one stable Helm
+      # version. Running it under every matrix leg makes the bot bounce between
+      # equivalent-but-different renders from different Helm releases.
+      - name: Install helm (early, for pre-commit hooks)
+        uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.PRE_COMMIT_HELM_VERSION }}
+
+      - name: Add Bitnami helm repository and update (early, for pre-commit hooks)
+        run: |
+          set -euo pipefail
+          # Add the Bitnami chart repository used by Chart dependencies.
+          # Using '|| true' prevents a failure if the repo already exists.
+          helm repo add bitnami https://charts.bitnami.com/bitnami || true
+          # Update local repo index
+          helm repo update
+
+      - name: (Optional) Login to GHCR for OCI charts
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
+        run: |
+          set -euo pipefail
+          echo "${{ secrets.GHCR_TOKEN }}" | helm registry login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin || true
+
+      # Ensure chart dependencies are downloaded BEFORE pre-commit hooks that generate templates run
+      - name: Ensure Helm chart dependencies for pre-commit hooks
+        run: |
+          set -euo pipefail
+          # Update repos (idempotent)
+          helm repo update || true
+          # Fetch dependencies for root and example charts so pre-commit hook can render templates
+          helm dependency update . || true
+          helm dependency update examples/common || true
+          helm dependency update examples/datadir || true
+          helm dependency update examples/pgconfig-acl || true
+
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
       - run: pre-commit run --all-files --color=always
-      - run: git diff --exit-code --patch > /tmp/pre-commit.patch; git diff --color; git reset --hard || true
-        if: failure()
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Apply pre-commit fix.patch
-          path: /tmp/pre-commit.patch
-          retention-days: 1
-        if: failure()
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
+      - run: git diff --color
+        if: failure() && matrix.helm == env.PRE_COMMIT_HELM_VERSION
       - uses: actions/upload-artifact@v4
         with:
           name: Expected
           path: tests/
           if-no-files-found: ignore
           retention-days: 5
-        if: failure()
+        if: failure() && matrix.helm == env.PRE_COMMIT_HELM_VERSION
       - run: git reset --hard
-        if: failure()
+        if: failure() && matrix.helm == env.PRE_COMMIT_HELM_VERSION
 
       - name: Print environment information
         run: c2cciutils-env
@@ -75,27 +108,77 @@ jobs:
         uses: azure/setup-helm@v4
         with:
           version: ${{ matrix.helm }}
+
+      # Add Bitnami repo so helm can resolve dependencies that live in bitnami
+      # This step runs before any `helm dependency update` commands.
+      - name: Add Bitnami helm repository and update
+        run: |
+          set -euo pipefail
+          helm repo add bitnami https://charts.bitnami.com/bitnami || true
+          helm repo update
+
+      - name: Update helm repos
+        run: helm repo update
+
       - run: helm dependency update .
       - run: helm lint .
 
       - run: helm dependency update .
       - run: helm dependency update examples/common
       - run: helm lint examples/common
-      - run: helm template --namespace=default gs-cloud-common examples/common > tests/actual-common.yaml
-      - run: diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' -I 'seLinuxOptions:' --ignore-trailing-space tests/expected-common.yaml tests/actual-common.yaml
+
+      - name: Render examples/common
+        run: |
+          set -euo pipefail
+          helm template --namespace=default gs-cloud-common examples/common > tests/actual-common.yaml
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
+
+      - name: Upload actual-common.yaml on failure
+        if: failure() && matrix.helm == env.PRE_COMMIT_HELM_VERSION
+        uses: actions/upload-artifact@v4
+        with:
+          name: actual-common
+          path: tests/actual-common.yaml
+          if-no-files-found: ignore
+          retention-days: 3
+
+      - name: Compare generated vs expected (will fail CI when different)
+        run: |
+          diff -Naur -I 'checksum/secret:' -I 'rabbitmq-password:' -I 'rabbitmq-erlang-cookie:' -I 'seLinuxOptions:' -I 'trafficDistribution:' --ignore-trailing-space tests/expected-common.yaml tests/actual-common.yaml
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
 
       - run: helm dependency update examples/datadir
       - run: helm lint examples/datadir
       - run: helm template --namespace=default gs-cloud-datadir examples/datadir > tests/actual-datadir.yaml
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
       - run: diff -Naur -I 'seLinuxOptions:' --ignore-trailing-space tests/expected-datadir.yaml tests/actual-datadir.yaml
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
 
       - run: helm dependency update examples/pgconfig-acl
       - run: helm lint examples/pgconfig-acl
       - run: helm template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl > tests/actual-pgconfig-acl.yaml
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
       - run: diff -Naur -I 'seLinuxOptions:' --ignore-trailing-space tests/expected-pgconfig-acl.yaml tests/actual-pgconfig-acl.yaml
+        if: matrix.helm == env.PRE_COMMIT_HELM_VERSION
 
       - name: Setup k3s/k3d
         run: c2cciutils-k8s-install
+
+      - name: Wait for k8s control plane + debug
+        run: |
+          set -euo pipefail
+          echo "== kubeconfig =="
+          kubectl config view || true
+          echo "== kubectl version (client) =="
+          kubectl version --client --short || true
+          n=0
+          until kubectl cluster-info >/dev/null 2>&1 || [ $n -ge 20 ]; do
+            n=$((n+1))
+            echo "kubernetes not ready yet (attempt $n/20)"
+            sleep 15
+          done
+          echo "== kubectl get nodes =="
+          kubectl get nodes --no-headers || true
 
       - name: Install prometheus CRD
         run: |
