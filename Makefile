@@ -1,5 +1,7 @@
 HELM ?= helm
+GEN_EXPECTED_HELM_VERSION ?= 3.11.0
 LOCAL_IP ?= $(shell hostname -I | awk '{print $$1}')
+YQ ?=
 
 .PHONY: examples-clean
 examples-clean:
@@ -21,18 +23,62 @@ examples-clean:
 dependencies:
 	${HELM} dependency update .
 
+.PHONY: check-gen-expected-helm
+check-gen-expected-helm:
+	@detected_version="$$( ${HELM} version --short 2>/dev/null | sed -E 's/^v([0-9]+\.[0-9]+\.[0-9]+).*/\1/' )"; \
+	if [ "$$detected_version" != "${GEN_EXPECTED_HELM_VERSION}" ]; then \
+		echo "ERROR: 'make gen-expected' must be run with Helm ${GEN_EXPECTED_HELM_VERSION}. Detected Helm version: $${detected_version:-unknown}." >&2; \
+		exit 1; \
+	fi
+
 .PHONY: gen-expected
-gen-expected: dependencies
+gen-expected: check-gen-expected-helm dependencies
 	${HELM} dependency update examples/common
 	${HELM} dependency update examples/datadir
 	${HELM} dependency update examples/pgconfig-acl
 	${HELM} dependency update examples/gwcStatefulSet
 	${HELM} dependency update examples/pgconfig-wms-hpa
-	${HELM} template --namespace=default gs-cloud-common examples/common > tests/expected-common.yaml
-	${HELM} template --namespace=default gs-cloud-datadir examples/datadir > tests/expected-datadir.yaml
-	${HELM} template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl > tests/expected-pgconfig-acl.yaml
-	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet > tests/expected-statefulset.yaml
-	${HELM} template --namespace=default gs-cloud-pgconfig-wms-hpa examples/pgconfig-wms-hpa > tests/expected-pgconfig-wms-hpa.yaml
+	# Generate expected manifests and normalize dynamic fields that cause spurious diffs in CI.
+ifeq (${YQ},)
+	# Use sed-based normalization if yq is not provided.
+	${HELM} template --namespace=default gs-cloud-common examples/common \
+	  | sed -E '/^\s*resourceVersion:/d; /^\s*uid:/d; /^\s*generation:/d' \
+	  | sed -E '/^\s*managedFields:/,/^\s*[A-Za-z0-9\-_]+:/d' \
+	  > tests/expected-common.yaml
+	${HELM} template --namespace=default gs-cloud-datadir examples/datadir \
+	  | sed -E '/^\s*resourceVersion:/d; /^\s*uid:/d; /^\s*generation:/d' \
+	  | sed -E '/^\s*managedFields:/,/^\s*[A-Za-z0-9\-_]+:/d' \
+	  > tests/expected-datadir.yaml
+	${HELM} template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl \
+	  | sed -E '/^\s*resourceVersion:/d; /^\s*uid:/d; /^\s*generation:/d' \
+	  | sed -E '/^\s*managedFields:/,/^\s*[A-Za-z0-9\-_]+:/d' \
+	  > tests/expected-pgconfig-acl.yaml
+	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet \
+	  | sed -E '/^\s*resourceVersion:/d; /^\s*uid:/d; /^\s*generation:/d' \
+	  | sed -E '/^\s*managedFields:/,/^\s*[A-Za-z0-9\-_]+:/d' \
+	  > tests/expected-statefulset.yaml
+	${HELM} template --namespace=default gs-cloud-pgconfig-wms-hpa examples/pgconfig-wms-hpa \
+	  | sed -E '/^\s*resourceVersion:/d; /^\s*uid:/d; /^\s*generation:/d' \
+	  | sed -E '/^\s*managedFields:/,/^\s*[A-Za-z0-9\-_]+:/d' \
+	  > tests/expected-pgconfig-wms-hpa.yaml
+else
+	# If YQ is provided, use it to remove dynamic metadata in a more reliable way.
+	${HELM} template --namespace=default gs-cloud-common examples/common \
+	  | ${YQ} eval 'del(..metadata.managedFields) | del(..metadata.uid) | del(..metadata.resourceVersion) | del(..metadata.generation)' - \
+	  > tests/expected-common.yaml
+	${HELM} template --namespace=default gs-cloud-datadir examples/datadir \
+	  | ${YQ} eval 'del(..metadata.managedFields) | del(..metadata.uid) | del(..metadata.resourceVersion) | del(..metadata.generation)' - \
+	  > tests/expected-datadir.yaml
+	${HELM} template --namespace=default gs-cloud-pgconfig-acl examples/pgconfig-acl \
+	  | ${YQ} eval 'del(..metadata.managedFields) | del(..metadata.uid) | del(..metadata.resourceVersion) | del(..metadata.generation)' - \
+	  > tests/expected-pgconfig-acl.yaml
+	${HELM} template --namespace=default gs-cloud-statefulset examples/gwcStatefulSet \
+	  | ${YQ} eval 'del(..metadata.managedFields) | del(..metadata.uid) | del(..metadata.resourceVersion) | del(..metadata.generation)' - \
+	  > tests/expected-statefulset.yaml
+	${HELM} template --namespace=default gs-cloud-pgconfig-wms-hpa examples/pgconfig-wms-hpa \
+	  | ${YQ} eval 'del(..metadata.managedFields) | del(..metadata.uid) | del(..metadata.resourceVersion) | del(..metadata.generation)' - \
+	  > tests/expected-pgconfig-wms-hpa.yaml
+endif
 	sed -i 's/[[:blank:]]\+$$//g'  tests/expected*.yaml
 
 .PHONY: example-common

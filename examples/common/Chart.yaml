@@ -5,6 +5,6 @@ name: examples-common
 version: 0.1.0
 dependencies:
   - name: 'rabbitmq'
-    version: 14.4.0
-    repository: 'oci://ghcr.io/georchestra/bitnami-helm-charts'
+    version: 16.0.14
+    repository: 'oci://registry-1.docker.io/bitnamicharts'
     condition: rabbitmq.enabled
