@@ -192,7 +192,7 @@ data:
   RELEASE_NAME: gs-cloud-pgconfig-wms-hpa
   RELEASE_NAMESPACE: default
   SERVICE_ACL_NAME: gs-cloud-pgconfig-wms-hpa-gsc-acl
-  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "2.4.0"
+  SERVICE_ACL_CONTAINER_SPRING_IMAGE_TAG: "3.0.3"
   SERVICE_GATEWAY_NAME: gs-cloud-pgconfig-wms-hpa-gsc-gateway
   SERVICE_GATEWAY_CONTAINER_SPRING_IMAGE_TAG: "3.0.2"
   SERVICE_GWC_NAME: gs-cloud-pgconfig-wms-hpa-gsc-gwc
