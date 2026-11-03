@@ -5,10 +5,7 @@ on:
   pull_request:
 
 permissions:
-  actions: write
-  contents: write
-  id-token: write
-  packages: write
+  contents: read
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
@@ -20,6 +17,10 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    outputs:
+      success-latest: ${{ steps.success.outputs.success-latest }}
+      success-3-11-0: ${{ steps.success.outputs.success-3-11-0 }}
 
     strategy:
       fail-fast: true
@@ -196,6 +197,44 @@ jobs:
       - name: Uninstall the application
         run: make examples-clean
 
+      # Mark as success
+      - id: success
+        run: |
+          version=${{ matrix.helm }}
+          echo "success-${version//./-}=true" >> $GITHUB_OUTPUT
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    needs: main
+    if: always()
+
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success-latest }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-11-0 }}" == "true" ]]'
+
+      # The full history is required to compute the version from the tags.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: latest-known
+          cache-python: true
+          python-version: '3.14'
+
+      # tag-publish downloads `cr` and `cosign` itself, but it uses the helm CLI to package the chart.
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+        with:
+          version: latest
+
       - name: Check if release already exists for current tag
         id: check_release
         uses: actions/github-script@v7
@@ -221,20 +260,28 @@ jobs:
               }
               throw error;
             }
-        if: github.ref_type == 'tag' && matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
+        if: github.ref_type == 'tag' && env.HAS_SECRETS == 'HAS_SECRETS'
+
+      # tag-publish packages the chart, the dependencies must be present.
+      - run: helm dependency update .
+
       - name: Publish
-        run: tag-publish
+        run: uv run --locked --isolated --no-build --project=.github/publish tag-publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS' && (github.ref_type != 'tag' || steps.check_release.outputs.release_exists != 'true')
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && (github.ref_type != 'tag' || steps.check_release.outputs.release_exists != 'true')
+
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch; git diff --color; git reset --hard || true
         if: failure()
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: Update dpkg versions list.patch
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
+
       - name: Trigger changelog workflow
         uses: actions/github-script@v7
         with:
@@ -249,4 +296,4 @@ jobs:
             }
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: matrix.helm == 'latest' && env.HAS_SECRETS == 'HAS_SECRETS'
+        if: env.HAS_SECRETS == 'HAS_SECRETS'
