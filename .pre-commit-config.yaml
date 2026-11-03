@@ -22,10 +22,14 @@ repos:
       - id: trailing-whitespace
       - id: mixed-line-ending
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.6.1
+    rev: 1.9.0
     hooks:
       - id: copyright
       - id: canonicalize
+      - id: uv-lock
+        additional_dependencies:
+          - uv==0.13.4 # pypi
+        files: ^\.github/publish/pyproject\.toml$
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
